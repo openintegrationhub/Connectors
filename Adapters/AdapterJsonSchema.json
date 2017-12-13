@@ -1,0 +1,204 @@
+{
+  "definitions": {
+    "viewClass": {
+      "type": "string",
+      "enum": ["TextFieldView", "TextAreaView ", "SelectView", "CheckBoxView", "PasswordFieldView", "OAuthFieldView", "CodeFieldView", "JSONataView", "WebHookPayloadView", "CSVReadView"],
+      "description": "To be done",
+      "default": "TextFieldWithNoteView",
+      "examples": [
+        "TextFieldWithNoteView"
+      ]
+    },
+    "fields": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "[a-z]+": {
+          "type": "object",
+          "minProperties": 3,
+          "required": [
+            "label",
+            "required",
+            "viewClass"
+          ]
+        }
+      }  
+    }
+  },
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "required": [
+    "title",
+    "description",
+    "credentials"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "Component name",
+      "examples": [
+        "Petstore API (Node.js)"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "Your component description",
+      "examples": [
+        "elastic.io component for the Petstore API"
+      ]
+    },
+    "docsUrl": {
+      "type": "string",
+      "description": "An explanation about the purpose of this instance.",
+      "format": "uri",
+      "default": "https://linkToYourDocs.com",
+      "examples": [
+        "https://github.com/elasticio/petstore-component-nodejs"
+      ]
+    },
+    "credentials": {
+      "type": "object",
+      "minProperties": 1,
+      "required": [
+        "fields"
+      ],
+      "properties": {
+        "fields": {"$ref": "#/definitions/fields"}
+      }
+    },
+    "triggers": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "[a-z]+": {
+          "type": "object",
+          "minProperties": 3,
+          "description" : "To be done",
+          "required": [
+            "main",
+            "type",
+            "title"
+          ],
+          "properties": {
+            "main": {
+              "type": "string",
+              "description": "To be done",
+              "default": "Path to trigger.js",
+              "examples": [
+                "./lib/triggers/getPetsByStatusWithGenerators.js"
+              ]
+            },
+            "type": {
+              "type": "string",
+              "enum": ["polling", "webhook"],
+              "description": "Defines if the trigger is a polling or webhook trigger",
+              "default": "polling",
+              "examples": [
+                "polling"
+              ]
+            },
+            "title": {
+              "type": "string",
+              "description": "Descriptive name of the trigger",
+              "default": "Trigger title",
+              "examples": [
+                "Get Pets By Status With Generators"
+              ]
+            },
+            "fields": {"$ref": "#/definitions/fields"},
+            "metadata": {
+              "type": "object",
+              "properties": {
+                "out": {
+                  "type": ["object","string"],
+                  "description": "Metadata defining the structure of the output messages.",
+                  "default": "path to out metadata ",
+                  "examples": [
+                    "./lib/schemas/getPetsByStatus.out.json"
+                  ]
+                }
+              }
+            },
+            "dynamicMetadata": {
+              "type": "boolean",
+              "description": "Defines dynamic Metadata is supported/enabled",
+              "default": false,
+              "examples": [
+                true
+              ]
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "[a-z]+": {
+          "type": "object",
+          "minProperties": 3,
+          "description" : "To be done",
+          "required": [
+            "main",
+            "title"
+          ],
+          "properties": {
+            "main": {
+              "type": "string",
+              "description": "To be done",
+              "default": "Path to action .json",
+              "examples": [
+                "./lib/actions/createPetWithPromise.js"
+              ]
+            },
+            "title": {
+              "type": "string",
+              "description": "Descriptive name of the action",
+              "default": "Title Name",
+              "examples": [
+                "Create a Pet With Promise"
+              ]
+            },
+            "metadata": {
+              "type": "object",
+              "minProperties": 2,
+              "required": [
+                "in",
+                "out"
+              ],
+              "properties": {
+                "in": {
+                  "type": ["string", "object"],
+                  "description": "Source of the metdata. Either a path to a json schema(string) or an inline json schema (object)",
+                  "default": "Path to in metadata",
+                  "examples": [
+                    "./lib/schemas/createPet.in.json"
+                  ]
+                },
+                "out": {
+                  "type": ["string", "object"],
+                  "description": "Metadata defining the structure of the output messages.",
+                  "default": "Path to out metadata",
+                  "examples": [
+                    "./lib/schemas/createPet.out.json"
+                  ]
+                }
+              }
+            },
+            "dynamicMetadata": {
+              "type": "boolean",
+              "description": "Defines dynamic Metadata is supported/enabled",
+              "default": false,
+              "examples": [
+                true
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

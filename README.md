@@ -53,17 +53,8 @@ Please contact philipp.hoegner@cloudecosystem.org for additional information on 
 
 ## Workgroup Content
 
-| Workgroup  | Architecture |
+| Workgroup  | Connectors |
 | ------------- | ------------- |
-| Content  | Domain Model |
-|  | Master Data Model(s)  |
-|  | Data Mapping  |
-|  | Data Hub & Standarization of the data model  |
-|  | Backlog Data-Hub & data model  |  
-| APs | 2.03 |
-|  | 2.04 |
-|  | 2.05 |
-|  | 2.06 |
-|  | 2.07 |
-|  | 2.09 |
-|  | 2.15 
+| Content  | Application Documents |
+|  | Adapter Guidelines  |
+|  | Transformer Guidelines  |

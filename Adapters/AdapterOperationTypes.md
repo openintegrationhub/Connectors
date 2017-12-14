@@ -1,11 +1,9 @@
-# Adapter Operation Types
-
-## Table of Contents
+# Table of Contents
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Table of Contents](#table-of-contents)
 - [Adapter Operation Types](#adapter-operation-types)
-	- [Table of Contents](#table-of-contents)
 	- [Receive updates to information that is from a system](#receive-updates-to-information-that-is-from-a-system)
 	- [Create and update information in a system](#create-and-update-information-in-a-system)
 	- [Lookup Operations](#lookup-operations)
@@ -13,6 +11,8 @@
 	- [Domain Specific Triggers](#domain-specific-triggers)
 
 <!-- /TOC -->
+
+# Adapter Operation Types
 
 **What Adapter Functionality Can Be Build and What API Functionality is
 Necessary to Allow Functionality?**

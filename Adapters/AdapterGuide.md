@@ -64,7 +64,7 @@ read, update and delete objects) then the following diagram explains which
 triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
 
-![API Classification3](https://github.com/openintegrationhub/Architecture/blob/master/Adapters/Assets/ApiClassification.svg)
+![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
 A checklist for each case exists in the document `AdapterCompletenessChecklist.md`.
 
 ## Question 1: Is the list of business objects dynamic?

@@ -1,8 +1,7 @@
 # Introduction
 
 ## Table of Content
-- [Contact](#contact)
-- [General Information](#general-information)
+- [General Workgroup Information](#general-information)
   - [Manager](#manager)
   - [Commiters](#committers)
   - [Contributors](#contributors)
@@ -12,14 +11,9 @@
 
 - [Contribution](#contribution)
 
-- [Decisions](#decisions)
+- [Contact](#contact)
 
-## Contact
-For more information please visit our [official homepage](http://www.openintegrationhub.de/connect.html).
-
-Please contact philipp.hoegner@cloudecosystem.org for additional information on connectors.
-
-## General Information
+## General Workgroup Information
 - Each workgroup has at least one **status call** every two weeks
 - **Every Committer** must attend the status call
 
@@ -57,4 +51,9 @@ Please contact philipp.hoegner@cloudecosystem.org for additional information on 
 | ------------- | ------------- |
 | Content  | Application Documents |
 |  | Adapter Guidelines  |
-|  | Transformer Guidelines  |
+|  | Transformer Guidelines  
+
+## Contact
+For more information please visit our [official homepage](http://www.openintegrationhub.de/connect.html).
+
+Please contact philipp.hoegner@cloudecosystem.org for additional information on connectors.

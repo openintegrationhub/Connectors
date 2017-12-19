@@ -20,7 +20,18 @@
             "label",
             "required",
             "viewClass"
-          ]
+          ],
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "What is the purpose of this field",
+              "default": "Example lable"
+            },
+            "required": {
+              "type": "boolean",
+              "default": true
+            },
+            "viewClass" : {"$ref": "#/definitions/viewClass"}
         }
       }  
     }

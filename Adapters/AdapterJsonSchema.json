@@ -31,7 +31,10 @@
               "type": "boolean",
               "default": true
             },
-            "viewClass" : {"$ref": "#/definitions/viewClass"}
+            "viewClass" : {
+              "$ref": "#/definitions/viewClass"
+            }
+          }  
         }
       }  
     }

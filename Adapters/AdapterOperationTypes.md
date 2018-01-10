@@ -22,7 +22,7 @@ Each category of operations requires certain functionality to exist in the API.
 The following lists each category of adapter behavior and the required API
 functionality to build such adapter behavior.
 
-## Receive updates to information that is from a system
+## Receive Updates to Information that is from a System
 *(Updates propagate out of a system)*: The ability to extract new and updated
  information from a system.
   - [ ] Record the time of the last modification of all objects in the system
@@ -38,7 +38,7 @@ functionality to build such adapter behavior.
     * having deletion events be propagated through webhooks
     * allowing a list of recently deleted ids to be fetched
 
-## Create and update information in a system
+## Create and update Information in a System
 *(Updates propagate into a system)*: The ability to add information
  to a system and to update information once it is present in the system.
   - [ ] Given an object that is semantically valid (as per the business rules of

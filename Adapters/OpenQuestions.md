@@ -3,7 +3,7 @@
 This document discusses problems not addressed by the adapter guide or
 proposed changes to the existing guide.
 
-There is an additional guide `AdapterGuide.md` which explains how to design a adapter.
+There is an additional guide `AdapterGuide.md` which explains how to design an adapter.
 
 There is an additional document `AdapterCompletenessChecklist.md` which is a
 checklist which lists all items which should be done for a fully complete
@@ -39,7 +39,7 @@ Objects share ids between systems.
 Otherwise, do a query for existence to determine if an insert or update
 operation is required.  `isNew` as metadata could be useful.
 
-## Foreign Key pattern
+## Foreign Key Pattern
 `this` system stores the id of the object in `other` system.
 * Assumes that an additional column/property can be created in `this` system.
 * Checks to see if an item exists where `otherId === incomingId`.  If yes,
@@ -94,7 +94,7 @@ An alternative to the current proposal is to:
  Extract functionalities of the system to complete the initial import.
 * Require polling trigger have config variables for pollingStart (which defaults
 to now) and pollingEnd (which defaults to never).  This provides an operational
-tool which can then be used as a recovery mechanism outages to the webhook
+tool which can then be used as a recovery mechanism outage to the webhook
 infrastructure.
 
 # Standardized Event Metadata Information
@@ -120,7 +120,7 @@ Currently, the omission of this information isn't relevant for the SugarCRM
 example provided in the `AdapterGuide.md`.  However, providing this
 information may be helpful for solving future problems.
 
-# Define behavior for handling object merges
+# Define Behavior for handling Object merges
 Merge object behavior isn't particularly common in APIs but it does exist.  (For
 example, see
 [Salesforce](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_merge.htm)
@@ -144,7 +144,7 @@ storage mediums) to be uniformly configured between adapters written by
 different developers.  (For example, consider [log4j for
 Java](https://en.wikipedia.org/wiki/Log4j) and its ports to other languages.)
 
-# Event debouncing
+# Event Debouncing
 Consider the following flows:
 - FooCRM.getObjects -> BarCRM.upsertObject
 - BarCRM.getObjects -> FooCRM.upsertObject

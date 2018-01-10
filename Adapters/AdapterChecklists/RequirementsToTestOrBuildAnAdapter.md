@@ -1,6 +1,6 @@
 # Requirements to Test or Build an Adapter
 In order for an individual to test the correctness of an adapter or to build an
-adapter for a new system, the following resources are must haves in order to
+adapter for a new system, the following resources are **must haves** in order to
 access the API:
 - [ ] An instance/account/tenant for the tester to use.  This includes:
   - [ ] A server where the API is set up (or the API is already hosted in the cloud)
@@ -12,6 +12,6 @@ access the API:
   - [ ] Create, Update and Delete objects as required in the UI of the system
   - [ ] Configure API access for the adapter
 - [ ] Data in the test instance/account/tenant can only be manipulated by the
-tester and the adapter. (No shared test instances/accounts/tenants.)
+tester and the adapter (No shared test instances/accounts/tenants)
 - [ ] The tester must be provided all API keys that are required in order for
 the adapter to interact with the API

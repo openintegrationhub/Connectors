@@ -15,3 +15,5 @@ access the API:
 tester and the adapter (No shared test instances/accounts/tenants)
 - [ ] The tester must be provided all API keys that are required in order for
 the adapter to interact with the API
+- [ ] Access to the API documentation (in the event that the API documentation is 
+password protected or not otherwise publicly available)

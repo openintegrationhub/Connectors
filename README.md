@@ -49,9 +49,12 @@
 
 | Workgroup  | Connectors |
 | ------------- | ------------- |
-| Content  | Application Documents |
-|  | Adapter Guidelines  |
-|  | Transformer Guidelines  
+| Content  | Definition procedure model for solution integration |
+|  |Development of two prototypes for connectors |
+|  | Know-How transfer & Training of cloud provider |
+| AP | 7.01 |
+|  | 7.02 |
+|  | 10.01 |  
 
 ## Contact
 For more information please visit our [official homepage](http://www.openintegrationhub.de/connect.html).

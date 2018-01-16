@@ -37,13 +37,10 @@
 
 | Workgroup  | Member Name | Role |
 | ------------- | ------------- | ------------- |
-| Connectors  | Robin  | **Manager & Committer**  |
-|  | Philipp  | Committer  |
+| Connectors  | Philipp  | **Manager & Committer**  |
+|  | Robin  | Committer  |
 |  | Jacob  | Committer  |
 |  | Renat  | Contributor  |
-|  | Jürgen  | Committer  |
-|  | Veerle  | Contributor  |
-|  | Olga  | Contributor  |
 
 ## Workgroup Content
 

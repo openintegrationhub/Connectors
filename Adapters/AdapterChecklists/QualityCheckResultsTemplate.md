@@ -7,20 +7,16 @@ In the first section the general template is provided. In the second section, an
 
 
 # Table of Contents
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Quality Checks Results Template](#quality-checks-results-template)
-- [Table of Contents](#table-of-contents)
 - [Template](#template)
 	- [Documentation](#documentation)
 	- [Coverage](#coverage)
 	- [Functionality](#functionality)
 - [Example](#example)
-	- [Documentation](#documentation)
-	- [Coverage](#coverage)
-	- [Functionality](#functionality)
+	- [Documentation](#documentation-1)
+	- [Coverage](#coverage-1)
+	- [Functionality](#functionality-1)
 
-<!-- /TOC -->
 
 # Template
 

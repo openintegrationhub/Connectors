@@ -21,9 +21,9 @@
 | Workgroup  | Member Name | Role |
 | ------------- | ------------- | ------------- |
 | Connectors  | Philipp (@philecs)  | **Manager & Committer**  |
-|  | Robin  | Committer (@RobinBrinkmann)  |
-|  | Jacob  | Committer (@jhorbulyk)  |
-|  | Renat  | Contributor (@zubairov)  |
+|  | Robin (@RobinBrinkmann)   | Committer  |
+|  | Jacob (@jhorbulyk) | Committer   |
+|  | Renat (@zubairov) | Contributor   |
 
 ## Workgroup Content
 

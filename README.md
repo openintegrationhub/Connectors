@@ -1,7 +1,6 @@
 # Table of Contents
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Table of Contents](#table-of-contents)
 - [General Workgroup Information](#general-workgroup-information)
 	- [Workgroup Member](#workgroup-member)
 	- [Workgroup Content](#workgroup-content)

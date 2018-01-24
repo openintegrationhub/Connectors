@@ -72,7 +72,7 @@ The quality checks for coverage and functionality were performed on the basis of
 The quality check for the documentation was performed on the basis of the [Adapter Description and Documentation Guidelines](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/AdapterDescriptionAndDocumentationGuidelines.md)
 
 | Priority  | Relating file | Impacted requirement  | What is missing / insufficient |
-| ------------- | ------------- | ------------- |
+| ------------- | ------------- | ------------- | ------------- |
 | Must Have  | README.md | Description of the application adapter conntects to  | Description is missing |
 | Could Have | README.md | Version and compatibility information  | Information about version is missing  |
 | Should Have  | Component.json | Global description field  | Global description field is missing |

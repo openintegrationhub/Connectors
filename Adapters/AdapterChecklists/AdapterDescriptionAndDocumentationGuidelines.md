@@ -18,11 +18,15 @@ Adapter Repository Requirements:
 ## README.md
 - [ ] Description of the application adapter connects to
 - [ ] List of environment variables that need to be configured (e.g. OAuth ClientID/Secret)
+
 # Should Have
 ## README.md
 - [ ] Description of the incoming message and outgoing message for each action/trigger (e.g. Update Contact Action)
     - [ ] Description of any attachments generated or consumed for each action/trigger
+
 ## Component.json
+See the [AdapterJsonSchema](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterJsonSchema.json) for a template to create the `component.json` file.
+
 - [ ] `component.json` should have a global `description` field filled.
 - [ ] `component.json` should have a link to the documentation, e.g. `README` file below
 - [ ] Each field in credentials should have a `note` on it explaining what exactly is required here (unless it's obvious, e.g. password)
@@ -42,6 +46,7 @@ Adapter Repository Requirements:
 - [ ] Known limitations, may be with link to the issue
 - [ ] Contribution guidelines (they should be standardized)
 - [ ] License and copyright
+
 ## Other Files
 - [ ] Logo - 128x128 PNG file with transparent background
 - [ ] License file

@@ -61,11 +61,11 @@ a SOAP API, a SQL (or other) DB connection, etc.
 The expected actions and triggers of an adapter depend on the behavior of the
 API.  If the API supports CRUD operations (i.e. the API allows you to create,
 read, update and delete objects) then the following diagram explains which
-triggers and actions should exist in the adapter.  The triggers and actions
-should aim at covering 100% of the objects provided by the API.
+triggers and actions should exist in the adapter.  **The triggers and actions
+should aim at covering 100% of the objects provided by the API.**
 
 ![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
-A checklist for each case exists in the document `AdapterCompletenessChecklist.md`.
+A checklist for each case exists in the document [AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 
 ## Question 1: Is the list of Business Objects dynamic?
 Some systems have a fixed list of objects (and corresponding API endpoints)

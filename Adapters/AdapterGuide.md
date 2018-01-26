@@ -1,12 +1,12 @@
 # Guide for Creating an Adapter
 
-This document is designed as a guide.  It explains the problems which an
-adapter must solve and the recommended way of solving those problems.
+This guide explains the problems which an
+adapter must solve and the recommended way doing so.
 
 ## Table of Contents
 
 - [What is an adapter?](#what-is-an-adapter)
-- [What API Functionality is Necessary to Build an Adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
+- [What API functionality is necessary to build an adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
 - [Given an API how should an adapter behave?](#given-an-api-how-should-a-adapter-behave)
   - [Question 1: Is the list of business objects dynamic?](#question-1-is-the-list-of-business-objects-dynamic)
   - [Question 2: Is the structure of objects dynamic?](#question-2-is-the-structure-of-objects-dynamic)
@@ -41,12 +41,11 @@ The intent is that several adapters can be combined to create an [integration
 flow](https://support.elastic.io/support/solutions/articles/14000032295-what-is-an-integration-flow-).
  Several integration flows can then collectively form an integration.
 
-# What API Functionality is Necessary to Build an Adapter?
+# What API functionality is necessary to build an adapter?
 In order to build an adapter which will perform generic CRUD operations (for
 business objects where business rules allow CRUD operations) the API must expose
 CRUD functionality.  For more details on possible operation types, see
-`AdapterOperationTypes.md`.  In a guideline compliant adapter, all operations
-from the following types should be included:
+`AdapterOperationTypes.md`.  A guideline compliant adapter includes the following operations:
 * Receive updates from a system
 * Create and update information in a system
 * Lookup Operations
@@ -59,8 +58,7 @@ a SOAP API, a SQL (or other) DB connection, etc.
 
 # Given an API how should an Adapter behave?
 The expected actions and triggers of an adapter depend on the behavior of the
-API.  If the API supports CRUD operations (i.e. the API allows you to create,
-read, update and delete objects) then the following diagram explains which
+API.  If the API supports CRUD operations the following diagram explains which
 triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
 
@@ -105,7 +103,7 @@ object.](https://github.com/elasticio/sugarcrm-component/blob/master/lib/actions
 ## Question 3: Does the API support Webhooks?
 Some external systems support the concept of **Webhooks**.  The idea of a hook
 is that when a change occurs to an object in that external system, that external
-system can proactively inform other systems about this change.  Webhooks are
+system proactively informs other systems about this change.  Webhooks are
 hooks where the information is transferred by having the system reporting the
 change make a REST API call to the system making the change.  [See here for more
 information about elastic.io
@@ -117,26 +115,25 @@ have occurred.
 # Descriptions of standardized Actions or Triggers
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
-common behaviors, then it is possible to build integrations by combining
-adapters which are developed by different developers.
+common behavior, it is possible to build integrations by combining
+adapters developed by different developers.
 
 In general, all actions or triggers should emit events individually as opposed
 to creating batches.
 
 In general, any action or trigger should only make requests to one API endpoint
-(with the exception of any calls required for authentication). (I.e. It is ok
+(with the exception of calls required for authentication). I.e. It is ok
 for a trigger to traverse paged results, but it should not make multiple calls
-to combine data.)
+to combine data.
 
 ## Standardized Triggers (including Webhooks)
 ### Get Objects - Polling
-This trigger will be scheduled to execute periodically.  When executed, this
-trigger will fetch all objects in the database that have been modified or
-created since the previous execution.  During the first execution, the trigger
-will start at the beginning of time.   This means that this trigger will
-initially fetch all objects.  It will emit one message per object that changes
-since the last polling interval. The entire object should be emitted as the
-message body.
+This trigger will be scheduled to execute periodically.  When executed, it will
+fetch all objects in the database that have been modified or created since the 
+previous execution. During the first execution, the trigger will start at the 
+beginning of time. This means the trigger will initially fetch all objects.
+It will emit one message per object that changed since the last polling interval.
+The entire object should be emitted as the message body.
 
 The naming convention for this trigger should be `get<objectNamePlural>Polling`.
 For example, if the trigger was for objects called `Customer` objects, the name
@@ -145,8 +142,8 @@ system are generic, it is possible to write a single trigger where the object
 type is a configuration setting.  In this case, the trigger should be named
 `getObjectsPolling`.
 
-In many systems, if the number of matching results is too large, then only a
-subset will be returned on the first request (the first page).  Often systems
+In many systems, if the number of matching results is too large, only a
+subset is returned on the first request (the first page).  Often systems
 can return the results based on some ordering.  (In our case, the useful
 ordering will be by last updated time.)  The system will often provide either a
 link to the next page or the next page can be obtained by modifying the search

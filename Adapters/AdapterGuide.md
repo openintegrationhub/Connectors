@@ -1,13 +1,13 @@
-# Guide for Creating an Adapter
+# Guide for creating an Adapter
 
 This guide explains the problems which an
 adapter must solve and the recommended way doing so.
 
 ## Table of Contents
 
-- [What is an adapter?](#what-is-an-adapter)
-- [What API functionality is necessary to build an adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
-- [Given an API how should an adapter behave?](#given-an-api-how-should-a-adapter-behave)
+- [What is an Adapter?](#what-is-an-adapter)
+- [What API functionality is necessary to build an Adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
+- [Given an API how should an Adapter behave?](#given-an-api-how-should-a-adapter-behave)
   - [Question 1: Is the list of business objects dynamic?](#question-1-is-the-list-of-business-objects-dynamic)
   - [Question 2: Is the structure of objects dynamic?](#question-2-is-the-structure-of-objects-dynamic)
   - [Question 3: Does the API support webhooks?](#question-3-does-the-api-support-webhooks)
@@ -24,7 +24,7 @@ adapter must solve and the recommended way doing so.
 - [Example of flows in a complete one way integration between two systems](#example-of-flows-in-a-complete-one-way-integration-between-two-systems)
 
 
-# What is an adapter?
+# What is an Adapter?
 An **adapter** is a single, reusable piece of functionality that typically
 represents a way to communicate with one system and/or API.  This functionality
 is created by combining code with a file (`component.json`) which describes:
@@ -41,7 +41,7 @@ The intent is that several adapters can be combined to create an [integration
 flow](https://support.elastic.io/support/solutions/articles/14000032295-what-is-an-integration-flow-).
  Several integration flows can then collectively form an integration.
 
-# What API functionality is necessary to build an adapter?
+# What API functionality is necessary to build an Adapter?
 In order to build an adapter which will perform generic CRUD operations (for
 business objects where business rules allow CRUD operations) the API must expose
 CRUD functionality.  For more details on possible operation types, see
@@ -65,7 +65,7 @@ should aim at covering 100% of the objects provided by the API.
 ![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
 A checklist for each case exists in the document `AdapterCompletenessChecklist.md`.
 
-## Question 1: Is the list of Business Objects dynamic?
+## Question 1: Is the list of business objects dynamic?
 Some systems have a fixed list of objects (and corresponding API endpoints)
 which exist in the system.  Other systems allow users and admins to create new
 types of objects (which result in the system dynamically creating API
@@ -86,7 +86,7 @@ of objects is unknown, the structure of objects is also unknown.  This means
 that an answer of *yes* to *Question 1* implies an answer of *yes* to *Question
 2*.
 
-## Question 2: Is the Structure of Objects dynamic?
+## Question 2: Is the structure of objects dynamic?
 *As explained above, an answer of yes to Question 1 implies an answer of yes to
 Question 2.*
 
@@ -112,7 +112,7 @@ This can be more efficient (both in terms of speed and machine resources) than
 having a scheduled job periodically make calls for changes that may or may not
 have occurred.
 
-# Descriptions of standardized Actions or Triggers
+# Descriptions of standardized actions or triggers
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
 common behavior, it is possible to build integrations by combining
@@ -126,7 +126,7 @@ In general, any action or trigger should only make requests to one API endpoint
 for a trigger to traverse paged results, but it should not make multiple calls
 to combine data.
 
-## Standardized Triggers (including Webhooks)
+## Standardized triggers (including Webhooks)
 ### Get Objects - Polling
 This trigger will be scheduled to execute periodically.  When executed, it will
 fetch all objects in the database that have been modified or created since the 
@@ -195,7 +195,7 @@ The naming convention for this trigger should be `getDeleted<objectNamePlural>Po
 
 Many APIs may not support this behavior.
 
-## Standardized Actions
+## Standardized actions
 ### Upsert Object
 This action accepts an object as its input.  If the incoming object does not
 have an ID, this action will create an object in the system it is connected to.
@@ -209,7 +209,7 @@ The naming convention for this action should be `upsert<objectNameSingular>`. (e
 adapter](https://github.com/elasticio/sugarcrm-component/blob/master/lib/actions/upsertObject.js)
 
 ### Delete Object
-Given an incoming message with an id, delete the corresponding object in the
+Given an incoming message with an ID, delete the corresponding object in the
 system.  The action should emit a message with the object of the ID which was
 deleted.
 
@@ -244,7 +244,7 @@ enum](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/enum).
 
 **Example for revised action TBD**
 
-# Example of Flows in a complete one way Integration between two Systems
+# Example of flows in a complete one way integration between two systems
 A complete one way integration between two systems is an integration where:
 * One system is the system of truth
 * Creations, updates and deletions happen only in one system

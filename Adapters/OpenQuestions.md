@@ -13,9 +13,6 @@ adapter.
 
 - [Open Questions Related To Adapter Design](#open-questions-related-to-adapter-design)
 - [ID Linking of the Objects Themselves](#id-linking-of-the-objects-themselves)
-  - [Shared ID Pattern](#shared-id-pattern)
-  - [Foreign Key pattern](#foreign-key-pattern)
-  - [Third Party System Which Links IDs](#third-party-system-which-links-ids)
 - [ID matching for Linked Objects](#id-matching-for-linked-objects)
 - [Initial Data Fetch](#initial-data-fetch)
 - [Standardized Event Metadata Information](#standardized-event-metadata-information)
@@ -143,18 +140,18 @@ How is this cycle broken?
 
 # Other Open Questions
 1. How to handle object changes in systems, without a change tracking?
-  - Implementation of a changelog is needed
-  - Which functionalities are possible without a change tracking mechanism?
+  1. Implementation of a changelog is needed
+  2. Which functionalities are possible without a change tracking mechanism?
 2. How to handle API Limits?
-  - Provide best pracitces to handle API limits
+  1. Provide best pracitces to handle API limits
 3. Conflict resolution
-  - Which conflicts can/should be handled within the adapters?
+  2. Which conflicts can/should be handled within the adapters?
 4. Batching (so that bulk read/write operations can be invoked for the sake of
  saving machine resources or using finite API calls efficiently)
-  - Which functionalities must be provided by the Adapter to enable batching
-  - Which characteristics must be given in order to be able to support batching
+  1. Which functionalities must be provided by the Adapter to enable batching
+  2. Which characteristics must be given in order to be able to support batching
 5. Two way mapping language (If I want changes to move from FooCRM to BarCRM and
  also from BarCRM to FooCRM does the integrator have to write the mapping twice
  (one for each direction) and enforce that mapping FooCRM -> BarCRM -> FooCRM
  is truly impotent.
-   - Demand for two way mapping in the [minimal scenario](https://github.com/openintegrationhub/Board/blob/master/protocols/2017-11-13BoardWorkshop.md#use-case-scenarios)?
+   1. Demand for two way mapping in the [minimal scenario](https://github.com/openintegrationhub/Board/blob/master/protocols/2017-11-13BoardWorkshop.md#use-case-scenarios)?

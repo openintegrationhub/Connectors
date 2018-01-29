@@ -58,16 +58,9 @@ a SOAP API, a SQL (or other) DB connection, etc.
 
 # Given an API how should an Adapter behave?
 The expected actions and triggers of an adapter depend on the behavior of the
-<<<<<<< HEAD
-API.  If the API supports CRUD operations (i.e. the API allows you to create,
-read, update and delete objects) then the following diagram explains which
-triggers and actions should exist in the adapter.  **The triggers and actions
-should aim at covering 100% of the objects provided by the API.**
-=======
 API.  If the API supports CRUD operations the following diagram explains which
 triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
->>>>>>> 3b64218a7496ad8d73bcbbde91794fcc89120b26
 
 ![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
 A checklist for each case exists in the document [AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
@@ -136,8 +129,8 @@ to combine data.
 ## Standardized triggers (including Webhooks)
 ### Get Objects - Polling
 This trigger will be scheduled to execute periodically.  When executed, it will
-fetch all objects in the database that have been modified or created since the 
-previous execution. During the first execution, the trigger will start at the 
+fetch all objects in the database that have been modified or created since the
+previous execution. During the first execution, the trigger will start at the
 beginning of time. This means the trigger will initially fetch all objects.
 It will emit one message per object that changed since the last polling interval.
 The entire object should be emitted as the message body.

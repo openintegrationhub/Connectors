@@ -139,19 +139,19 @@ Consider the following sequence of events:
 How is this cycle broken?
 
 # Other Open Questions
-1. How to handle object changes in systems, without a change tracking?
-  1. Implementation of a changelog is needed
-  2. Which functionalities are possible without a change tracking mechanism?
-2. How to handle API Limits?
-  1. Provide best pracitces to handle API limits
-3. Conflict resolution
-  2. Which conflicts can/should be handled within the adapters?
-4. Batching (so that bulk read/write operations can be invoked for the sake of
+- How to handle object changes in systems, without a change tracking?
+  - Implementation of a changelog is needed
+  - Which functionalities are possible without a change tracking mechanism?
+- How to handle API Limits?
+  - Provide best pracitces to handle API limits
+- Conflict resolution
+  - Which conflicts can/should be handled within the adapters?
+- Batching (so that bulk read/write operations can be invoked for the sake of
  saving machine resources or using finite API calls efficiently)
-  1. Which functionalities must be provided by the Adapter to enable batching
-  2. Which characteristics must be given in order to be able to support batching
-5. Two way mapping language (If I want changes to move from FooCRM to BarCRM and
+  - Which functionalities must be provided by the Adapter to enable batching
+  - Which characteristics must be given in order to be able to support batching
+- Two way mapping language (If I want changes to move from FooCRM to BarCRM and
  also from BarCRM to FooCRM does the integrator have to write the mapping twice
  (one for each direction) and enforce that mapping FooCRM -> BarCRM -> FooCRM
  is truly impotent.
-   1. Demand for two way mapping in the [minimal scenario](https://github.com/openintegrationhub/Board/blob/master/protocols/2017-11-13BoardWorkshop.md#use-case-scenarios)?
+   - Demand for two way mapping in the [minimal scenario](https://github.com/openintegrationhub/Board/blob/master/protocols/2017-11-13BoardWorkshop.md#use-case-scenarios)?

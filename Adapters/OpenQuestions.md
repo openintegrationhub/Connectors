@@ -26,7 +26,7 @@ When an adapter must alter (such as delete or update) a record in the system
 that it is connected to, there needs to be a method to link incoming requests
 from some  `other` system to the ids which exist in `this` system.  
 
-The ID linking is solved by using **OIHApplicationDataRecords**.
+The ID linking is solved by using [**OIHApplicationDataRecords**](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels#4-global-rules-and-regulations-for-omdms).
 An **OIHApplicationDataRecord** is a reference to the record of the application or service being the source of the record and contains:
 - The open integration hubs identifier for the application (mandatory)
 - The record's ID within the application (mandatory)

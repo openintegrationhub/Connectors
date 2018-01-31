@@ -8,3 +8,4 @@ current checklists:
  complete adaptor.
 * `RequirementsToTestOrBuildAnAdapter.md`: List what is access to a system is
  required to build or test an adapter.
+* `QualityCheckResultsTemplate.md`: Provides a template to document the results from adapter quality checks.

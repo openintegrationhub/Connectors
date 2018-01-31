@@ -1,6 +1,6 @@
 # Desired Adapter Behaviors
 See the section `Given an API how should an adapter behave?` in the document
-`AdapterGuide` to see which questions must be asked and answered to find out which
+[AdapterGuide](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterGuide.md) to see which questions must be asked and answered to find out which
 case your adapter falls into. The following sections list each case and
 the expected actions and triggers of the adapters.
 

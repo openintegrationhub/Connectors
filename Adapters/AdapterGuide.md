@@ -63,7 +63,7 @@ triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
 
 ![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
-A checklist for each case exists in the document `AdapterCompletenessChecklist.md`.
+A checklist for each case exists in the document [AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 
 ## Question 1: Is the list of business objects dynamic?
 Some systems have a fixed list of objects (and corresponding API endpoints)
@@ -129,8 +129,8 @@ to combine data.
 ## Standardized triggers (including Webhooks)
 ### Get Objects - Polling
 This trigger will be scheduled to execute periodically.  When executed, it will
-fetch all objects in the database that have been modified or created since the 
-previous execution. During the first execution, the trigger will start at the 
+fetch all objects in the database that have been modified or created since the
+previous execution. During the first execution, the trigger will start at the
 beginning of time. This means the trigger will initially fetch all objects.
 It will emit one message per object that changed since the last polling interval.
 The entire object should be emitted as the message body.

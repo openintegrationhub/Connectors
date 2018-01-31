@@ -13,9 +13,6 @@ adapter.
 
 - [Open Questions Related To Adapter Design](#open-questions-related-to-adapter-design)
 - [ID Linking of the Objects Themselves](#id-linking-of-the-objects-themselves)
-  - [Shared ID Pattern](#shared-id-pattern)
-  - [Foreign Key pattern](#foreign-key-pattern)
-  - [Third Party System Which Links IDs](#third-party-system-which-links-ids)
 - [ID matching for Linked Objects](#id-matching-for-linked-objects)
 - [Initial Data Fetch](#initial-data-fetch)
 - [Standardized Event Metadata Information](#standardized-event-metadata-information)
@@ -27,31 +24,13 @@ adapter.
 # ID Linking of the Objects Themselves
 When an adapter must alter (such as delete or update) a record in the system
 that it is connected to, there needs to be a method to link incoming requests
-from some  `other` system to the ids which exist in `this` system.  Consider the
-following possibilities.
+from some  `other` system to the ids which exist in `this` system.  
 
-## Shared ID Pattern
-Objects share ids between systems.
-* Pros: Two way linking is possible
-* Cons: Ids need to exist in the same universe (i.e. GUID vs 64-bit integer).
-`this` system needs to allow the user to specify an ID upon creation.
-* If a native `upsert` operation exists in `this` system is present, use that.
-Otherwise, do a query for existence to determine if an insert or update
-operation is required.  `isNew` as metadata could be useful.
-
-## Foreign Key Pattern
-`this` system stores the id of the object in `other` system.
-* Assumes that an additional column/property can be created in `this` system.
-* Checks to see if an item exists where `otherId === incomingId`.  If yes,
-   update that item.  Otherwise create an item. `isNew` as metadata could be
-   useful.
-* Cons: Two way linking becomes complicated.  One or both systems will have to
- support the capability to add additional fields.
-
-## Third Party System Which Links IDs
-* Incoming object already is aware of the id in `this` system because
- this information was previously fetched from a master data system.
-  * See **OIH** for implementation.
+The ID linking is solved by using [**OIHApplicationDataRecords**](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels#4-global-rules-and-regulations-for-omdms).
+An **OIHApplicationDataRecord** is a reference to the record of the application or service being the source of the record and contains:
+- The open integration hubs identifier for the application (mandatory)
+- The record's ID within the application (mandatory)
+- Creation and last modification dates of the record within the application (optionally)
 
 # ID matching for Linked Objects
 Consider the following situation:
@@ -151,22 +130,28 @@ Consider the following flows:
 
 Consider the following sequence of events:
 1. An object is updated in FooCRM
-1. FooCRM.getObjects detects the change and publishes the message.
-1. BarCRM.upsertObject persists the update in BarCRM
-1. BarCRM.getObjects detects the update and publishes a message
-1. FooCRM.upsertObject persists the update in FooCRM
-1. This triggers the event in step 1.
+2. FooCRM.getObjects detects the change and publishes the message.
+3. BarCRM.upsertObject persists the update in BarCRM
+4. BarCRM.getObjects detects the update and publishes a message
+5. FooCRM.upsertObject persists the update in FooCRM
+6. This triggers the event in step 1.
 
 How is this cycle broken?
 
 # Other Open Questions
-* How to handle object changes in systems, without a change tracking?
-  -> Implementation of a changelog is needed
-* How to handle API Limits?
-* Conflict resolution
-* Batching (so that bulk read/write operations can be invoked for the sake of
+- How to handle object changes in systems, without a change tracking?
+  - Implementation of a changelog is needed
+  - Which functionalities are possible without a change tracking mechanism?
+- How to handle API Limits?
+  - Provide best pracitces to handle API limits
+- Conflict resolution
+  - Which conflicts can/should be handled within the adapters?
+- Batching (so that bulk read/write operations can be invoked for the sake of
  saving machine resources or using finite API calls efficiently)
-* Two way mapping language (If I want changes to move from FooCRM to BarCRM and
+  - Which functionalities must be provided by the Adapter to enable batching
+  - Which characteristics must be given in order to be able to support batching
+- Two way mapping language (If I want changes to move from FooCRM to BarCRM and
  also from BarCRM to FooCRM does the integrator have to write the mapping twice
  (one for each direction) and enforce that mapping FooCRM -> BarCRM -> FooCRM
  is truly impotent.
+   - Demand for two way mapping in the [minimal scenario](https://github.com/openintegrationhub/Board/blob/master/protocols/2017-11-13BoardWorkshop.md#use-case-scenarios)?

@@ -20,17 +20,10 @@
 
 | Workgroup  | Member Name | Role |
 | ------------- | ------------- | ------------- |
-<<<<<<< HEAD
 | Connectors  | Philipp (@philecs)  | **Manager**  |
-|  | Robin  | Committer (@RobinBrinkmann)  |
-|  | Jacob  | Committer (@jhorbulyk)  |
-|  | Renat  | Contributor (@zubairov)  |
-=======
-| Connectors  | Philipp (@philecs)  | **Manager & Committer**  |
-|  | Robin (@RobinBrinkmann)   | Committer  |
+|  | Robin (@RobinBrinkmann)  | Committer   |
 |  | Jacob (@jhorbulyk) | Committer   |
 |  | Renat (@zubairov) | Contributor   |
->>>>>>> 3b64218a7496ad8d73bcbbde91794fcc89120b26
 
 ## Workgroup Content
 

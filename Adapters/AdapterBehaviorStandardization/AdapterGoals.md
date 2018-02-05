@@ -12,7 +12,7 @@
 
 <!-- /TOC -->
 
-# Adapter Operation Types
+# Adapter Goals
 
 This document lists the types of operations an adapter can perform, the motivations for
 providing this functionality as well as the related API functionality which must

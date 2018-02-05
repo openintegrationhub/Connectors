@@ -1,9 +1,10 @@
-The document
+An integrator who is using a connector to build an integration will have a set
+of goals for their integration.  Some common goals are listed and explained in
+the document
+[`AdapterGoals.md`](/Adapters/AdapterBehaviorStandardization/AdapterGoals.md).
+In order to satisfy these goals, the connector should expose functionality in a
+standardized way *(if that goal can be generalized across systems)*.  The
+document
 [`StandardizedActionsAndTriggers.md`](/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md)
-lists all standardized actions and triggers as well as their expected behaviors.
-
-There is a document
-[`AdapterOperationTypes.md`](/Adapters/AdapterBehaviorStandardization/AdapterOperationTypes.md)
-which lists the types of operations an adapter can perform, the motivations for
-providing this functionality as well as the related API functionality which must
-exist for an efficient implementation of these functionalities.
+lists these standardizations. Furthermore it describes what functionality is
+required in the CSP's API in order build such an action/trigger.

@@ -113,28 +113,3 @@ webhooks.](https://support.elastic.io/support/solutions/folders/14000109800)
 This can be more efficient (both in terms of speed and machine resources) than
 having a scheduled job periodically make calls for changes that may or may not
 have occurred.
-
-# What actions and triggers are Expected?
-
-
-# Example of flows in a complete one way integration between two systems
-A complete one way integration between two systems is an integration where:
-* One system is the system of truth
-* Creations, updates and deletions happen only in one system
-* Any creation, update or deletion of an object in that system results in the
- corresponding creation, update or deletion in the other system.
-
-One possible implementation for the complete integration can be done by building
-the following flows.  These flows are built exclusively with standardized
-actions and triggers.  The two systems are identified by `Foo` and `Bar` where
-Foo is the system of truth.  It is assumed that each system falls into *Case 1*
-described in the `AdapterCompletenessChecklist.md`.  Additionally, both Foo
-and Bar are configured with a field, `externalId` to store the id of the object
-once it exists in the other system.  The Mapper is configured to convert the
-data in Foo's format to Bar's format.  Additionally, as the objects pass through
-the mapper, the values of `id` and `externalId` are swapped.
-* Foo.getObjectsPolling -> Mapper -> Bar.upsertObject -> Mapper -> Foo.upsertObject (Flow is run only during initial import)
-* Foo.getObjectsWebhook -> Mapper -> Bar.upsertObject -> Mapper -> Foo.upsertObject
-* Foo.getDeletedObjectsWebhook -> Mapper -> Bar.deleteObject
-
- The `Foo.upsertObject` step is done to propagate the id of the object in Bar back into Foo.

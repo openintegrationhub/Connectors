@@ -1,4 +1,7 @@
 # Adapter Description and Documentation Guidelines
+**Version Publish Date: 05.02.2018**
+
+**Semantic Version of Document: 1.0.0**
 
 ## Table of Contents
 

@@ -1,4 +1,8 @@
 # Desired Adapter Behaviors
+**Version Publish Date: 05.02.2018**
+
+**Semantic Version of Document: 1.0.0**
+
 See the section `Given an API how should a adapter behave?` in the document
 `AdapterGuide` to see which questions must be asked and answered to see which
 case your adapter falls into.  The following sections list each case and then

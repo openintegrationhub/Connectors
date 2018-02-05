@@ -1,4 +1,8 @@
 # Requirements to Test or Build an Adapter
+**Version Publish Date: 05.02.2018**
+
+**Semantic Version of Document: 1.0.0**
+
 In order for an individual to test the correctness of an adapter or to build an
 adapter for a new system, the following resources are must haves in order to
 access the API:

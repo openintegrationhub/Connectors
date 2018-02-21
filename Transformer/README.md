@@ -3,12 +3,12 @@
 A transformer is responsible to semantically transform an incoming JSON object into another JSON object.
 
 ## Transformer Concept
-As already mentioned the transformer transforms one JSON object into another. Prior to this transformation a semantical mapping has to take place where the entities of the source model are mapped against the entities of the Open Integration Hub master data model.
+As already mentioned the transformer transforms one JSON object into another. Prior to this transformation a semantic mapping has to take place where the entities of the source model are mapped against the entities of the Open Integration Hub master data model.
 
 A transformer expects a JSON object which represents the application's proprietary data model as an input. It is possible to automatically pull JSON schemas via the OIH API which represent the structure of the Open Integration Hub master data model. Afterwards it transforms the incoming JSON object into another JSON object (via a transformation language. We suggest [JSONata](http://jsonata.org/) for the transformation) which represents the structure of the Open Integration Hub master data model. The transformer's output is then send to the Open Integration Hub and is validated against a deposited JSON schema.
 
 ## Transformation Language
-A transformation language is needed to transform one object into another. For the semantical transformation that is performed by the transformer, we suggest JSONata as it is built to transform one JSON object into another.
+A transformation language is needed to transform one object into another. For the semantic transformation that is performed by the transformer, we suggest JSONata as it is built to transform one JSON object into another.
 
 **JSONata:**
 - Is a Lightweight query and transformation language for JSON data

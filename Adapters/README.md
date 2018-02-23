@@ -1,4 +1,4 @@
-# Adaptor Documentation
+# Adapter Documentation
 
 * If you are not familiar with adapters, the document [`AdapterGuide.md`](/Adapters/AdapterGuide.md) is
 designed to be a starting point.  It explains the problems which an adapter must

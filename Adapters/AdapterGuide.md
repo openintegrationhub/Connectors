@@ -1,13 +1,13 @@
-# Guide for Creating a Adapter
+# Guide for creating an Adapter
 
-This document is designed as a guide.  It explains the problems which an
-adapter must solve and the recommended way of solving those problems.
+This guide explains the problems which an
+adapter must solve and the recommended way doing so.
 
 ## Table of Contents
 
-- [What is an adapter?](#what-is-an-adapter)
-- [What API Functionality is Necessary to Build a Adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
-- [Given an API how should a adapter behave?](#given-an-api-how-should-a-adapter-behave)
+- [What is an Adapter?](#what-is-an-adapter)
+- [What API functionality is necessary to build an Adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
+- [Given an API how should an Adapter behave?](#given-an-api-how-should-a-adapter-behave)
   - [Question 1: Is the list of business objects dynamic?](#question-1-is-the-list-of-business-objects-dynamic)
   - [Question 2: Is the structure of objects dynamic?](#question-2-is-the-structure-of-objects-dynamic)
   - [Question 3: Does the API support webhooks?](#question-3-does-the-api-support-webhooks)
@@ -24,7 +24,7 @@ adapter must solve and the recommended way of solving those problems.
 - [Example of flows in a complete one way integration between two systems](#example-of-flows-in-a-complete-one-way-integration-between-two-systems)
 
 
-# What is an adapter?
+# What is an Adapter?
 An **adapter** is a single, reusable piece of functionality that typically
 represents a way to communicate with one system and/or API.  This functionality
 is created by combining code with a file (`component.json`) which describes:
@@ -34,19 +34,18 @@ is created by combining code with a file (`component.json`) which describes:
 * inputs and outputs for triggers and actions
 * configuration settings (e.g. authentication information of the service, URL of the service)
 
-[See elastic.io's defintion of a component.json
+[See elastic.io's definition of a component.json
 file](https://support.elastic.io/support/solutions/articles/14000036334-component-descriptor-structure)
 
 The intent is that several adapters can be combined to create an [integration
 flow](https://support.elastic.io/support/solutions/articles/14000032295-what-is-an-integration-flow-).
  Several integration flows can then collectively form an integration.
 
-# What API Functionality is Necessary to Build a Adapter?
-In order to build a adapter which will perform generic CRUD operations (for
+# What API functionality is necessary to build an Adapter?
+In order to build an adapter which will perform generic CRUD operations (for
 business objects where business rules allow CRUD operations) the API must expose
 CRUD functionality.  For more details on possible operation types, see
-`AdapterOperationTypes.md`.  In a guideline compliant adapter, all operations
-from the following types should be included:
+`AdapterOperationTypes.md`.  A guideline compliant adapter includes the following operations:
 * Receive updates from a system
 * Create and update information in a system
 * Lookup Operations
@@ -57,15 +56,14 @@ a SOAP API, a SQL (or other) DB connection, etc.
 
 *CRUD: Create, Read, Update and Delete*
 
-# Given an API how should a adapter behave?
-The expected actions and triggers of a adapter depend on the behavior of the
-API.  If the API supports CRUD operations (i.e. the API allows you to create,
-read, update and delete objects) then the following diagram explains which
+# Given an API how should an Adapter behave?
+The expected actions and triggers of an adapter depend on the behavior of the
+API.  If the API supports CRUD operations the following diagram explains which
 triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
 
 ![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
-A checklist for each case exists in the document `AdapterCompletenessChecklist.md`.
+A checklist for each case exists in the document [AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 
 ## Question 1: Is the list of business objects dynamic?
 Some systems have a fixed list of objects (and corresponding API endpoints)
@@ -97,15 +95,15 @@ users and admins to customize the structure of each object.  In this case, it is
 common for the system to provide an API endpoint which can provide the structure
 of any object in the system.
 
-If the objects has a fixed structure, then the adapter developer can hard code
+If the objects have a fixed structure, then the adapter developer can hard code
 the schema of the objects produced.  Otherwise, the developer should write code
 to fetch [the dynamic structure of that
 object.](https://github.com/elasticio/sugarcrm-component/blob/master/lib/actions/upsertObject.js#L36-L43).
 
-## Question 3: Does the API support webhooks?
+## Question 3: Does the API support Webhooks?
 Some external systems support the concept of **Webhooks**.  The idea of a hook
 is that when a change occurs to an object in that external system, that external
-system can proactively inform other systems about this change.  Webhooks are
+system proactively informs other systems about this change.  Webhooks are
 hooks where the information is transferred by having the system reporting the
 change make a REST API call to the system making the change.  [See here for more
 information about elastic.io

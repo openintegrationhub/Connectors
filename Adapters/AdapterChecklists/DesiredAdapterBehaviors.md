@@ -3,9 +3,9 @@
 
 **Semantic Version of Document: 1.0.0**
 
-See the section `Given an API how should a adapter behave?` in the document
-`AdapterGuide` to see which questions must be asked and answered to see which
-case your adapter falls into.  The following sections list each case and then
+See the section `Given an API how should an adapter behave?` in the document
+[AdapterGuide](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterGuide.md) to see which questions must be asked and answered to find out which
+case your adapter falls into. The following sections list each case and
 the expected actions and triggers of the adapters.
 
 All items in each list is a **should** have.

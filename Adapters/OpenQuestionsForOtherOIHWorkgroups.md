@@ -28,33 +28,16 @@ the mapper, the values of `id` and `externalId` are swapped.
  The viability of the above proposal should be tested.
 
  # ID Linking of the Objects Themselves
- When an adapter must alter (such as delete or update) a record in the system
- that it is connected to, there needs to be a method to link incoming requests
- from some  `other` system to the ids which exist in `this` system.  Consider the
- following possibilities.
+When an adapter must alter (such as delete or update) a record in the system
+that it is connected to, there needs to be a method to link incoming requests
+from some  `other` system to the ids which exist in `this` system.
 
- ## Shared ID Pattern
- Objects share ids between systems.
- * Pros: Two way linking is possible
- * Cons: Ids need to exist in the same universe (i.e. GUID vs 64-bit integer).
- `this` system needs to allow the user to specify an ID upon creation.
- * If a native `upsert` operation exists in `this` system is present, use that.
- Otherwise, do a query for existence to determine if an insert or update
- operation is required.  `isNew` as metadata could be useful.
+The ID linking is solved by using [**OIHApplicationDataRecords**](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels#4-global-rules-and-regulations-for-omdms).
+An **OIHApplicationDataRecord** is a reference to the record of the application or service being the source of the record and contains:
+- The open integration hubs identifier for the application (mandatory)
+- The record's ID within the application (mandatory)
+- Creation and last modification dates of the record within the application (optionally)
 
- ## Foreign Key pattern
- `this` system stores the id of the object in `other` system.
- * Assumes that an additional column/property can be created in `this` system.
- * Checks to see if an item exists where `otherId === incomingId`.  If yes,
-    update that item.  Otherwise create an item. `isNew` as metadata could be
-    useful.
- * Cons: Two way linking becomes complicated.  One or both systems will have to
-  support the capability to add additional fields.
-
- ## Third Party System Which Links IDs
- * Incoming object already is aware of the id in `this` system because
-  this information was previously fetched from a master data system.
-   * See **OIH** for implementation.
 
  # ID matching for Linked Objects
  Consider the following situation:
@@ -73,7 +56,7 @@ the mapper, the values of `id` and `externalId` are swapped.
  this information, how does the adapter know to assign the new account in
  BarCRM to salesperson `abc` in BarCRM?
 
-# Event debouncing
+# Event Debouncing
 Consider the following flows:
 - FooCRM.getObjects -> BarCRM.upsertObject
 - BarCRM.getObjects -> FooCRM.upsertObject
@@ -89,11 +72,19 @@ Consider the following sequence of events:
 How is this cycle broken?
 
 # Other Open Questions
-* How to handle object changes in systems, without a change tracking?
-  -> Implementation of a changelog is needed
-* How to handle API Limits?
-* Conflict resolution
-* Two way mapping language (If I want changes to move from FooCRM to BarCRM and
+- How to handle object changes in systems, without a change tracking?
+  - Implementation of a changelog is needed
+  - Which functionalities are possible without a change tracking mechanism?
+- How to handle API Limits?
+  - Provide best pracitces to handle API limits
+- Conflict resolution
+  - Which conflicts can/should be handled within the adapters?
+- Batching (so that bulk read/write operations can be invoked for the sake of
+ saving machine resources or using finite API calls efficiently)
+  - Which functionalities must be provided by the Adapter to enable batching
+  - Which characteristics must be given in order to be able to support batching
+- Two way mapping language (If I want changes to move from FooCRM to BarCRM and
  also from BarCRM to FooCRM does the integrator have to write the mapping twice
  (one for each direction) and enforce that mapping FooCRM -> BarCRM -> FooCRM
  is truly impotent.
+   - Demand for two way mapping in the [minimal scenario](https://github.com/openintegrationhub/Board/blob/master/protocols/2017-11-13BoardWorkshop.md#use-case-scenarios)?

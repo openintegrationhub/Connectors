@@ -14,3 +14,4 @@ connector.  Can be used to:
 connector
   * Be used to track connector completeness based on the functionality provided by
 the API
+* `QualityCheckResultsTemplate.md`: Provides a template to document the results from adapter quality checks.

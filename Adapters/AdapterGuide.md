@@ -5,23 +5,16 @@ adapter must solve and the recommended way doing so.
 
 ## Table of Contents
 
+- [Guide for creating an Adapter](#guide-for-creating-an-adapter)
+  * [Table of Contents](#table-of-contents)
 - [What is an Adapter?](#what-is-an-adapter)
-- [What API functionality is necessary to build an Adapter?](#what-api-functionality-is-necessary-to-build-a-adapter)
-- [Given an API how should an Adapter behave?](#given-an-api-how-should-a-adapter-behave)
-  - [Question 1: Is the list of business objects dynamic?](#question-1-is-the-list-of-business-objects-dynamic)
-  - [Question 2: Is the structure of objects dynamic?](#question-2-is-the-structure-of-objects-dynamic)
-  - [Question 3: Does the API support webhooks?](#question-3-does-the-api-support-webhooks)
-- [Descriptions of standardized actions or triggers](#descriptions-of-standardized-actions-or-triggers)
-  - [Standardized Triggers (including webhooks)](#standardized-triggers-including-webhooks)
-    - [Get Objects - Polling](#get-objects---polling)
-    - [Get Objects - Webhook](#get-objects---webhook)
-    - [Get Deleted Objects - Webhook](#get-deleted-objects---webhook)
-    - [Get Deleted Objects - Polling](#get-deleted-objects---polling)
-  - [Standardized Actions](#standardized-actions)
-    - [Upsert Object](#upsert-object)
-    - [Delete Object](#delete-object)
-    - [Lookup Object By Field](#lookup-object-by-field)
-- [Example of flows in a complete one way integration between two systems](#example-of-flows-in-a-complete-one-way-integration-between-two-systems)
+- [What does an Adapter Abstract?](#what-does-an-adapter-abstract)
+  * [1. An Adapter Exposes an Endpoint](#1-an-adapter-exposes-an-endpoint)
+  * [2. An Adapter Exposes the Ability to Manipulate Data Stored by a System](#2-an-adapter-exposes-the-ability-to-manipulate-data-stored-by-a-system)
+- [Given an API how should an Adapter behave?](#given-an-api-how-should-an-adapter-behave)
+  * [Question 1: Is the list of business objects dynamic?](#question-1-is-the-list-of-business-objects-dynamic)
+  * [Question 2: Is the structure of objects dynamic?](#question-2-is-the-structure-of-objects-dynamic)
+  * [Question 3: Does the API support Webhooks?](#question-3-does-the-api-support-webhooks)
 
 
 # What is an Adapter?
@@ -41,20 +34,45 @@ The intent is that several adapters can be combined to create an [integration
 flow](https://support.elastic.io/support/solutions/articles/14000032295-what-is-an-integration-flow-).
  Several integration flows can then collectively form an integration.
 
-# What API functionality is necessary to build an Adapter?
-In order to build an adapter which will perform generic CRUD operations (for
-business objects where business rules allow CRUD operations) the API must expose
-CRUD functionality.  For more details on possible operation types, see
-`AdapterOperationTypes.md`.  A guideline compliant adapter includes the following operations:
-* Receive updates from a system
-* Create and update information in a system
-* Lookup Operations
+ **Note:** Although RESTful APIs are preferred, the API does not necessarily have
+ to be a REST API.  It is possible for the above functionality to be exposed via
+ a SOAP API, a SQL (or other) DB connection, etc.
 
-**Note:** Although RESTful APIs are preferred, the API does not necessarily have
-to be a REST API.  It is possible for the above functionality to be exposed via
-a SOAP API, a SQL (or other) DB connection, etc.
+# What does an Adapter Abstract?
+There are two ways in which an adapter can expose the API functionality:
+## 1. An Adapter Exposes an Endpoint
+In this approach, the API exposes an endpoint and the adaptor provides actions
+as a way to call that endpoint from a flow.  For example, [Mandrill's API
+contains the Send Message API
+endpoint](https://mandrillapp.com/api/docs/messages.JSON.html#method=send).
+This endpoint expects parameters related to email sending and tracking to be
+provided to the endpoint.  An adapter exposes this functionality by allowing the
+values for all of these parameters to be configured by an integrator.  In this
+case, the adapter is responsible for the following:
+* Knowing/building the URL to which the request is provided
+* Handling any authentication required by the request
+* Exposing all inputs to the integration platform
+* Carrying out the request, provide the results of the request back to the
+platform and handling any errors that occur in the process
 
-*CRUD: Create, Read, Update and Delete*
+## 2. An Adapter Exposes the Ability to Manipulate Data Stored by a System
+In this approach, the external system is a system which stores data that can be
+read and manipulated through an API.  The adapter, instead of providing explicit
+access to API mechanisms, provides actions and triggers which facilitate the
+reading and manipulation of the underlying data.  For instance, consider
+[Salesforce's REST
+API](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm).
+This API exposes many endpoints where the purpose of most of the endpoints is to
+read and manipulate data in Salesforce.  While it is possible to expose these
+endpoints using method 1, doing so is generally not useful as it requires the
+integrator to have a deep understanding of the mechanisms specific to this API.
+Therefore, the adapter should encapsulate/abstract away the mechanics of the API
+by making actions and triggers available to the integrator so that the
+integrator can manipulate data.  This is in addition to all of the
+responsibilities of approach 1.
+
+*Note: Within any given adapter, it is possible to combine the two approaches if
+*doing so makes sense.*
 
 # Given an API how should an Adapter behave?
 The expected actions and triggers of an adapter depend on the behavior of the
@@ -63,7 +81,8 @@ triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
 
 ![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
-A checklist for each case exists in the document [AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
+A checklist for each case exists in the document
+[AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 
 ## Question 1: Is the list of business objects dynamic?
 Some systems have a fixed list of objects (and corresponding API endpoints)

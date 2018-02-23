@@ -4,45 +4,45 @@ This document identifies goals *that can be generalized across systems* and then
 lists the standard implementations that satisfy those
 goals.
 
-This document is divided into the following sections:
-* **Triggers**: Move data from inside the system to outside of the system.
-* **Lookup actions**: Given some inputs fetch relevant data from the system.
-
-This document lists the types of operations an adapter can perform, the motivations for
-providing this functionality as well as the related API functionality which must
-exist for an efficient implementation of these functionalities.
-
 This document is formatted in the following way:
 1. Different goals of an adapter are listed.
 2. For each goal, different implementations of that goal are listed.
-3. For each implementation, the required API functionality is listed.
 
-# Triggers
-Triggers in an adapter move data from inside the system to outside of the
-system.  Triggers are expected to be the first item in an integration flow.
-
-## Bulk Import
+## Bulk Extract
 **Goal:** An entire data set exists in the system.  An integrator wants to export
-all of the data that exists in the system through an integration flow.
+all of the data or all of that data which matches certain criteria that exists in the system through an integration flow.
 
+**Standardized Actions and Triggers:**
+* Bulk Extract
+* Get Objects Polling
 
-
-## Receive Updates to Information (Updates Propagate out of a System)
-**Goal:** As data is added to, updated in and deleted from the system, we want a
+## Detect Data/Object Changes
+**Goal:** As object data is added to, updated in and deleted from the system, we want a
 flow to be triggered with that information.
 
-There are
+**Standardized Actions and Triggers:**
+Basic Case:
+* Get Objects Polling
+* Get Objects Webhook
+* Bulk Extract (with integration platform side delta detection)
+Delete Case:
+* Get Deleted Objects Polling
+* Get Deleted Objects Webhook
+* Bulk Extract (with integration platform side deletion detection)
+Merge Case:
+TBD
 
-## Domain Specific Triggers
+## System Specific Event Observation
 **Goal:** Be able to trigger flows when events or modifications happen within
 the system which are distinct from *CRUD* operations.
 
-*Examples: be informed of merged records, an email tracking program detects that
+*Examples: an email tracking program detects that
 an email has been opened, some async operation has been completed*
 
-# Actions
-Actions in an adaptor allow flows to interact with the system after some other
-event has occurred.
+**Standardized Actions and Triggers:**
+* Polling for Events
+* Events Webhook
+* Bulk Extract (of event log with integration platform side delta detection)
 
 ## Lookup a Single Record Based on Some Criteria
 **Goal:** You have some information which is expected to match exactly one

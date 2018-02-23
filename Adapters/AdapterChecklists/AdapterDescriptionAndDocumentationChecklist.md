@@ -1,19 +1,13 @@
 # Adapter Description and Documentation Guidelines
-**Version Publish Date: 05.02.2018**
+**Version Publish Date: 26.02.2018**
 
 **Semantic Version of Document: 1.0.0**
 
 ## Table of Contents
 
 - [Must Have](#must-have)
-  - [README.md](#readmemd)
 - [Should Have](#should-have)
-  - [README.md](#readmemd-1)
-  - [component.json](#componentjson)
 - [Could Have](#could-have)
-  - [README.md](#readmemd-2)
-  - [Other Files](#other-files)
-
 
 Adapter Repository Requirements:
 
@@ -38,6 +32,10 @@ See the [AdapterJsonSchema](https://github.com/openintegrationhub/Connectors/blo
 - [ ] Each field in the trigger/action should have a `note` explaining what expected to be there as well as meaningful example
  in `placeholder` which could be (for optional fields) a default value if field is empty
 
+## AdapterFunctionalityChecklist.md
+- [ ] A copy of the [Adapter Functionality Checklist](https://github.com/openintegrationhub/Connectors/blob/master/AdapterChecklists/AdapterFunctionalityChecklist.md) which tracks which functionality has been implemented in the component.
+
+
 # Could Have
 ## README.md
 - [ ] Version and compatibility information
@@ -49,6 +47,9 @@ See the [AdapterJsonSchema](https://github.com/openintegrationhub/Connectors/blo
 - [ ] Known limitations, may be with link to the issue
 - [ ] Contribution guidelines (they should be standardized)
 - [ ] License and copyright
+
+## AdapterDescriptionAndDocumentationChecklist
+- [ ] A copy of this checklist which tracks completeness of the documentation.
 
 ## Other Files
 - [ ] Logo - 128x128 PNG file with transparent background

@@ -1,5 +1,5 @@
 # Requirements to Test or Build an Adapter
-**Version Publish Date: 05.02.2018**
+**Version Publish Date: 26.02.2018**
 
 **Semantic Version of Document: 1.0.0**
 
@@ -21,3 +21,5 @@ tester and the adapter (No shared test instances/accounts/tenants)
 the adapter to interact with the API
 - [ ] Access to the API documentation *(in case of password protected or not 
 otherwise publicly available API documentation)*
+- [ ] The API documentation must be available in a language that is
+understandable to the developer/tester

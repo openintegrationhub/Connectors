@@ -1,18 +1,12 @@
-# Table of Contents
-
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Table of Contents](#table-of-contents)
-- [Adapter Operation Types](#adapter-operation-types)
-	- [Receive updates to information that is from a system](#receive-updates-to-information-that-is-from-a-system)
-	- [Create and update information in a system](#create-and-update-information-in-a-system)
-	- [Lookup Operations](#lookup-operations)
-	- [Domains Specific Actions](#domains-specific-actions)
-	- [Domain Specific Triggers](#domain-specific-triggers)
-
-<!-- /TOC -->
-
 # Adapter Goals
+
+This document identifies goals *that can be generalized across systems* and then
+lists the standard implementations that satisfy those
+goals.
+
+This document is divided into the following sections:
+* **Triggers**: Move data from inside the system to outside of the system.
+* **Lookup actions**: Given some inputs fetch relevant data from the system.
 
 This document lists the types of operations an adapter can perform, the motivations for
 providing this functionality as well as the related API functionality which must

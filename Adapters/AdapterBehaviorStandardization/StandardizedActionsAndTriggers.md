@@ -1,4 +1,8 @@
 # Descriptions of standardized actions or triggers
+**Version Publish Date: 26.02.2018**
+
+**Semantic Version of Document: 1.0.0**
+
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
 common behaviors, then it is possible to build integrations by combining

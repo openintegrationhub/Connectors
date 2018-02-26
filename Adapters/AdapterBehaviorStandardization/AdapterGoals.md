@@ -49,8 +49,8 @@ the system which are distinct from *CRUD* operations.
 an email has been opened, some async operation has been completed*
 
 **Standardized Actions and Triggers:**
-* Polling for Events
-* Events Webhook
+* Get Events Polling
+* Get Events Webhook
 * Bulk Extract (of event log with integration platform side delta detection)
 
 ## Lookup Information in the System

@@ -17,3 +17,73 @@ limitations of that system.
    * Identify static object types (if object types are static).
    * Identify endpoints which may be sensibly exposed by the adapter.
 3. As actions and triggers are built, check of those items on this checklist.
+
+## Checklist
+- [ ] Bulk Extract
+- [ ] Get Objects Polling
+
+  - [ ] All Objects Programmatically Detectable Covered
+  - [ ] Objects Explicitly Covered: `_________________`
+
+- [ ] Get Objects Webhook
+
+  - [ ] All Objects Programmatically Detectable Covered
+  - [ ] Objects Explicitly Covered: `_________________`
+
+- [ ] Get Events Polling
+
+  - [ ] All Events Programmatically Detectable Covered
+  - [ ] Events Explicitly Covered: `_________________`
+
+- [ ] Get Events Webhook
+
+  - [ ] All Events Programmatically Detectable Covered
+  - [ ] Events Explicitly Covered: `_________________`
+
+- [ ] Lookup Object by Field(s)
+
+  - [ ] All Events Programmatically Detectable Covered
+  - [ ] Events Explicitly Covered: `_________________`
+
+  - [ ] All Fields Programmatically Detectable Covered
+  - [ ] Fields Explicitly Covered: `_________________`
+
+- [ ] Lookup Objects By Criteria
+
+  - [ ] All Events Programmatically Detectable Covered
+  - [ ] Events Explicitly Covered: `_________________`
+
+  - [ ] All Criteria Programmatically Detectable Covered
+  - [ ] Criteria Explicitly Covered: `_________________`
+
+- [ ] Execute System Specific Query/Modification Language Operation
+- [ ] Upsert Object
+
+  - [ ] All Objects Programmatically Detectable Covered
+  - [ ] Objects Explicitly Covered: `_________________`
+
+- [ ] Deep Create Object
+
+  - [ ] All Objects Programmatically Detectable Covered
+  - [ ] Objects Explicitly Covered: `_________________`
+
+- [ ] Delete Object
+
+  - [ ] All Objects Programmatically Detectable Covered
+  - [ ] Objects Explicitly Covered: `_________________`
+
+- [ ] Upsert Link
+- [ ] Delete Link
+- [ ] Perform Action/Evaluate Function
+
+  - [ ] All Actions/Functions Programmatically Detectable Covered
+  - [ ] Actions/Functions Explicitly Covered: `_________________`
+
+- [ ] Exposed Endpoints
+
+   List all exposed endpoints: `_________________`
+
+- [ ] Generic Request
+- [ ] Other Functionality
+
+   List all other functionality: `_________________`

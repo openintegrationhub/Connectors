@@ -123,7 +123,14 @@ checked yes by the customer.
      - [ ] All types of objects
      - [ ] Only certain types of objects *(List types of objects here)*: `__________________________________`
 
-7. Do you wish to merge objects in your system? *(Select One)*
+7. Is there any data related to an object that is not part of that object which you wish to set?  *(Select One)*
+
+    *(Example: Set Inventory Level for Product)*
+
+    - [ ] Yes *(List types of data here)*: `__________________________________`
+    - [ ] No
+
+8. Do you wish to merge objects in your system? *(Select One)*
 
    *(Example: Duplicate Contact Merge)*
 

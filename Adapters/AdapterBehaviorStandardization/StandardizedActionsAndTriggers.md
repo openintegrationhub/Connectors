@@ -8,16 +8,140 @@ and performs actions on generic domain objects.  If adapters follow
 common behaviors, then it is possible to build integrations by combining
 adapters which are developed by different developers.
 
-In general, all actions or triggers should emit events individually as opposed
-to creating batches.
+This document describes standards for these actions and triggers.  For each
+standardization, it provides:
+* A description of the behavior for the action/trigger
+* A description of required configurations/inputs for the action/trigger
+* The outputs of the action/trigger (including the metadata which is learned by the action/trigger)
+* Operational concerns related to the action/trigger
+* The required functionality which must exist in the underlying API
+* A sample pseudo-code for an implementation against a typical REST API
 
-In general, any action or trigger should only make requests to one API endpoint
-(with the exception of any calls required for authentication). (I.e. It is ok
-for a trigger to traverse paged results, but it should not make multiple calls
-to combine data.)
+Many of these actions and triggers operate on objects where systems support multiple types of
+If the lists of objects in a
+system are generic, it is possible to write a single trigger where the object
+type is a configuration setting.  In this case, the trigger should be named
+`getObjectsPolling`.
 
-## Standardized Triggers (including webhooks)
-### Get Objects - Polling
+# Standardized Triggers (including webhooks)
+## Bulk Extract
+Given an object type, outputs each object of that type in the system once.
+After the first execution, further runs should not produce further output.  Can expose
+server-side filters if they exist in the system.
+
+**Required configurations/inputs:**
+* The type of object to extract
+* Ideally, the configuration
+should take a `onlyModifiedBefore` timestamp which limits the results to records
+created on or modified before this timestamp.
+
+**Outputs (including metadata):**
+* Each record in the system as an individual output
+* Each record should have the timestamp for the last modified datetime
+accessible at `modifiedOn` in ISO 8601 format
+* Each record should have the timestamp for the creation datetime accessible at
+ `createdOn` in ISO 8601 format
+
+**Operational concerns:**
+Generally, this trigger will be combined with `Get Objects Polling` or `Get
+Objects Webhook` which will be configured to pick up changes which happen after
+the `onlyModifiedBefore`.
+
+**Required API functionality:**
+- [ ] A mechanism which allows all objects of a type to be iterated
+- [ ] A `modifiedOn` timestamp should exist on each object to identify when it
+was modified so that the `onlyModifiedBefore` can be applied
+
+**Sample pseudo-code implementation:**
+Stable List with Pagination Case:
+```
+async function BulkExtract(onlyModifiedBefore, objectType) {
+    let hasMorePages = true;
+    let pageNum = 0;
+    while (hasMorePages) {
+        const pageOfResults = await MakeRequestForResultsPage(pageNum, objectType);
+        pageOfResults.records.forEach(record => {
+            const output = StandardizeModifiedOnAndCreatedOnForRecord(record);
+            if(output.modifiedOn < onlyModifiedBefore) {
+                EmitOutput(output);
+            }
+        }
+        hasMorePages = PageOfResults.hasMorePages;
+    }
+    SetTriggerToNotExecuteAgain();
+}
+```
+
+DB Dump Case:
+```
+async function BulkExtract(onlyModifiedBefore, objectType) {
+    const dbDumpJob = await StartDbDumpJob(objectType);
+    const dbDumpUrl = await dbDumpJob;
+    const dbDumpReader = CreateDbDumpReader(dbDumpUrl);
+    
+    dbDumpReader.on('record', (record) => {
+        const output = StandardizeModifiedOnAndCreatedOnForRecord(record);
+        if(output.modifiedOn < onlyModifiedBefore) {
+            EmitOutput(output);
+        }
+    }
+    
+    dbDumpReader.on('end', () => {
+        SetTriggerToNotExecuteAgain();
+    }
+}
+```
+
+## Get Objects Polling
+This trigger will be scheduled to execute periodically.  When executed, this
+trigger will fetch all objects in the database that have been modified or
+created since the previous execution.  It will emit one message per object that changes or is added
+since the last polling interval. The entire object should be emitted as the
+message body.
+
+**Required configurations/inputs:**
+* The type of object to poll for
+* Filter values for any server side filters supported
+* A timestamp which indicates where in time to begin polling from  (If this is the
+
+
+**Outputs (including metadata):**
+* It will emit one message per object that changes or is added
+since the last polling interval. The entire object should be emitted as the
+message body.
+
+**Operational concerns:**
+
+**Required API functionality:**
+
+
+**Sample pseudo-code implementation:**
+
+
+
+
+
+## Template
+Description
+
+**Required configurations/inputs:**
+
+**Outputs (including metadata):**
+
+**Operational concerns:**
+
+**Required API functionality:**
+
+
+**Sample pseudo-code implementation:**
+
+
+
+
+
+
+
+## Get Objects - Polling
 This trigger will be scheduled to execute periodically.  When executed, this
 trigger will fetch all objects in the database that have been modified or
 created since the previous execution.  During the first execution, the trigger

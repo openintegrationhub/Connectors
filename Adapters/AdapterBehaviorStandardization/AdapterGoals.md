@@ -86,6 +86,8 @@ Create, Update and Delete Information in the System:
 * upsertObject
 * deepCreateObject
 * deleteObject
+Set Data for Object:
+* setDataForObject
 Manipulate Links Between Objects:
 * upsertLink
 * deleteLink

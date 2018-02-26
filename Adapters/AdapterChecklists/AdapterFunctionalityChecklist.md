@@ -20,25 +20,41 @@ limitations of that system.
 
 ## Checklist
 - [ ] Bulk Extract
+
+  - [ ] All Objects Programmatically Detectable Covered
+  - [ ] Objects Explicitly Covered: `_________________`
+
 - [ ] Get Objects Polling
 
   - [ ] All Objects Programmatically Detectable Covered
   - [ ] Objects Explicitly Covered: `_________________`
+
+  List of Polling Filters Supported: `_________________`
+
 
 - [ ] Get Objects Webhook
 
   - [ ] All Objects Programmatically Detectable Covered
   - [ ] Objects Explicitly Covered: `_________________`
 
+  List of Server-side Filters Supported: `_________________`
+
+
 - [ ] Get Events Polling
 
   - [ ] All Events Programmatically Detectable Covered
   - [ ] Events Explicitly Covered: `_________________`
 
+  List of Polling Filters Supported: `_________________`
+
+
 - [ ] Get Events Webhook
 
   - [ ] All Events Programmatically Detectable Covered
   - [ ] Events Explicitly Covered: `_________________`
+
+  List of Server-side Filters Supported: `_________________`
+
 
 - [ ] Lookup Object by Field(s)
 
@@ -74,6 +90,10 @@ limitations of that system.
 
 - [ ] Upsert Link
 - [ ] Delete Link
+- [ ] Set Data For Object
+
+    List all types of settable data:  `_________________`
+
 - [ ] Perform Action/Evaluate Function
 
   - [ ] All Actions/Functions Programmatically Detectable Covered

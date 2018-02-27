@@ -24,12 +24,16 @@ limitations of that system.
   - [ ] All Objects Programmatically Detectable Covered
   - [ ] Objects Explicitly Covered: `_________________`
 
+  List of Server-side Filters Supported: `_________________`
+
 - [ ] Get Objects Polling
 
   - [ ] All Objects Programmatically Detectable Covered
   - [ ] Objects Explicitly Covered: `_________________`
 
   List of Polling Filters Supported: `_________________`
+
+  List of Server-side Hydration Supported: `_________________`
 
 
 - [ ] Get Objects Webhook
@@ -39,6 +43,17 @@ limitations of that system.
 
   List of Server-side Filters Supported: `_________________`
 
+  List of Server-side Hydration Supported: `_________________`
+
+- [ ] Get Deleted Objects Polling
+
+  - [ ] All Events Programmatically Detectable Covered
+  - [ ] Events Explicitly Covered: `_________________`
+
+- [ ] Get Deleted Objects Webhook
+
+  - [ ] All Events Programmatically Detectable Covered
+  - [ ] Events Explicitly Covered: `_________________`
 
 - [ ] Get Events Polling
 

@@ -3,7 +3,7 @@
 This guide explains the problems which an
 adapter must solve and the recommended way doing so.
 
-## Table of Contents
+# Table of Contents
 
 - [Guide for creating an Adapter](#guide-for-creating-an-adapter)
   * [Table of Contents](#table-of-contents)
@@ -72,7 +72,7 @@ integrator can manipulate data.  This is in addition to all of the
 responsibilities of approach 1.
 
 *Note: Within any given adapter, it is possible to combine the two approaches if
-*doing so makes sense.*
+doing so makes sense.*
 
 # Given an API how should an Adapter behave?
 The expected actions and triggers of an adapter depend on the behavior of the
@@ -80,9 +80,9 @@ API.  If the API supports CRUD operations the following diagram explains which
 triggers and actions should exist in the adapter.  The triggers and actions
 should aim at covering 100% of the objects provided by the API.
 
-![API Classification3](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/Assets/ApiClassification.svg)
+![API Classification3](/Adapters/Assets/ApiClassification.svg)
 A checklist for each case exists in the document
-[AdapterCompletenessChecklist.md](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
+[AdapterCompletenessChecklist.md](/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 
 ## Question 1: Is the list of business objects dynamic?
 Some systems have a fixed list of objects (and corresponding API endpoints)

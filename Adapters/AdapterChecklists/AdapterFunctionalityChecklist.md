@@ -1,10 +1,11 @@
 # Adapter Functionality Checklist
-**Version Publish Date: 26.02.2018**
+**Version Publish Date: 01.03.2018**
 
 **Semantic Version of Document: 1.0.0**
 
 The goal of this document is to track connector completeness based on the
-functionality provided by the API.
+functionality provided by the API or  to formalize estimates for a non-CSP MSE
+(CSP consumer) requesting the construction of a connector.
 
 # Instructions
 1. Copy this document from the OIH repository and place it in the repository for

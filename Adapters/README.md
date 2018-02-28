@@ -14,10 +14,6 @@ well as to identify the API provider requirements.
 which describes the various forms of behavior that a component can perform and
 the standard way of exposing that functionality.
 
-* There is an additional folder [`FutureIdeas`](/Adapters/FutureIdeas) which identifies
-shortcomings in these standardization documents and suggests and discusses
-possible ways in which these shortcomings may be standardized in the future.
-
 * There is an additional document
 [`OpenQuestionsForOtherOIHWorkgroups.md`](/Adapters/OpenQuestionsForOtherOIHWorkgroups.md).
 This document outlines potential design decisions made by other workgroups which

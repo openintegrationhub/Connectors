@@ -3,6 +3,14 @@
 This document outlines potential design decisions made by other workgroups which
 would effect some of the design decisions related to connector standardization.
 
+# Table of Contents
+- [Open Questions For Other OIH Workgroups](#open-questions-for-other-oih-workgroups)
+- [Example of flows in a complete one way integration between two systems](#example-of-flows-in-a-complete-one-way-integration-between-two-systems)
+- [ID Linking of the Objects Themselves](#id-linking-of-the-objects-themselves)
+- [ID matching for Linked Objects](#id-matching-for-linked-objects)
+- [Event Debouncing](#event-debouncing)
+- [Other Open Questions](#other-open-questions)
+
 # Example of flows in a complete one way integration between two systems
 A complete one way integration between two systems is an integration where:
 * One system is the system of truth
@@ -32,8 +40,10 @@ When an adapter must alter (such as delete or update) a record in the system
 that it is connected to, there needs to be a method to link incoming requests
 from some  `other` system to the ids which exist in `this` system.
 
-The ID linking is solved by using [**OIHApplicationDataRecords**](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels#4-global-rules-and-regulations-for-omdms).
-An **OIHApplicationDataRecord** is a reference to the record of the application or service being the source of the record and contains:
+The ID linking is solved by using
+[**OIHApplicationDataRecords**](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels#4-global-rules-and-regulations-for-omdms).
+An **OIHApplicationDataRecord** is a reference to the record of the application
+or service being the source of the record and contains:
 - The open integration hubs identifier for the application (mandatory)
 - The record's ID within the application (mandatory)
 - Creation and last modification dates of the record within the application (optionally)
@@ -76,7 +86,7 @@ How is this cycle broken?
   - Implementation of a changelog is needed
   - Which functionalities are possible without a change tracking mechanism?
 - How to handle API Limits?
-  - Provide best pracitces to handle API limits
+  - Provide best practices to handle API limits
 - Conflict resolution
   - Which conflicts can/should be handled within the adapters?
 - Batching (so that bulk read/write operations can be invoked for the sake of

@@ -1,7 +1,31 @@
 # Descriptions of standardized actions or triggers
-**Version Publish Date: 26.02.2018**
+**Version Publish Date: 01.03.2018**
 
 **Semantic Version of Document: 1.0.0**
+
+# Table of Contents
+- [Standardized Triggers (including webhooks)](#standardized-triggers-including-webhooks)
+  * [Bulk Extract](#bulk-extract)
+  * [Get Objects Polling](#get-objects-polling)
+  * [Get Objects Webhook](#get-objects-webhook)
+  * [Get Deleted Objects Polling](#get-deleted-objects-polling)
+  * [Get Deleted Objects Webhook](#get-deleted-objects-webhook)
+  * [Get Events Polling](#get-events-polling)
+  * [Get Events Webhook](#get-events-webhook)
+- [Actions](#actions)
+  * [Lookup Object by Field(s)](#lookup-object-by-fields)
+  * [Lookup Objects By Criteria](#lookup-objects-by-criteria)
+  * [Execute System Specific Query/Modification Language Operation](#execute-system-specific-querymodification-language-operation)
+  * [Upsert Object](#upsert-object)
+  * [Deep Create Object](#deep-create-object)
+  * [Delete Object](#delete-object)
+  * [Upsert Link](#upsert-link)
+  * [Delete Link](#delete-link)
+  * [Set Data For Object](#set-data-for-object)
+  * [Perform Action/Evaluate Function](#perform-actionevaluate-function)
+  * [Exposed Endpoints](#exposed-endpoints)
+  * [Generic Request](#generic-request)
+
 
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
@@ -102,16 +126,16 @@ async function BulkExtract(onlyModifiedBefore, objectType) {
 ## Get Objects Polling
 This trigger will be scheduled to execute periodically.  When executed, this
 trigger will fetch all objects in the database that have been modified or
-created since the previous execution.  It will emit one message per object that changes or is added
-since the last polling interval. The entire object should be emitted as the
-message body.
+created since the previous execution.  It will emit one message per object that
+changes or is added since the last polling interval. The entire object should be
+emitted as the message body.
 
 **Required configurations/inputs:**
 * The type of object to poll for
 * Optionally filter values for any server side filters supported
 * A timestamp which indicates where in time to begin polling from.  If this
- value is set to the begining of time, the trigger will do a DB export on the
- inital run.  If set to now, only future modifications will be exported and the
+ value is set to the beginning of time, the trigger will do a DB export on the
+ initial run.  If set to now, only future modifications will be exported and the
  first execution will return no results.
 * An optional timestamp which indicates the end of polling time.  The trigger
  will not return results which have been modified after this timestamp.
@@ -135,7 +159,8 @@ Sometimes, this trigger will act as a fallback mechanism for webhook failures.
 - [ ] Allow objects to be fetched based on the modification time
 - [ ] Record the time of the last modification of all objects in the system
 OR
-- [ ] Support for [delta links](http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/part1-protocol/odata-v4.0-errata03-os-part1-protocol-complete.html#_Toc453752294)
+- [ ] Support for [delta
+links](http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/part1-protocol/odata-v4.0-errata03-os-part1-protocol-complete.html#_Toc453752294)
 AND
   - [ ] When a sub-object is modified that is not directly fetchable via the API
     (such as an address of a contact, a variant of a product or a shipment in an
@@ -177,7 +202,7 @@ can recover data lost during outages.
 
 **Required API functionality:**
 * Webhooks
-* Optionally, these webhooks can be programatically configured, started and stopped.
+* Optionally, these webhooks can be programmatically configured, started and stopped.
 
 **Sample pseudo-code implementation:**
 TBD
@@ -235,8 +260,8 @@ Similar to `Get Objects Polling` except for events
 **Required configurations/inputs:**
 * Optionally filter values for any server side filters supported
 * A timestamp which indicates where in time to begin polling from.  If this
- value is set to the begining of time, the trigger will do a DB export on the
- inital run.  If set to now, only future modifications will be exported and the
+ value is set to the beginning of time, the trigger will do a DB export on the
+ initial run.  If set to now, only future modifications will be exported and the
  first execution will return no results.
 * An optional timestamp which indicates the end of polling time.  The trigger
  will not return results which have been modified after this timestamp.
@@ -273,14 +298,10 @@ Same as for `Get Objects Webhook`.
 
 **Required API functionality:**
 * Events Webhooks
-* Optionally, these webhooks can be programatically configured, started and stopped.
+* Optionally, these webhooks can be programmatically configured, started and stopped.
 
 **Sample pseudo-code implementation:**
 TBD
-
-
-
-
 
 # Actions
 ## Lookup Object by Field(s)
@@ -291,7 +312,7 @@ record.
 * Object type to look up
 * Field to search by
 * Value for the fields
-* Behavoir for when 0 records match (error vs emit empty)
+* Behavior for when 0 records match (error vs emit empty)
 
 **Outputs (including metadata):**
 If no matches, emit the empty object or error.
@@ -365,9 +386,6 @@ The existence of a Query/Modification Language in the system.
 **Sample pseudo-code implementation:**
 TBD
 
-
-
-
 ## Upsert Object
 This action accepts an object as its input.  If the incoming object does not
 have an ID, this action will create an object in the system it is connected to.
@@ -377,7 +395,7 @@ instead of full update operation should be performed.
 
 **Required configurations/inputs:**
 * The type of object to upsert
-* The id of the object in the system where the upsert is occuring
+* The id of the object in the system where the upsert is occurring
 * The object being updated.  Ids which point to linked objects can be included in the
 
 **Outputs (including metadata):**
@@ -416,7 +434,6 @@ commands from some external application.
 
 **Sample pseudo-code implementation:**
 TBD
-
 
 ## Delete Object
 Deletes an object.
@@ -494,7 +511,8 @@ TBD
 ## Perform Action/Evaluate Function
 The system supports the ability to
 * trigger events (which may or may not result in side-effects outside the system)
-* to modify the state of data inside the system in a way that is distinct from *CRUD* operations
+* to modify the state of data inside the system in a way that is distinct from
+*CRUD* operations
 * provide the results a complex calculation based on some inputs
 
 **Required configurations/inputs:**

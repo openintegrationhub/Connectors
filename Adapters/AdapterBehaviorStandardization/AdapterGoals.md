@@ -1,5 +1,5 @@
 # Adapter Goals
-**Version Publish Date: 26.02.2018**
+**Version Publish Date: 01.03.2018**
 
 **Semantic Version of Document: 1.0.0**
 
@@ -11,9 +11,19 @@ This document is formatted in the following way:
 1. Different goals of an adapter are listed.
 2. For each goal, different implementations of that goal are listed.
 
+# Table of Contents
+  * [Bulk Extract](#bulk-extract)
+  * [Detect Data/Object Changes](#detect-dataobject-changes)
+  * [System Specific Event Observation](#system-specific-event-observation)
+  * [Lookup Information in the System](#lookup-information-in-the-system)
+  * [Modify Records in the System](#modify-records-in-the-system)
+  * [Perform a System Action/Invoke a System Function](#perform-a-system-actioninvoke-a-system-function)
+  * [Expose Endpoint(s)](#expose-endpoints)
+
 ## Bulk Extract
-**Goal:** An entire data set exists in the system.  An integrator wants to export
-all of the data or all of that data which matches certain criteria that exists in the system through an integration flow.
+**Goal:** An entire data set exists in the system.  An integrator wants to export all of
+the data or all of that data which matches certain criteria that exists in the
+system through an integration flow.
 
 **Standardized Actions and Triggers:**
 * Bulk Extract
@@ -25,7 +35,8 @@ flow to be triggered with that information.
 
 We may also want to observe changes in many-to-many relationships
 
-We may also want to be able to trigger flows when objects undergo a merge operation (e.g. merge duplicate contacts).
+We may also want to be able to trigger flows when objects undergo a merge
+operation (e.g. merge duplicate contacts).
 
 **Standardized Actions and Triggers:**
 Basic Case:

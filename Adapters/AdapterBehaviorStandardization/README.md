@@ -14,8 +14,8 @@ given behaviors for an implementation can be generalized across connectors.
 
 The documents in this folder are arranged in the following way:
 * [`AdapterGoals.md`](/Adapters/AdapterBehaviorStandardization/AdapterGoals.md)
-identifies goals *that can be generalized across systems* and then lists the standard implementations that satisfy those
-goals.
+identifies goals *that can be generalized across systems* and then lists the
+standard implementations that satisfy those goals.
 * [`StandardizedActionsAndTriggers.md`](/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md)
 describes in detail the standard behavior of each implementation.  Furthermore,
 it describes what functionality is required in the CSP's API in order build such

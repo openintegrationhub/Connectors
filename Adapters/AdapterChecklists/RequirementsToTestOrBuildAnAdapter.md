@@ -1,5 +1,5 @@
 # Requirements to Test or Build an Adapter
-**Version Publish Date: 26.02.2018**
+**Version Publish Date: 01.03.2018**
 
 **Semantic Version of Document: 1.0.0**
 

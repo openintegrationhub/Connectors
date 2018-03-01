@@ -1,8 +1,6 @@
-As described in [README.md](/REAMDE.md) a transformer semantically transforms one JSON object into another. For this purpose a transformation language such as JSONata can be used. <br>
-In the following some general information about JSONata as well as a general example are presented.
-
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Introduction](#introduction)
 - [JSONata Overview](#jsonata-overview)
 	- [Exemplary Functions](#exemplary-functions)
 		- [String Functions](#string-functions)
@@ -11,6 +9,16 @@ In the following some general information about JSONata as well as a general exa
 - [Exemplary JSONata Transformation](#exemplary-jsonata-transformation)
 
 <!-- /TOC -->
+# Introduction
+As described in [README.md](/REAMDE.md) a transformer semantically transforms one JSON object into another. For this purpose a programming language or a transformation language such as JSONata can be used. <br>
+
+Short description of model transformation languages in general:
+
+> A model transformation, which is essentially a program which operates on models, can be written in a general-purpose programming language, such as Java. However, special-purpose model transformation languages can offer advantages, such as syntax that makes it easy to refer to model elements.
+
+_Source:_ [Wikipedia](https://en.wikipedia.org/wiki/Model_transformation_language)
+
+Due to its focus on JSON objects and its simplicity, JSONata is the recommended transformation language for creating a transformer.
 
 # JSONata Overview
 - Is a Lightweight query and transformation language for JSON data

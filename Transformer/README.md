@@ -1,11 +1,11 @@
 # Transformer
 
-A transformer is responsible to semantically transform an incoming JSON object into another JSON object.
 
 ## Transformer Concept
 As already mentioned the transformer transforms one JSON object into another. Prior to this transformation a semantic mapping has to take place where the entities of the source model are mapped against the entities of the Open Integration Hub master data model.
 
-A transformer expects a JSON object which represents the application's proprietary data model as an input. It is possible to automatically pull JSON schemas via the OIH API which represent the structure of the Open Integration Hub master data model. Afterwards it transforms the incoming JSON object into another JSON object via a transformation language (_We suggest JSONata for the transformation_). The resulting JSON object represents the structure of the Open Integration Hub master data model. The transformer's output is then send to the Open Integration Hub and is validated against a deposited JSON schema.
+A transformer should transform data in both directions (from _source model_ to _Open Integration Hub master data model_ & from _Open Integration Hub master data model_ to _source model_) as can be seen in the [connector overview](https://github.com/openintegrationhub/Connectors/blob/master/Assets/ConnectorsV2.svg).
+A transformer expects a JSON object  as an input. Depending on the direction of the transformation the input either represents the structure of the proprieraty data model (direction: _source model_ --> _Open Integration Hub master data model_) or the structure of the Open Integration Hub master data model (direction: _Open Integration Hub master data model_ --> _source model_). Afterwards it transforms the incoming JSON object into another JSON object e.g. via a transformation language (_We suggest JSONata for the transformation_).  Depending on the transformation direction, the transformer's output is then send either to the Open Integration Hub and is validated against a deposited JSON schema or to the corresponding adapter.
 
 ## Transformation Language
 One way of transforming the JSON objects is the usage of a transformation language. As already mentioned our suggested transformation language is JSONata as it is especially built to transform one JSON object into another.

@@ -26,6 +26,11 @@ Due to its focus on JSON objects and its simplicity, JSONata is the recommended 
 - Supports more than 20 operators
 - Includes numerous functions such as string-, numeric-, array- and object-functions
 
+In the following some exemplary functions as well as a general JSONata mapping example is provided.
+
+For further information of JSONata please visit the [official JSONata documentation](http://docs.jsonata.org/), which also includes a listing of all supported functions. <br>
+If you want to test JSONata check out the [JSONata Excerciser](http://try.jsonata.org/).
+
 ## Exemplary Functions
 ### String Functions
 Find and replace of a pattern within a string and replace it with a certain value:
@@ -121,5 +126,3 @@ The following JSON object results from the transformation:
 "weight": 80.3,
 "age": 30
 ```
-
-For further information of JSONata please visit the [official JSONata documentation](http://jsonata.org/).

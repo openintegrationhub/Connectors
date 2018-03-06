@@ -41,14 +41,6 @@ Additional information on the different roles can be found within the [contribut
 |  | Jacob (@jhorbulyk) | Committer   |
 |  | Renat (@zubairov) | Contributor   |
 
-## Workgroup Content
-
-| Workgroup  | Connectors |
-| ------------- | ------------- |
-| Content  | Definition procedure model for solution integration |
-|  |Development of two prototypes for connectors |
-|  | Know-How transfer & Training of cloud provider |
-
 # Wording
 Within the project different terms and abbreviations are frequently used. All terms and abbrevations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).
 

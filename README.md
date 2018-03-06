@@ -6,7 +6,6 @@
 	- [Transformer](#transformer)
 - [General Workgroup Information](#general-workgroup-information)
 	- [Workgroup Member](#workgroup-member)
-	- [Workgroup Content](#workgroup-content)
 - [Wording](#wording)
 - [Contribution](#contribution)
 - [Contact](#contact)

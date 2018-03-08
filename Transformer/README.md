@@ -1,11 +1,22 @@
-# Transformer
+## Table of Contents
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Table of Contents](#table-of-contents)
+- [Transformer Concept](#transformer-concept)
+- [Transformation Language](#transformation-language)
+- [Transformer Evolution](#transformer-evolution)
+- [Possible Implementations](#possible-implementations)
+	- [Elastic.io Transformer UI Mockup](#elasticio-transformer-ui)
+
+<!-- /TOC -->
 
 ## Transformer Concept
 As already mentioned the transformer transforms one JSON object into another. Prior to this transformation a semantic mapping has to take place where the entities of the source model are mapped against the entities of the Open Integration Hub master data model.
 
 A transformer should transform data in both directions (from _source model_ to _Open Integration Hub master data model_ & from _Open Integration Hub master data model_ to _source model_) as can be seen in the [connector overview](https://github.com/openintegrationhub/Connectors/blob/master/Assets/ConnectorsV2.svg).
 A transformer expects a JSON object  as an input. Depending on the direction of the transformation the input either represents the structure of the proprieraty data model (direction: _source model_ --> _Open Integration Hub master data model_) or the structure of the Open Integration Hub master data model (direction: _Open Integration Hub master data model_ --> _source model_). Afterwards it transforms the incoming JSON object into another JSON object e.g. via a transformation language (_We suggest JSONata for the transformation_).  Depending on the transformation direction, the transformer's output is then send either to the Open Integration Hub and is validated against a deposited JSON schema or to the corresponding adapter.
+
+_Note: As the Open Integration Hub is feasible of storing different data models, it is also possible that the mapping of the source model is done against another model than the Open Integration Hub master data model. An example of how an implementation with individually uploaded data models could look like is presendet under the section [possible implementations](#possible-implementations)._
 
 ## Transformation Language
 One way of transforming the JSON objects is the usage of a transformation language. As already mentioned our suggested transformation language is JSONata as it is especially built to transform one JSON object into another.
@@ -39,3 +50,12 @@ If a new version of a model is created, two options exist to create a transforme
 The following illustrations shows how a transformer works and a possible adjustments that has to be made if a change in a data model occurs:
 
 ![TransformerEvolution](Assets/TransformerEvolution.svg)
+
+## Possible Implementations
+### Elastic.io Transformer UI Mockup
+As the Open Integration Hub enables a series of business models, the different implementations of transformers can vary within these business models.
+In the following a mockup of a transformer user interface in the elastic.io integration platform is presented.
+
+As described above it is possible to store individual data models within the Open Integratio Hub. In this mockup, **no Open Integration Hub master data model** is used. Instead the user is able to upload a number of data models for different domains and choose against which model he wants to map his data model.
+
+The mockup can be found under [elastic.io transformer UI mockup](/ElasticioTransformerUIMockup.md).

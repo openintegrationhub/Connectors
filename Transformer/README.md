@@ -58,4 +58,4 @@ In the following a mockup of a transformer user interface in the elastic.io inte
 
 As described above it is possible to store individual data models within the Open Integratio Hub. In this mockup, **no Open Integration Hub master data model** is used. Instead the user is able to upload a number of data models for different domains and choose against which model he wants to map his data model.
 
-The mockup can be found under [elastic.io transformer UI mockup](/ElasticioTransformerUIMockup.md).
+The mockup can be found under [elastic.io transformer UI mockup](ElasticioTransformerUIMockup.md).

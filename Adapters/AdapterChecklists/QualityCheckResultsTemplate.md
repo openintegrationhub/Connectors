@@ -26,7 +26,7 @@ In the first section the general template is provided. In the second section, an
 
 ## Documentation
 
-The quality check for the documentation was performed on the basis of the [Adapter Description and Documentation Guidelines](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/AdapterDescriptionAndDocumentationGuidelines.md)
+The quality check for the documentation was performed on the basis of the [Adapter Description and Documentation Guidelines](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/AdapterDescriptionAndDocumentationChecklist.md)
 
 | Priority  | Impacted Requirement  | What is missing / insufficient |
 | ------------- | ------------- | ------------- |
@@ -65,7 +65,7 @@ The quality checks for coverage and functionality were performed on the basis of
 
 ## Documentation
 
-The quality check for the documentation was performed on the basis of the [Adapter Description and Documentation Guidelines](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/AdapterDescriptionAndDocumentationGuidelines.md)
+The quality check for the documentation was performed on the basis of the [Adapter Description and Documentation Guidelines](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterChecklists/AdapterDescriptionAndDocumentationChecklist.md)
 
 | Priority  | Relating file | Impacted requirement  | What is missing / insufficient |
 | ------------- | ------------- | ------------- | ------------- |

@@ -1,4 +1,4 @@
-# Adapter Functionality Checklist
+# Adapter Goal Checklist
 **Version Publish Date: 01.03.2018**
 
 **Semantic Version of Document: 1.0.0**

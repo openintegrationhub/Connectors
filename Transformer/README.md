@@ -53,7 +53,7 @@ The following illustrations shows how a transformer works and a possible adjustm
 
 ## Possible Implementations
 ### Elastic.io Transformer UI Mockup
-As the Open Integration Hub enables a series of business models, the different implementations of transformers can vary within these business models.
+As the Open Integration Hub enables a series of business models implementations of transformers can vary within these business models.
 In the following a mockup of a transformer user interface in the elastic.io integration platform is presented.
 
 As described above it is possible to store individual data models within the Open Integratio Hub. In this mockup, **no Open Integration Hub master data model** is used. Instead the user is able to upload a number of data models for different domains and choose against which model he wants to map his data model.

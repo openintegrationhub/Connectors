@@ -13,8 +13,12 @@
 ## Transformer Concept
 As already mentioned the transformer transforms one JSON object into another. Prior to this transformation a semantic mapping has to take place where the entities of the source model are mapped against the entities of the Open Integration Hub master data model.
 
-A transformer should transform data in both directions (from _source model_ to _Open Integration Hub master data model_ & from _Open Integration Hub master data model_ to _source model_) as can be seen in the [connector overview](https://github.com/openintegrationhub/Connectors/blob/master/Assets/ConnectorsV2.svg).
-A transformer expects a JSON object  as an input. Depending on the direction of the transformation the input either represents the structure of the proprieraty data model (direction: _source model_ --> _Open Integration Hub master data model_) or the structure of the Open Integration Hub master data model (direction: _Open Integration Hub master data model_ --> _source model_). Afterwards it transforms the incoming JSON object into another JSON object e.g. via a transformation language (_We suggest JSONata for the transformation_).  Depending on the transformation direction, the transformer's output is then send either to the Open Integration Hub and is validated against a deposited JSON schema or to the corresponding adapter.
+As can be seen in the [connector overview](https://github.com/openintegrationhub/Connectors/blob/master/Assets/ConnectorsV2.svg) a transformer should transform data in both directions:
+
+1. From _source model_ to _Open Integration Hub master data model_
+2. From _Open Integration Hub master data model_ to _source model_
+
+A transformer expects a JSON object  as an input. Depending on the direction of the transformation the input either represents the structure of the proprieraty data model (_flow direction 1_) or the structure of the Open Integration Hub master data model (_flow direction 2_). Afterwards it transforms the incoming JSON object into another JSON object e.g. via a transformation language (_We suggest JSONata for the transformation_).  Depending on the transformation direction, the transformer's output is then send either to the Open Integration Hub and is validated against a deposited JSON schema or to the corresponding adapter.
 
 _Note: As the Open Integration Hub is feasible of storing different data models, it is also possible that the mapping of the source model is done against another model than the Open Integration Hub master data model. An example of how an implementation with individually uploaded data models could look like is presented under the section [possible implementations](#possible-implementations)._
 

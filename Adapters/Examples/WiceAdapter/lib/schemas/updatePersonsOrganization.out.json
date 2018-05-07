@@ -1,0 +1,55 @@
+{
+    "type": "object",
+    "properties": {
+      "same_contactperson": {
+          "type": "string",
+          "required": true,
+          "title": "ID"
+      },
+        "for_rowid": {
+            "type": "string",
+            "required": true,
+            "title": "Company ID"
+        },
+        "name": {
+            "type": "string",
+            "required": true,
+            "title": "Last name"
+        },
+        "firstname": {
+            "type": "string",
+            "required": true,
+            "title": "First name"
+        },
+        "salutation": {
+            "type": "string",
+            "required": false,
+            "title": "Salutation"
+        },
+        "title": {
+            "type": "string",
+            "required": false,
+            "title": "Title"
+        },
+        "email": {
+            "type": "string",
+            "required": false,
+            "title": "Email"
+        },
+        "phone": {
+            "type": "string",
+            "required": false,
+            "title": "Phone"
+        },
+        "mobile_phone": {
+            "type": "string",
+            "required": false,
+            "title": "Mobile phone"
+        },
+        "position": {
+            "type": "string",
+            "required": false,
+            "title": "Position / Business card information"
+        }
+    }
+}

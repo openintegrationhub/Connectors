@@ -1,0 +1,35 @@
+{
+    "type": "object",
+    "properties": {
+        "description": {
+            "type": "string",
+            "required": true,
+            "title": "Description"
+        },
+        "number": {
+            "type": "string",
+            "required": true,
+            "title": "Article number"
+        },
+        "sales_price": {
+            "type": "string",
+            "required": true,
+            "title": "Sales price"
+        },
+        "purchase_price": {
+            "type": "string",
+            "required": true,
+            "title": "Purchase price"
+        },
+        "in_stock": {
+            "type": "string",
+            "required": true,
+            "title": "Quantitiy in stock"
+        },
+        "unit": {
+            "type": "string",
+            "required": true,
+            "title": "Unit"
+        }
+    }
+}

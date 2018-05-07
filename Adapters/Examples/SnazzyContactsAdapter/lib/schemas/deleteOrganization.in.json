@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "rowid": {
+      "type": "string",
+      "required": true,
+      "title": "ID"
+    }
+  }
+}

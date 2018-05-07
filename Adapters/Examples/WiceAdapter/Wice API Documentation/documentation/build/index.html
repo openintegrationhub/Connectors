@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en-US"><head><meta charset="utf-8"/><title>Wice CRM API Documentation</title><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/><link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/><link href="app-67a56927b43db9b4e5e5.css" rel="stylesheet"/></head><body><div id="app-root"><div id="wrapper" data-reactroot="" data-reactid="1" data-react-checksum="1407768501"><nav id="sidebar-wrapper" data-reactid="2"><div class="search" data-reactid="3"><input type="text" placeholder="Search..." value="" data-reactid="4"/></div><ul class="sidebar-nav" data-reactid="5"><li class="sidebar-category" data-reactid="6"><a href="#person" data-reactid="7">Person</a></li><li class="" data-reactid="8"><a href="#person-get-a-single-person" data-reactid="9">Get a single person</a></li><li class="" data-reactid="10"><a href="#person-get-all-persons" data-reactid="11">Get all persons</a></li><li class="" data-reactid="12"><a href="#person-create-person" data-reactid="13">Create person</a></li><li class="" data-reactid="14"><a href="#person-update-person" data-reactid="15">Update person</a></li><li class="" data-reactid="16"><a href="#person-delete-person" data-reactid="17">Delete person</a></li></ul><ul class="sidebar-nav" data-reactid="18"><li class="sidebar-category" data-reactid="19"><a href="#organization" data-reactid="20">Organization</a></li><li class="" data-reactid="21"><a href="#organization-get-a-single-organization" data-reactid="22">Get a single organization</a></li><li class="" data-reactid="23"><a href="#organization-get-all-organizations" data-reactid="24">Get all organizations</a></li><li class="" data-reactid="25"><a href="#organization-create-organization" data-reactid="26">Create organization</a></li><li class="" data-reactid="27"><a href="#organization-update-organization" data-reactid="28">Update organization</a></li><li class="" data-reactid="29"><a href="#organization-delete-organization" data-reactid="30">Delete organization</a></li></ul><ul class="sidebar-nav" data-reactid="31"><li class="sidebar-category" data-reactid="32"><a href="#article" data-reactid="33">Article</a></li><li class="" data-reactid="34"><a href="#article-get-a-single-article" data-reactid="35">Get a single article</a></li><li class="" data-reactid="36"><a href="#article-get-all-articles" data-reactid="37">Get all articles</a></li><li class="" data-reactid="38"><a href="#article-create-article" data-reactid="39">Create article</a></li><li class="" data-reactid="40"><a href="#article-update-article" data-reactid="41">Update article</a></li><li class="" data-reactid="42"><a href="#article-delete-article" data-reactid="43">Delete article</a></li></ul></nav><div id="page-content-wrapper" data-reactid="44"><div class="container-fluid" data-reactid="45"><div class="row" data-reactid="46"><div class="col-lg-12" data-reactid="47"><h1 data-reactid="48">Wice CRM API Documentation</h1><article class="panel panel-primary" data-reactid="49"><div class="panel-heading" data-reactid="50"><div id="person" data-reactid="51"></div><h2 data-reactid="52">Person</h2></div><div class="panel-body" data-reactid="53"><h3 data-reactid="54">Person object in Wice CRM</h3><header id="person-properties" data-reactid="55"><p data-reactid="56"><a class="btn btn-info" data-reactid="57"><span data-reactid="58">Show</span><!-- react-text: 59 --> <!-- /react-text --><!-- react-text: 60 -->properties and constraints defined on the object<!-- /react-text --></a></p></header></div><div class="list-group" data-reactid="61"><section id="person-get-a-single-person" class="list-group-item" data-reactid="62"><h3 data-reactid="63"><div class="label label-success" data-reactid="64">GET</div><!-- react-text: 65 --> <!-- /react-text --><div class="endpoint-title" data-reactid="66">Get a single person</div></h3><div data-reactid="67"><p>Get a single person saved by a specific user</p>
+</div><pre data-reactid="68"><!-- react-text: 69 -->GET<!-- /react-text --><!-- react-text: 70 --> <!-- /react-text --><!-- react-text: 71 -->plugin/wp_elasticio_backend/json?method=get_person<!-- /react-text --></pre><div data-reactid="72"><h4 data-reactid="73">Optional parameters</h4><table class="table table-hover" data-reactid="74"><thead data-reactid="75"><tr data-reactid="76"><th data-reactid="77"><p data-reactid="78"><!-- react-text: 79 -->Name <!-- /react-text --><small data-reactid="80">/type</small></p></th><th data-reactid="81"><p data-reactid="82"><!-- react-text: 83 -->Description <!-- /react-text --><small data-reactid="84">/example</small></p></th><th data-reactid="85"><p data-reactid="86">Constraints</p></th></tr></thead><tbody data-reactid="87"><tr data-reactid="88"><td data-reactid="89"><p data-reactid="90"><strong data-reactid="91">pkey</strong><br data-reactid="92"/><small data-reactid="93"><em data-reactid="94"><!-- react-text: 95 -->string<!-- /react-text --></em></small></p></td><td data-reactid="96"><div data-reactid="97"><p>Rowid</p>
+</div><div data-reactid="98"><small data-reactid="99"><code data-reactid="100">&quot;410849&quot;</code></small></div></td><td data-reactid="101"><ul class="constraints" data-reactid="102"></ul></td></tr></tbody></table></div><h4 data-reactid="103">cURL</h4><div data-reactid="104"><pre data-reactid="105">curl -X GET &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_person?pkey=410849&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot;</pre></div><h4 data-reactid="106">Response</h4><div data-reactid="107"><pre data-reactid="108">{
+  &quot;rowid&quot;: &quot;410849&quot;,
+  &quot;for_rowid&quot;: &quot;367660&quot;,
+  &quot;salutation&quot;: &quot;Herr&quot;,
+  &quot;firstname&quot;: &quot;John&quot;,
+  &quot;name&quot;: &quot;Doe&quot;,
+  &quot;birthday&quot;: &quot;1980-10-09&quot;,
+  &quot;private_street&quot;: &quot;Main Street 124&quot;,
+  &quot;private_zip_code&quot;: &quot;29610&quot;,
+  &quot;private_town&quot;: &quot;London&quot;,
+  &quot;private_state&quot;: &quot;London District&quot;,
+  &quot;private_country&quot;: &quot;Great Britain&quot;,
+  &quot;phone&quot;: &quot;+44 20 9812 0574&quot;,
+  &quot;fax&quot;: &quot;+44 20 9812 0590&quot;,
+  &quot;email&quot;: &quot;jdoe@mail.com&quot;,
+  &quot;url&quot;: &quot;www.johndoe.com&quot;
+}</pre></div></section><section id="person-get-all-persons" class="list-group-item" data-reactid="109"><h3 data-reactid="110"><div class="label label-success" data-reactid="111">GET</div><!-- react-text: 112 --> <!-- /react-text --><div class="endpoint-title" data-reactid="113">Get all persons</div></h3><div data-reactid="114"><p>Get all persons</p>
+</div><pre data-reactid="115"><!-- react-text: 116 -->GET<!-- /react-text --><!-- react-text: 117 --> <!-- /react-text --><!-- react-text: 118 -->plugin/wp_elasticio_backend/json?method=get_all_persons<!-- /react-text --></pre><h4 data-reactid="119">cURL</h4><div data-reactid="120"><pre data-reactid="121">curl -X GET &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_persons&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot;</pre></div><h4 data-reactid="122">Response</h4><div data-reactid="123"><pre data-reactid="124">[
+  {
+    &quot;rowid&quot;: &quot;410849&quot;,
+    &quot;for_rowid&quot;: &quot;367660&quot;,
+    &quot;salutation&quot;: &quot;Herr&quot;,
+    &quot;firstname&quot;: &quot;John&quot;,
+    &quot;name&quot;: &quot;Doe&quot;,
+    &quot;birthday&quot;: &quot;1980-10-09&quot;,
+    &quot;private_street&quot;: &quot;Main Street 124&quot;,
+    &quot;private_zip_code&quot;: &quot;29610&quot;,
+    &quot;private_town&quot;: &quot;London&quot;,
+    &quot;private_state&quot;: &quot;London District&quot;,
+    &quot;private_country&quot;: &quot;Great Britain&quot;,
+    &quot;phone&quot;: &quot;+44 20 9812 0574&quot;,
+    &quot;fax&quot;: &quot;+44 20 9812 0590&quot;,
+    &quot;email&quot;: &quot;jdoe@mail.com&quot;,
+    &quot;url&quot;: &quot;www.johndoe.com&quot;
+  }
+]</pre></div></section><section id="person-create-person" class="list-group-item" data-reactid="125"><h3 data-reactid="126"><div class="label label-success" data-reactid="127">POST</div><!-- react-text: 128 --> <!-- /react-text --><div class="endpoint-title" data-reactid="129">Create person</div></h3><div data-reactid="130"><p>To create a person you have to pass a first name and a last name.</p>
+</div><pre data-reactid="131"><!-- react-text: 132 -->POST<!-- /react-text --><!-- react-text: 133 --> <!-- /react-text --><!-- react-text: 134 -->plugin/wp_elasticio_backend/json?method=insert_contact<!-- /react-text --></pre><div data-reactid="135"><h4 data-reactid="136">Optional parameters</h4><table class="table table-hover" data-reactid="137"><thead data-reactid="138"><tr data-reactid="139"><th data-reactid="140"><p data-reactid="141"><!-- react-text: 142 -->Name <!-- /react-text --><small data-reactid="143">/type</small></p></th><th data-reactid="144"><p data-reactid="145"><!-- react-text: 146 -->Description <!-- /react-text --><small data-reactid="147">/example</small></p></th><th data-reactid="148"><p data-reactid="149">Constraints</p></th></tr></thead><tbody data-reactid="150"><tr data-reactid="151"><td data-reactid="152"><p data-reactid="153"><strong data-reactid="154">firstname</strong><br data-reactid="155"/><small data-reactid="156"><em data-reactid="157"><!-- react-text: 158 -->string<!-- /react-text --></em></small></p></td><td data-reactid="159"><div data-reactid="160"><p>First name of the person</p>
+</div><div data-reactid="161"><small data-reactid="162"><code data-reactid="163">&quot;John&quot;</code></small></div></td><td data-reactid="164"><ul class="constraints" data-reactid="165"></ul></td></tr><tr data-reactid="166"><td data-reactid="167"><p data-reactid="168"><strong data-reactid="169">name</strong><br data-reactid="170"/><small data-reactid="171"><em data-reactid="172"><!-- react-text: 173 -->string<!-- /react-text --></em></small></p></td><td data-reactid="174"><div data-reactid="175"><p>Name of the person</p>
+</div><div data-reactid="176"><small data-reactid="177"><code data-reactid="178">&quot;Doe&quot;</code></small></div></td><td data-reactid="179"><ul class="constraints" data-reactid="180"></ul></td></tr></tbody></table></div><h4 data-reactid="181">cURL</h4><div data-reactid="182"><pre data-reactid="183">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=insert_contact&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;firstname&quot;:&quot;John&quot;,&quot;name&quot;:&quot;Doe&quot;}&#x27;</pre></div><h4 data-reactid="184">Response</h4><div data-reactid="185"><pre data-reactid="186">{
+  &quot;rowid&quot;: &quot;410849&quot;,
+  &quot;firstname&quot;: &quot;John&quot;,
+  &quot;name&quot;: &quot;Doe&quot;
+}</pre></div></section><section id="person-update-person" class="list-group-item" data-reactid="187"><h3 data-reactid="188"><div class="label label-success" data-reactid="189">POST</div><!-- react-text: 190 --> <!-- /react-text --><div class="endpoint-title" data-reactid="191">Update person</div></h3><div data-reactid="192"><p>To update a person you need to pass person&#39;s rowid and the field which you want to update.</p>
+</div><pre data-reactid="193"><!-- react-text: 194 -->POST<!-- /react-text --><!-- react-text: 195 --> <!-- /react-text --><!-- react-text: 196 -->plugin/wp_elasticio_backend/json?method=update_contact<!-- /react-text --></pre><div data-reactid="197"><h4 data-reactid="198">Optional parameters</h4><table class="table table-hover" data-reactid="199"><thead data-reactid="200"><tr data-reactid="201"><th data-reactid="202"><p data-reactid="203"><!-- react-text: 204 -->Name <!-- /react-text --><small data-reactid="205">/type</small></p></th><th data-reactid="206"><p data-reactid="207"><!-- react-text: 208 -->Description <!-- /react-text --><small data-reactid="209">/example</small></p></th><th data-reactid="210"><p data-reactid="211">Constraints</p></th></tr></thead><tbody data-reactid="212"><tr data-reactid="213"><td data-reactid="214"><p data-reactid="215"><strong data-reactid="216">rowid</strong><br data-reactid="217"/><small data-reactid="218"><em data-reactid="219"><!-- react-text: 220 -->string<!-- /react-text --></em></small></p></td><td data-reactid="221"><div data-reactid="222"><p>User&#39;s rowid to update</p>
+</div><div data-reactid="223"><small data-reactid="224"><code data-reactid="225">&quot;410849&quot;</code></small></div></td><td data-reactid="226"><ul class="constraints" data-reactid="227"></ul></td></tr><tr data-reactid="228"><td data-reactid="229"><p data-reactid="230"><strong data-reactid="231">name</strong><br data-reactid="232"/><small data-reactid="233"><em data-reactid="234"><!-- react-text: 235 -->string<!-- /react-text --></em></small></p></td><td data-reactid="236"><div data-reactid="237"><p>User&#39;s field to update</p>
+</div><div data-reactid="238"><small data-reactid="239"><code data-reactid="240">&quot;Smith&quot;</code></small></div></td><td data-reactid="241"><ul class="constraints" data-reactid="242"></ul></td></tr></tbody></table></div><h4 data-reactid="243">cURL</h4><div data-reactid="244"><pre data-reactid="245">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=update_contact&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;rowid&quot;:&quot;410849&quot;,&quot;name&quot;:&quot;Smith&quot;}&#x27;</pre></div><h4 data-reactid="246">Response</h4><div data-reactid="247"><pre data-reactid="248">{
+  &quot;rowid&quot;: &quot;410849&quot;,
+  &quot;for_rowid&quot;: &quot;367660&quot;,
+  &quot;salutation&quot;: &quot;Herr&quot;,
+  &quot;firstname&quot;: &quot;John&quot;,
+  &quot;name&quot;: &quot;Smith&quot;,
+  &quot;birthday&quot;: &quot;1980-10-09&quot;,
+  &quot;private_street&quot;: &quot;Main Street 124&quot;,
+  &quot;private_zip_code&quot;: &quot;29610&quot;,
+  &quot;private_town&quot;: &quot;London&quot;,
+  &quot;private_state&quot;: &quot;London District&quot;,
+  &quot;private_country&quot;: &quot;Great Britain&quot;,
+  &quot;phone&quot;: &quot;+44 20 9812 0574&quot;,
+  &quot;fax&quot;: &quot;+44 20 9812 0590&quot;,
+  &quot;email&quot;: &quot;jdoe@mail.com&quot;,
+  &quot;url&quot;: &quot;www.johndoe.com&quot;
+}</pre></div></section><section id="person-delete-person" class="list-group-item" data-reactid="249"><h3 data-reactid="250"><div class="label label-success" data-reactid="251">POST</div><!-- react-text: 252 --> <!-- /react-text --><div class="endpoint-title" data-reactid="253">Delete person</div></h3><div data-reactid="254"><p>To delete a person you have to pass person&#39;s rowid, which you want to delete. We do NOT really delete the person from our database, we just mark the person as &#39;deactivated&#39;.</p>
+</div><pre data-reactid="255"><!-- react-text: 256 -->POST<!-- /react-text --><!-- react-text: 257 --> <!-- /react-text --><!-- react-text: 258 -->plugin/wp_elasticio_backend/json?method=delete_person<!-- /react-text --></pre><div data-reactid="259"><h4 data-reactid="260">Optional parameters</h4><table class="table table-hover" data-reactid="261"><thead data-reactid="262"><tr data-reactid="263"><th data-reactid="264"><p data-reactid="265"><!-- react-text: 266 -->Name <!-- /react-text --><small data-reactid="267">/type</small></p></th><th data-reactid="268"><p data-reactid="269"><!-- react-text: 270 -->Description <!-- /react-text --><small data-reactid="271">/example</small></p></th><th data-reactid="272"><p data-reactid="273">Constraints</p></th></tr></thead><tbody data-reactid="274"><tr data-reactid="275"><td data-reactid="276"><p data-reactid="277"><strong data-reactid="278">rowid</strong><br data-reactid="279"/><small data-reactid="280"><em data-reactid="281"><!-- react-text: 282 -->string<!-- /react-text --></em></small></p></td><td data-reactid="283"><div data-reactid="284"><p>User&#39;s rowid</p>
+</div><div data-reactid="285"><small data-reactid="286"><code data-reactid="287">&quot;410849&quot;</code></small></div></td><td data-reactid="288"><ul class="constraints" data-reactid="289"></ul></td></tr></tbody></table></div><h4 data-reactid="290">cURL</h4><div data-reactid="291"><pre data-reactid="292">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=delete_person&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;rowid&quot;:&quot;410849&quot;}&#x27;</pre></div><h4 data-reactid="293">Response</h4><div data-reactid="294"><pre data-reactid="295">{
+  &quot;msg&quot;: &quot;Person was deleted&quot;,
+  &quot;rowid&quot;: &quot;410849&quot;,
+  &quot;firstname&quot;: &quot;John&quot;,
+  &quot;name&quot;: &quot;Doe&quot;
+}</pre></div></section></div></article><article class="panel panel-primary" data-reactid="296"><div class="panel-heading" data-reactid="297"><div id="organization" data-reactid="298"></div><h2 data-reactid="299">Organization</h2></div><div class="panel-body" data-reactid="300"><h3 data-reactid="301">Organization object in Wice CRM</h3><header id="organization-properties" data-reactid="302"><p data-reactid="303"><a class="btn btn-info" data-reactid="304"><span data-reactid="305">Show</span><!-- react-text: 306 --> <!-- /react-text --><!-- react-text: 307 -->properties and constraints defined on the object<!-- /react-text --></a></p></header></div><div class="list-group" data-reactid="308"><section id="organization-get-a-single-organization" class="list-group-item" data-reactid="309"><h3 data-reactid="310"><div class="label label-success" data-reactid="311">GET</div><!-- react-text: 312 --> <!-- /react-text --><div class="endpoint-title" data-reactid="313">Get a single organization</div></h3><div data-reactid="314"><p>Get a single organization saved by a specific user</p>
+</div><pre data-reactid="315"><!-- react-text: 316 -->GET<!-- /react-text --><!-- react-text: 317 --> <!-- /react-text --><!-- react-text: 318 -->plugin/wp_elasticio_backend/json?method=get_company<!-- /react-text --></pre><div data-reactid="319"><h4 data-reactid="320">Optional parameters</h4><table class="table table-hover" data-reactid="321"><thead data-reactid="322"><tr data-reactid="323"><th data-reactid="324"><p data-reactid="325"><!-- react-text: 326 -->Name <!-- /react-text --><small data-reactid="327">/type</small></p></th><th data-reactid="328"><p data-reactid="329"><!-- react-text: 330 -->Description <!-- /react-text --><small data-reactid="331">/example</small></p></th><th data-reactid="332"><p data-reactid="333">Constraints</p></th></tr></thead><tbody data-reactid="334"><tr data-reactid="335"><td data-reactid="336"><p data-reactid="337"><strong data-reactid="338">pkey</strong><br data-reactid="339"/><small data-reactid="340"><em data-reactid="341"><!-- react-text: 342 -->string<!-- /react-text --></em></small></p></td><td data-reactid="343"><div data-reactid="344"><p>Rowid</p>
+</div><div data-reactid="345"><small data-reactid="346"><code data-reactid="347">&quot;197775&quot;</code></small></div></td><td data-reactid="348"><ul class="constraints" data-reactid="349"></ul></td></tr></tbody></table></div><h4 data-reactid="350">cURL</h4><div data-reactid="351"><pre data-reactid="352">curl -X GET &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_company?pkey=197775&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot;</pre></div><h4 data-reactid="353">Response</h4><div data-reactid="354"><pre data-reactid="355">{
+  &quot;rowid&quot;: &quot;197775&quot;,
+  &quot;name&quot;: &quot;Your Compnay Ltd.&quot;,
+  &quot;street&quot;: &quot;Main Street&quot;,
+  &quot;street_number&quot;: &quot;124&quot;,
+  &quot;zip_code&quot;: &quot;29610&quot;,
+  &quot;town&quot;: &quot;London&quot;,
+  &quot;state&quot;: &quot;London District&quot;,
+  &quot;country&quot;: &quot;Great Britain&quot;,
+  &quot;phone&quot;: &quot;+44 20 9812 0574&quot;,
+  &quot;fax&quot;: &quot;+44 20 9812 0590&quot;,
+  &quot;email&quot;: &quot;yourcompany@mail.com&quot;,
+  &quot;url&quot;: &quot;www.yourcompany.com&quot;
+}</pre></div></section><section id="organization-get-all-organizations" class="list-group-item" data-reactid="356"><h3 data-reactid="357"><div class="label label-success" data-reactid="358">GET</div><!-- react-text: 359 --> <!-- /react-text --><div class="endpoint-title" data-reactid="360">Get all organizations</div></h3><div data-reactid="361"><p>Get all organizations</p>
+</div><pre data-reactid="362"><!-- react-text: 363 -->GET<!-- /react-text --><!-- react-text: 364 --> <!-- /react-text --><!-- react-text: 365 -->plugin/wp_elasticio_backend/json?method=get_all_companies<!-- /react-text --></pre><h4 data-reactid="366">cURL</h4><div data-reactid="367"><pre data-reactid="368">curl -X GET &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot;</pre></div><h4 data-reactid="369">Response</h4><div data-reactid="370"><pre data-reactid="371">[
+  {
+    &quot;rowid&quot;: &quot;197775&quot;,
+    &quot;name&quot;: &quot;Your Compnay Ltd.&quot;,
+    &quot;street&quot;: &quot;Main Street&quot;,
+    &quot;street_number&quot;: &quot;124&quot;,
+    &quot;zip_code&quot;: &quot;29610&quot;,
+    &quot;town&quot;: &quot;London&quot;,
+    &quot;state&quot;: &quot;London District&quot;,
+    &quot;country&quot;: &quot;Great Britain&quot;,
+    &quot;phone&quot;: &quot;+44 20 9812 0574&quot;,
+    &quot;fax&quot;: &quot;+44 20 9812 0590&quot;,
+    &quot;email&quot;: &quot;yourcompany@mail.com&quot;,
+    &quot;url&quot;: &quot;www.yourcompany.com&quot;
+  }
+]</pre></div></section><section id="organization-create-organization" class="list-group-item" data-reactid="372"><h3 data-reactid="373"><div class="label label-success" data-reactid="374">POST</div><!-- react-text: 375 --> <!-- /react-text --><div class="endpoint-title" data-reactid="376">Create organization</div></h3><div data-reactid="377"><p>To create an organization you have to pass organization&#39;s name.</p>
+</div><pre data-reactid="378"><!-- react-text: 379 -->POST<!-- /react-text --><!-- react-text: 380 --> <!-- /react-text --><!-- react-text: 381 -->plugin/wp_elasticio_backend/json?method=insert_company<!-- /react-text --></pre><div data-reactid="382"><h4 data-reactid="383">Optional parameters</h4><table class="table table-hover" data-reactid="384"><thead data-reactid="385"><tr data-reactid="386"><th data-reactid="387"><p data-reactid="388"><!-- react-text: 389 -->Name <!-- /react-text --><small data-reactid="390">/type</small></p></th><th data-reactid="391"><p data-reactid="392"><!-- react-text: 393 -->Description <!-- /react-text --><small data-reactid="394">/example</small></p></th><th data-reactid="395"><p data-reactid="396">Constraints</p></th></tr></thead><tbody data-reactid="397"><tr data-reactid="398"><td data-reactid="399"><p data-reactid="400"><strong data-reactid="401">name</strong><br data-reactid="402"/><small data-reactid="403"><em data-reactid="404"><!-- react-text: 405 -->string<!-- /react-text --></em></small></p></td><td data-reactid="406"><div data-reactid="407"><p>Organization&#39;s name</p>
+</div><div data-reactid="408"><small data-reactid="409"><code data-reactid="410">&quot;Your Compnay Ltd.&quot;</code></small></div></td><td data-reactid="411"><ul class="constraints" data-reactid="412"></ul></td></tr></tbody></table></div><h4 data-reactid="413">cURL</h4><div data-reactid="414"><pre data-reactid="415">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=insert_company&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;name&quot;:&quot;Your Compnay Ltd.&quot;}&#x27;</pre></div><h4 data-reactid="416">Response</h4><div data-reactid="417"><pre data-reactid="418">{
+  &quot;rowid&quot;: &quot;197775&quot;,
+  &quot;name&quot;: &quot;Your Compnay Ltd.&quot;
+}</pre></div></section><section id="organization-update-organization" class="list-group-item" data-reactid="419"><h3 data-reactid="420"><div class="label label-success" data-reactid="421">POST</div><!-- react-text: 422 --> <!-- /react-text --><div class="endpoint-title" data-reactid="423">Update organization</div></h3><div data-reactid="424"><p>To update an organization you need to pass organization rowid and the field which you want to update.</p>
+</div><pre data-reactid="425"><!-- react-text: 426 -->POST<!-- /react-text --><!-- react-text: 427 --> <!-- /react-text --><!-- react-text: 428 -->plugin/wp_elasticio_backend/json?method=update_company<!-- /react-text --></pre><div data-reactid="429"><h4 data-reactid="430">Optional parameters</h4><table class="table table-hover" data-reactid="431"><thead data-reactid="432"><tr data-reactid="433"><th data-reactid="434"><p data-reactid="435"><!-- react-text: 436 -->Name <!-- /react-text --><small data-reactid="437">/type</small></p></th><th data-reactid="438"><p data-reactid="439"><!-- react-text: 440 -->Description <!-- /react-text --><small data-reactid="441">/example</small></p></th><th data-reactid="442"><p data-reactid="443">Constraints</p></th></tr></thead><tbody data-reactid="444"><tr data-reactid="445"><td data-reactid="446"><p data-reactid="447"><strong data-reactid="448">rowid</strong><br data-reactid="449"/><small data-reactid="450"><em data-reactid="451"><!-- react-text: 452 -->string<!-- /react-text --></em></small></p></td><td data-reactid="453"><div data-reactid="454"><p>Organization&#39;s rowid to update</p>
+</div><div data-reactid="455"><small data-reactid="456"><code data-reactid="457">&quot;197775&quot;</code></small></div></td><td data-reactid="458"><ul class="constraints" data-reactid="459"></ul></td></tr><tr data-reactid="460"><td data-reactid="461"><p data-reactid="462"><strong data-reactid="463">name</strong><br data-reactid="464"/><small data-reactid="465"><em data-reactid="466"><!-- react-text: 467 -->string<!-- /react-text --></em></small></p></td><td data-reactid="468"><div data-reactid="469"><p>Organization&#39;s name to update</p>
+</div><div data-reactid="470"><small data-reactid="471"><code data-reactid="472">&quot;Big Company Ltd&quot;</code></small></div></td><td data-reactid="473"><ul class="constraints" data-reactid="474"></ul></td></tr></tbody></table></div><h4 data-reactid="475">cURL</h4><div data-reactid="476"><pre data-reactid="477">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=update_company&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;rowid&quot;:&quot;197775&quot;,&quot;name&quot;:&quot;Big Company Ltd&quot;}&#x27;</pre></div><h4 data-reactid="478">Response</h4><div data-reactid="479"><pre data-reactid="480">{
+  &quot;rowid&quot;: &quot;197775&quot;,
+  &quot;name&quot;: &quot;Big Company Ltd&quot;,
+  &quot;street&quot;: &quot;Main Street&quot;,
+  &quot;street_number&quot;: &quot;124&quot;,
+  &quot;zip_code&quot;: &quot;29610&quot;,
+  &quot;town&quot;: &quot;London&quot;,
+  &quot;state&quot;: &quot;London District&quot;,
+  &quot;country&quot;: &quot;Great Britain&quot;,
+  &quot;phone&quot;: &quot;+44 20 9812 0574&quot;,
+  &quot;fax&quot;: &quot;+44 20 9812 0590&quot;,
+  &quot;email&quot;: &quot;yourcompany@mail.com&quot;,
+  &quot;url&quot;: &quot;www.yourcompany.com&quot;
+}</pre></div></section><section id="organization-delete-organization" class="list-group-item" data-reactid="481"><h3 data-reactid="482"><div class="label label-success" data-reactid="483">POST</div><!-- react-text: 484 --> <!-- /react-text --><div class="endpoint-title" data-reactid="485">Delete organization</div></h3><div data-reactid="486"><p>To delete an organization you have to pass organization&#39;s rowid, which you want to delete. We do NOT really delete the organization from our database, we just move it to trash bin.</p>
+</div><pre data-reactid="487"><!-- react-text: 488 -->POST<!-- /react-text --><!-- react-text: 489 --> <!-- /react-text --><!-- react-text: 490 -->plugin/wp_elasticio_backend/json?method=delete_company<!-- /react-text --></pre><div data-reactid="491"><h4 data-reactid="492">Optional parameters</h4><table class="table table-hover" data-reactid="493"><thead data-reactid="494"><tr data-reactid="495"><th data-reactid="496"><p data-reactid="497"><!-- react-text: 498 -->Name <!-- /react-text --><small data-reactid="499">/type</small></p></th><th data-reactid="500"><p data-reactid="501"><!-- react-text: 502 -->Description <!-- /react-text --><small data-reactid="503">/example</small></p></th><th data-reactid="504"><p data-reactid="505">Constraints</p></th></tr></thead><tbody data-reactid="506"><tr data-reactid="507"><td data-reactid="508"><p data-reactid="509"><strong data-reactid="510">rowid</strong><br data-reactid="511"/><small data-reactid="512"><em data-reactid="513"><!-- react-text: 514 -->string<!-- /react-text --></em></small></p></td><td data-reactid="515"><div data-reactid="516"><p>Organization&#39;s rowid which must be deleted</p>
+</div><div data-reactid="517"><small data-reactid="518"><code data-reactid="519">&quot;197775&quot;</code></small></div></td><td data-reactid="520"><ul class="constraints" data-reactid="521"></ul></td></tr></tbody></table></div><h4 data-reactid="522">cURL</h4><div data-reactid="523"><pre data-reactid="524">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=delete_company&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;rowid&quot;:&quot;197775&quot;}&#x27;</pre></div><h4 data-reactid="525">Response</h4><div data-reactid="526"><pre data-reactid="527">{
+  &quot;rowid&quot;: &quot;197775&quot;,
+  &quot;name&quot;: &quot;Your Compnay Ltd.&quot;
+}</pre></div></section></div></article><article class="panel panel-primary" data-reactid="528"><div class="panel-heading" data-reactid="529"><div id="article" data-reactid="530"></div><h2 data-reactid="531">Article</h2></div><div class="panel-body" data-reactid="532"><h3 data-reactid="533">Article object in Wice CRM</h3><header id="article-properties" data-reactid="534"><p data-reactid="535"><a class="btn btn-info" data-reactid="536"><span data-reactid="537">Show</span><!-- react-text: 538 --> <!-- /react-text --><!-- react-text: 539 -->properties and constraints defined on the object<!-- /react-text --></a></p></header></div><div class="list-group" data-reactid="540"><section id="article-get-a-single-article" class="list-group-item" data-reactid="541"><h3 data-reactid="542"><div class="label label-success" data-reactid="543">GET</div><!-- react-text: 544 --> <!-- /react-text --><div class="endpoint-title" data-reactid="545">Get a single article</div></h3><div data-reactid="546"><p>Get a single article saved by a specific user</p>
+</div><pre data-reactid="547"><!-- react-text: 548 -->GET<!-- /react-text --><!-- react-text: 549 --> <!-- /react-text --><!-- react-text: 550 -->plugin/wp_elasticio_backend/json?method=get_article<!-- /react-text --></pre><div data-reactid="551"><h4 data-reactid="552">Optional parameters</h4><table class="table table-hover" data-reactid="553"><thead data-reactid="554"><tr data-reactid="555"><th data-reactid="556"><p data-reactid="557"><!-- react-text: 558 -->Name <!-- /react-text --><small data-reactid="559">/type</small></p></th><th data-reactid="560"><p data-reactid="561"><!-- react-text: 562 -->Description <!-- /react-text --><small data-reactid="563">/example</small></p></th><th data-reactid="564"><p data-reactid="565">Constraints</p></th></tr></thead><tbody data-reactid="566"><tr data-reactid="567"><td data-reactid="568"><p data-reactid="569"><strong data-reactid="570">show_detailview</strong><br data-reactid="571"/><small data-reactid="572"><em data-reactid="573"><!-- react-text: 574 -->string<!-- /react-text --></em></small></p></td><td data-reactid="575"><div data-reactid="576"><p>Rowid</p>
+</div><div data-reactid="577"><small data-reactid="578"><code data-reactid="579">&quot;5711&quot;</code></small></div></td><td data-reactid="580"><ul class="constraints" data-reactid="581"></ul></td></tr></tbody></table></div><h4 data-reactid="582">cURL</h4><div data-reactid="583"><pre data-reactid="584">curl -X GET &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_article?show_detailview=5711&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot;</pre></div><h4 data-reactid="585">Response</h4><div data-reactid="586"><pre data-reactid="587">{
+  &quot;rowid&quot;: &quot;5711&quot;,
+  &quot;number&quot;: &quot;777634&quot;,
+  &quot;description&quot;: &quot;Retaining bolt&quot;,
+  &quot;sales_price&quot;: &quot;75.23&quot;,
+  &quot;purchase_price&quot;: &quot;35.78&quot;,
+  &quot;weight&quot;: &quot;5.6 kg&quot;,
+  &quot;in_stock&quot;: &quot;152&quot;,
+  &quot;long_description&quot;: &quot;Retaining bolt for vertical stabilizer, A123-34-alpha&quot;
+}</pre></div></section><section id="article-get-all-articles" class="list-group-item" data-reactid="588"><h3 data-reactid="589"><div class="label label-success" data-reactid="590">GET</div><!-- react-text: 591 --> <!-- /react-text --><div class="endpoint-title" data-reactid="592">Get all articles</div></h3><div data-reactid="593"><p>Get all articles saved by a specific user</p>
+</div><pre data-reactid="594"><!-- react-text: 595 -->GET<!-- /react-text --><!-- react-text: 596 --> <!-- /react-text --><!-- react-text: 597 -->plugin/wp_elasticio_backend/json?method=get_all_articles<!-- /react-text --></pre><h4 data-reactid="598">cURL</h4><div data-reactid="599"><pre data-reactid="600">curl -X GET &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_articles&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot;</pre></div><h4 data-reactid="601">Response</h4><div data-reactid="602"><pre data-reactid="603">[
+  {
+    &quot;rowid&quot;: &quot;5711&quot;,
+    &quot;number&quot;: &quot;777634&quot;,
+    &quot;description&quot;: &quot;Retaining bolt&quot;,
+    &quot;sales_price&quot;: &quot;75.23&quot;,
+    &quot;purchase_price&quot;: &quot;35.78&quot;,
+    &quot;weight&quot;: &quot;5.6 kg&quot;,
+    &quot;in_stock&quot;: &quot;152&quot;,
+    &quot;long_description&quot;: &quot;Retaining bolt for vertical stabilizer, A123-34-alpha&quot;
+  }
+]</pre></div></section><section id="article-create-article" class="list-group-item" data-reactid="604"><h3 data-reactid="605"><div class="label label-success" data-reactid="606">POST</div><!-- react-text: 607 --> <!-- /react-text --><div class="endpoint-title" data-reactid="608">Create article</div></h3><div data-reactid="609"><p>To create an article you have to pass a name(in Wice called: description).</p>
+</div><pre data-reactid="610"><!-- react-text: 611 -->POST<!-- /react-text --><!-- react-text: 612 --> <!-- /react-text --><!-- react-text: 613 -->plugin/wp_elasticio_backend/json?method=insert_article<!-- /react-text --></pre><div data-reactid="614"><h4 data-reactid="615">Optional parameters</h4><table class="table table-hover" data-reactid="616"><thead data-reactid="617"><tr data-reactid="618"><th data-reactid="619"><p data-reactid="620"><!-- react-text: 621 -->Name <!-- /react-text --><small data-reactid="622">/type</small></p></th><th data-reactid="623"><p data-reactid="624"><!-- react-text: 625 -->Description <!-- /react-text --><small data-reactid="626">/example</small></p></th><th data-reactid="627"><p data-reactid="628">Constraints</p></th></tr></thead><tbody data-reactid="629"><tr data-reactid="630"><td data-reactid="631"><p data-reactid="632"><strong data-reactid="633">description</strong><br data-reactid="634"/><small data-reactid="635"><em data-reactid="636"><!-- react-text: 637 -->string<!-- /react-text --></em></small></p></td><td data-reactid="638"><div data-reactid="639"><p>Article</p>
+</div><div data-reactid="640"><small data-reactid="641"><code data-reactid="642">&quot;Retaining bolt&quot;</code></small></div></td><td data-reactid="643"><ul class="constraints" data-reactid="644"></ul></td></tr></tbody></table></div><h4 data-reactid="645">cURL</h4><div data-reactid="646"><pre data-reactid="647">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=insert_article&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;description&quot;:&quot;Retaining bolt&quot;}&#x27;</pre></div><h4 data-reactid="648">Response</h4><div data-reactid="649"><pre data-reactid="650">{
+  &quot;rowid&quot;: &quot;5711&quot;,
+  &quot;description&quot;: &quot;Retaining bolt&quot;
+}</pre></div></section><section id="article-update-article" class="list-group-item" data-reactid="651"><h3 data-reactid="652"><div class="label label-success" data-reactid="653">POST</div><!-- react-text: 654 --> <!-- /react-text --><div class="endpoint-title" data-reactid="655">Update article</div></h3><div data-reactid="656"><p>To update an article you need to pass article&#39;s rowid and the field which you want to update.</p>
+</div><pre data-reactid="657"><!-- react-text: 658 -->POST<!-- /react-text --><!-- react-text: 659 --> <!-- /react-text --><!-- react-text: 660 -->plugin/wp_elasticio_backend/json?method=update_article<!-- /react-text --></pre><div data-reactid="661"><h4 data-reactid="662">Optional parameters</h4><table class="table table-hover" data-reactid="663"><thead data-reactid="664"><tr data-reactid="665"><th data-reactid="666"><p data-reactid="667"><!-- react-text: 668 -->Name <!-- /react-text --><small data-reactid="669">/type</small></p></th><th data-reactid="670"><p data-reactid="671"><!-- react-text: 672 -->Description <!-- /react-text --><small data-reactid="673">/example</small></p></th><th data-reactid="674"><p data-reactid="675">Constraints</p></th></tr></thead><tbody data-reactid="676"><tr data-reactid="677"><td data-reactid="678"><p data-reactid="679"><strong data-reactid="680">rowid</strong><br data-reactid="681"/><small data-reactid="682"><em data-reactid="683"><!-- react-text: 684 -->string<!-- /react-text --></em></small></p></td><td data-reactid="685"><div data-reactid="686"><p>Articles&#39;s rowid to update</p>
+</div><div data-reactid="687"><small data-reactid="688"><code data-reactid="689">&quot;5711&quot;</code></small></div></td><td data-reactid="690"><ul class="constraints" data-reactid="691"></ul></td></tr><tr data-reactid="692"><td data-reactid="693"><p data-reactid="694"><strong data-reactid="695">description</strong><br data-reactid="696"/><small data-reactid="697"><em data-reactid="698"><!-- react-text: 699 -->string<!-- /react-text --></em></small></p></td><td data-reactid="700"><div data-reactid="701"><p>Articles&#39;s field to update</p>
+</div><div data-reactid="702"><small data-reactid="703"><code data-reactid="704">&quot;Bolt&quot;</code></small></div></td><td data-reactid="705"><ul class="constraints" data-reactid="706"></ul></td></tr></tbody></table></div><h4 data-reactid="707">cURL</h4><div data-reactid="708"><pre data-reactid="709">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=update_article&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;rowid&quot;:&quot;5711&quot;,&quot;description&quot;:&quot;Bolt&quot;}&#x27;</pre></div><h4 data-reactid="710">Response</h4><div data-reactid="711"><pre data-reactid="712">{
+  &quot;rowid&quot;: &quot;5711&quot;,
+  &quot;number&quot;: &quot;777634&quot;,
+  &quot;description&quot;: &quot;Bolt&quot;,
+  &quot;sales_price&quot;: &quot;75.23&quot;,
+  &quot;purchase_price&quot;: &quot;35.78&quot;,
+  &quot;weight&quot;: &quot;5.6 kg&quot;,
+  &quot;in_stock&quot;: &quot;152&quot;,
+  &quot;long_description&quot;: &quot;Retaining bolt for vertical stabilizer, A123-34-alpha&quot;
+}</pre></div></section><section id="article-delete-article" class="list-group-item" data-reactid="713"><h3 data-reactid="714"><div class="label label-success" data-reactid="715">POST</div><!-- react-text: 716 --> <!-- /react-text --><div class="endpoint-title" data-reactid="717">Delete article</div></h3><div data-reactid="718"><p>To delete an article you have to pass article&#39;s rowid, which you want to delete.</p>
+</div><pre data-reactid="719"><!-- react-text: 720 -->POST<!-- /react-text --><!-- react-text: 721 --> <!-- /react-text --><!-- react-text: 722 -->plugin/wp_elasticio_backend/json?method=delete_article<!-- /react-text --></pre><div data-reactid="723"><h4 data-reactid="724">Optional parameters</h4><table class="table table-hover" data-reactid="725"><thead data-reactid="726"><tr data-reactid="727"><th data-reactid="728"><p data-reactid="729"><!-- react-text: 730 -->Name <!-- /react-text --><small data-reactid="731">/type</small></p></th><th data-reactid="732"><p data-reactid="733"><!-- react-text: 734 -->Description <!-- /react-text --><small data-reactid="735">/example</small></p></th><th data-reactid="736"><p data-reactid="737">Constraints</p></th></tr></thead><tbody data-reactid="738"><tr data-reactid="739"><td data-reactid="740"><p data-reactid="741"><strong data-reactid="742">rowid</strong><br data-reactid="743"/><small data-reactid="744"><em data-reactid="745"><!-- react-text: 746 -->string<!-- /react-text --></em></small></p></td><td data-reactid="747"><div data-reactid="748"><p>Article&#39;s rowid</p>
+</div><div data-reactid="749"><small data-reactid="750"><code data-reactid="751">&quot;5711&quot;</code></small></div></td><td data-reactid="752"><ul class="constraints" data-reactid="753"></ul></td></tr></tbody></table></div><h4 data-reactid="754">cURL</h4><div data-reactid="755"><pre data-reactid="756">curl -X POST &quot;https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=delete_article&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     -H &quot;X-API-KEY: [YOUR_API_KEY]&quot; \
+     -H &quot;cookie: [YOUR_COOKIE]&quot; \
+     --data &#x27;{&quot;rowid&quot;:&quot;5711&quot;}&#x27;</pre></div><h4 data-reactid="757">Response</h4><div data-reactid="758"><pre data-reactid="759">{
+  &quot;msg&quot;: &quot;Article is now deleted&quot;,
+  &quot;rowid&quot;: &quot;5711&quot;,
+  &quot;description&quot;: &quot;Retaining bolt&quot;
+}</pre></div></section></div></article></div></div></div></div></div></div><script src="app-67a56927b43db9b4e5e5.js" type="text/javascript"></script></body></html>

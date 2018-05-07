@@ -1,0 +1,175 @@
+{
+  "title": "Wice",
+  "description": "Wice component for the elastic.io platform",
+  "docsUrl": "https://wice.de/",
+  "credentials": {
+    "fields": {
+      "apikey": {
+        "label": "API key for data sharing",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please use <b>WICE</b> API key."
+      },
+      "mandant": {
+        "label": "Mandant",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please use <b>Wice</b> mandant."
+      },
+      "username": {
+        "label": "Your username",
+        "required": true,
+        "viewClass": "TextFieldView",
+        "note": "Use your username registerd in Wice"
+      },
+      "password": {
+        "label": "Your password",
+        "required": true,
+        "viewClass": "TextFieldView",
+        "note": "Use your password for Wice"
+      }
+    }
+  },
+  "triggers": {
+    "getPersonsPolling": {
+      "main": "./lib/triggers/getPersonsPolling.js",
+      "type": "polling",
+      "description": "Get all persons saved by the user",
+      "title": "Get persons",
+      "metadata": {
+        "out": "./lib/schemas/getPersons.out.json"
+      }
+    },
+    "getOrganizationsPolling": {
+      "main": "./lib/triggers/getOrganizationsPolling.js",
+      "type": "polling",
+      "description": "Get all organizations saved by the user",
+      "title": "Get organizations",
+      "metadata": {
+        "out": "./lib/schemas/getOrganizations.out.json"
+      }
+    },
+    "getArticlesPolling": {
+      "main": "./lib/triggers/getArticlesPolling.js",
+      "type": "polling",
+      "description": "Get all articles saved by the user",
+      "title": "Get articles",
+      "metadata": {
+        "out": "./lib/schemas/getArticles.out.json"
+      }
+    }
+  },
+  "actions": {
+    "getPersonPolling": {
+      "main": "./lib/actions/getPersonPolling.js",
+      "type": "polling",
+      "description": "Get a single user",
+      "title": "Get person",
+      "metadata": {
+        "in": "./lib/schemas/getPerson.in.json",
+        "out": "./lib/schemas/getPerson.out.json"
+      }
+    },
+    "getOrganizationPolling": {
+      "main": "./lib/actions/getOrganizationPolling.js",
+      "type": "polling",
+      "description": "Get a single organization",
+      "title": "Get organization",
+      "metadata": {
+        "in": "./lib/schemas/getOrganization.in.json",
+        "out": "./lib/schemas/getOrganization.out.json"
+      }
+    },
+    "getArticlePolling": {
+      "main": "./lib/actions/getArticlePolling.js",
+      "type": "polling",
+      "description": "Get a single article",
+      "title": "Get article",
+      "metadata": {
+        "in": "./lib/schemas/getArticle.in.json",
+        "out": "./lib/schemas/getArticle.out.json"
+      }
+    },
+    "createPerson": {
+      "main": "./lib/actions/createPerson.js",
+      "title": "Create person",
+      "description": "Create a new person",
+      "metadata": {
+        "in": "./lib/schemas/createPerson.in.json",
+        "out": "./lib/schemas/createPerson.out.json"
+      }
+    },
+    "createOrganization": {
+      "main": "./lib/actions/createOrganization.js",
+      "title": "Create organization",
+      "description": "Create an organization",
+      "metadata": {
+        "in": "./lib/schemas/createOrganization.in.json",
+        "out": "./lib/schemas/createOrganization.out.json"
+      }
+    },
+    "createArticle": {
+      "main": "./lib/actions/createArticle.js",
+      "title": "Create article",
+      "description": "Create an article",
+      "metadata": {
+        "in": "./lib/schemas/createArticle.in.json",
+        "out": "./lib/schemas/createArticle.out.json"
+      }
+    },
+    "updatePerson": {
+      "main": "./lib/actions/updatePerson.js",
+      "title": "Update person",
+      "description": "Update a person",
+      "metadata": {
+        "in": "./lib/schemas/updatePerson.in.json",
+        "out": "./lib/schemas/updatePerson.out.json"
+      }
+    },
+    "updateOrganization": {
+      "main": "./lib/actions/updateOrganization.js",
+      "title": "Update organization",
+      "description": "Update an organization",
+      "metadata": {
+        "in": "./lib/schemas/updateOrganization.in.json",
+        "out": "./lib/schemas/updateOrganization.out.json"
+      }
+    },
+    "updateArticle": {
+      "main": "./lib/actions/updateArticle.js",
+      "title": "Update article",
+      "description": "Update an article",
+      "metadata": {
+        "in": "./lib/schemas/updateArticle.in.json",
+        "out": "./lib/schemas/updateArticle.out.json"
+      }
+    },
+    "deletePerson": {
+      "main": "./lib/actions/deletePerson.js",
+      "title": "Delete person",
+      "description": "Delete a person",
+      "metadata": {
+        "in": "./lib/schemas/deletePerson.in.json",
+        "out": "./lib/schemas/deletePerson.out.json"
+      }
+    },
+    "deleteOrganization": {
+      "main": "./lib/actions/deleteOrganization.js",
+      "title": "Delete organization",
+      "description": "Delete an organization",
+      "metadata": {
+        "in": "./lib/schemas/deleteOrganization.in.json",
+        "out": "./lib/schemas/deleteOrganization.out.json"
+      }
+    },
+    "deleteArticle": {
+      "main": "./lib/actions/deleteArticle.js",
+      "title": "Delete article",
+      "description": "Delete an article",
+      "metadata": {
+        "in": "./lib/schemas/deleteArticle.in.json",
+        "out": "./lib/schemas/deleteArticle.out.json"
+      }
+    }
+  }
+}

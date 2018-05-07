@@ -1,0 +1,296 @@
+{
+  "id": "/article",
+  "title": "Article",
+  "description": "Article object in Wice CRM",
+  "type": "object",
+
+  "definitions": {
+    "rowid": {
+      "type": "number",
+      "description": "Rowid",
+      "example": "5711"
+    },
+    "number": {
+      "type": "number",
+      "description": "your article number",
+      "example": "777634"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the article",
+      "example": "Retaining bolt"
+    },
+    "sales_price": {
+      "type": "number",
+      "description": "Sales price",
+      "example": "75.23"
+    },
+    "purchase_price": {
+      "type": "number",
+      "description": "Purchaise price",
+      "example": "35.78"
+    },
+    "weight": {
+      "type": "string",
+      "description": "Weight",
+      "example": "5.6 kg"
+    },
+    "in_stock": {
+      "type": "number",
+      "description": "In stock",
+      "example": "152"
+    },
+    "unit": {
+      "type": "string",
+      "description": "Unit",
+      "example": "2"
+    },
+    "long_description": {
+      "type": "string",
+      "description": "Long Description",
+      "example": "Retaining bolt for vertical stabilizer, A123-34-alpha"
+    },
+    "msg_del": {
+      "type": "string",
+      "description": "Delete message",
+      "example": "Article is now deleted"
+    },
+    "updated_description": {
+      "type": "string",
+      "description": "Updated description",
+      "example": "Bolt"
+    }
+  },
+  "required": [
+    "description"
+  ],
+  "properties": {
+    "rowid": {
+      "$ref": "#/definitions/rowid"
+    },
+    "number": {
+      "$ref": "#/definitions/number"
+    },
+    "description": {
+      "$ref": "#/definitions/description"
+    },
+    "sales_price": {
+      "$ref": "#/definitions/sales_price"
+    },
+    "purchase_price": {
+      "$ref": "#/definitions/purchase_price"
+    },
+    "weight": {
+      "$ref": "#/definitions/weight"
+    },
+    "in_stock": {
+      "$ref": "#/definitions/in_stock"
+    },
+    "long_description": {
+      "$ref": "#/definitions/long_description"
+    }
+  },
+  "links": [{
+      "title": "Get a single article",
+      "description": "Get a single article saved by a specific user",
+      "rel": "instances",
+      "href": "plugin/wp_elasticio_backend/json?method=get_article",
+      "method": "GET",
+      "authentication_needed": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "show_detailview": {
+            "type": "string",
+            "description": "Rowid",
+            "example": "5711"
+          }
+        }
+      },
+      "targetSchema": {
+        "type": "object",
+        "properties": {
+          "rowid": {
+            "$ref": "#/definitions/rowid"
+          },
+          "number": {
+            "$ref": "#/definitions/number"
+          },
+          "description": {
+            "$ref": "#/definitions/description"
+          },
+          "sales_price": {
+            "$ref": "#/definitions/sales_price"
+          },
+          "purchase_price": {
+            "$ref": "#/definitions/purchase_price"
+          },
+          "weight": {
+            "$ref": "#/definitions/weight"
+          },
+          "in_stock": {
+            "$ref": "#/definitions/in_stock"
+          },
+          "long_description": {
+            "$ref": "#/definitions/long_description"
+          }
+        }
+      }
+    },
+    {
+      "title": "Get all articles",
+      "description": "Get all articles saved by a specific user",
+      "rel": "instances",
+      "href": "plugin/wp_elasticio_backend/json?method=get_all_articles",
+      "method": "GET",
+      "authentication_needed": true,
+      "targetSchema": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "rowid": {
+              "$ref": "#/definitions/rowid"
+            },
+            "number": {
+              "$ref": "#/definitions/number"
+            },
+            "description": {
+              "$ref": "#/definitions/description"
+            },
+            "sales_price": {
+              "$ref": "#/definitions/sales_price"
+            },
+            "purchase_price": {
+              "$ref": "#/definitions/purchase_price"
+            },
+            "weight": {
+              "$ref": "#/definitions/weight"
+            },
+            "in_stock": {
+              "$ref": "#/definitions/in_stock"
+            },
+            "long_description": {
+              "$ref": "#/definitions/long_description"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Create article",
+      "description": "To create an article you have to pass a name(in Wice called: description).",
+      "rel": "instances",
+      "href": "plugin/wp_elasticio_backend/json?method=insert_article",
+      "method": "POST",
+      "authentication_needed": true,
+      "required": ["description"],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Article",
+            "example":  "Retaining bolt"
+          }
+        }
+      },
+      "targetSchema": {
+        "type": "object",
+        "properties": {
+          "rowid": {
+            "$ref": "#/definitions/rowid"
+          },
+          "description": {
+            "$ref": "#/definitions/description"
+          }
+        }
+      }
+    },
+    {
+      "title": "Update article",
+      "description": "To update an article you need to pass article's rowid and the field which you want to update.",
+      "rel": "instances",
+      "href": "plugin/wp_elasticio_backend/json?method=update_article",
+      "method": "POST",
+      "authentication_needed": true,
+      "required": ["rowid"],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "rowid": {
+            "type": "string",
+            "description": "Articles's rowid to update",
+            "example": "5711"
+          },
+          "description": {
+            "type": "string",
+            "description": "Articles's field to update",
+            "example": "Bolt"
+          }
+        }
+      },
+      "targetSchema": {
+        "type": "object",
+        "properties": {
+          "rowid": {
+            "$ref": "#/definitions/rowid"
+          },
+          "number": {
+            "$ref": "#/definitions/number"
+          },
+          "description": {
+            "$ref": "#/definitions/updated_description"
+          },
+          "sales_price": {
+            "$ref": "#/definitions/sales_price"
+          },
+          "purchase_price": {
+            "$ref": "#/definitions/purchase_price"
+          },
+          "weight": {
+            "$ref": "#/definitions/weight"
+          },
+          "in_stock": {
+            "$ref": "#/definitions/in_stock"
+          },
+          "long_description": {
+            "$ref": "#/definitions/long_description"
+          }
+        }
+      }
+    },
+    {
+      "title": "Delete article",
+      "description": "To delete an article you have to pass article's rowid, which you want to delete.",
+      "rel": "instances",
+      "href": "plugin/wp_elasticio_backend/json?method=delete_article",
+      "method": "POST",
+      "authentication_needed": true,
+      "required": ["rowid"],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "rowid": {
+            "type": "string",
+            "description": "Article's rowid",
+            "example": "5711"
+          }
+        }
+      },
+      "targetSchema": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "$ref": "#/definitions/msg_del"
+          },
+          "rowid": {
+            "$ref": "#/definitions/rowid"
+          },
+          "description": {
+            "$ref": "#/definitions/description"
+          }
+        }
+      }
+    }
+  ]
+}

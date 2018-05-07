@@ -1,0 +1,112 @@
+{
+  "title": "Snazzy Contacts",
+  "description": "Snazzy Contacts component for the elastic.io platform",
+  "docsUrl": "https://snazzycontacts.com",
+  "credentials": {
+    "fields": {
+      "apikey": {
+        "label": "API key for data sharing",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please use <b>Snazzy Contacts</b> API key."
+      },
+      "email": {
+        "label": "Your email",
+        "required": true,
+        "viewClass": "TextFieldView",
+        "note": "Use your email registerd in Snazzy Contacts"
+      },
+      "password": {
+        "label": "Your password",
+        "required": true,
+        "viewClass": "TextFieldView",
+        "note": "Use your password for Snazzy Contacts"
+      }
+    }
+  },
+  "triggers": {
+    "getPersonsPolling": {
+      "main": "./lib/triggers/getPersonsPolling.js",
+      "type": "polling",
+      "description": "Fetch all persons from snazzycontacts saved by the user",
+      "title": "Get Persons",
+      "metadata": {
+        "out": "./lib/schemas/getPersons.out.json"
+      }
+    },
+    "getOrganizationsPolling": {
+      "main": "./lib/triggers/getOrganizationsPolling.js",
+      "type": "polling",
+      "description": "Fetch all organizations from snazzycontacts saved by the user",
+      "title": "Get Organizations",
+      "metadata": {
+        "out": "./lib/schemas/getOrganizations.out.json"
+      }
+    }
+  },
+  "actions": {
+    "createPerson": {
+      "main": "./lib/actions/createPerson.js",
+      "title": "Create Person",
+      "description": "Create a new person in snazzycontacts",
+      "metadata": {
+        "in": "./lib/schemas/createPerson.in.json",
+        "out": "./lib/schemas/createPerson.out.json"
+      }
+    },
+    "createOrganization": {
+      "main": "./lib/actions/createOrganization.js",
+      "title": "Create Organization",
+      "description": "Create an organization in snazzycontacts",
+      "metadata": {
+        "in": "./lib/schemas/createOrganization.in.json",
+        "out": "./lib/schemas/createOrganization.out.json"
+      }
+    },
+    "updatePerson": {
+      "main": "./lib/actions/updatePerson.js",
+      "title": "Update Person",
+      "description": "Update a person in snazzycontacts",
+      "metadata": {
+        "in": "./lib/schemas/updatePerson.in.json",
+        "out": "./lib/schemas/updatePerson.out.json"
+      }
+    },
+    "updateOrganization": {
+      "main": "./lib/actions/updateOrganization.js",
+      "title": "Update Organization",
+      "description": "Update an organization in snazzycontacts",
+      "metadata": {
+        "in": "./lib/schemas/updateOrganization.in.json",
+        "out": "./lib/schemas/updateOrganization.out.json"
+      }
+    },
+    "updatePersonsOrganization": {
+      "main": "./lib/actions/updatePersonsOrganization.js",
+      "title": "Update Person`s Organization",
+      "description": "Add a person to more than one organization",
+      "metadata": {
+        "in": "./lib/schemas/updatePersonsOrganization.in.json",
+        "out": "./lib/schemas/updatePersonsOrganization.out.json"
+      }
+    },
+    "deletePerson": {
+      "main": "./lib/actions/deletePerson.js",
+      "title": "Delete Person",
+      "description": "Delete a person in snazzycontacts",
+      "metadata": {
+        "in": "./lib/schemas/deletePerson.in.json",
+        "out": "./lib/schemas/deletePerson.out.json"
+      }
+    },
+    "deleteOrganization": {
+      "main": "./lib/actions/deleteOrganization.js",
+      "title": "Delete Organization",
+      "description": "Delete an organization in snazzycontacts",
+      "metadata": {
+        "in": "./lib/schemas/deleteOrganization.in.json",
+        "out": "./lib/schemas/deleteOrganization.out.json"
+      }
+    }
+  }
+}

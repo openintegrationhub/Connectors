@@ -1,0 +1,25 @@
+{
+    "name": "snazzycontacts",
+    "version": "0.1.0",
+    "description": "elastic.io Snazzy Contacts component",
+    "scripts": {
+        "test": "exit 0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:openintegrationhub/Data-and-Domain-Models.git"
+    },
+    "author": "Wice GmbH",
+    "license": "BSD-2-Clause",
+    "engines": {
+        "node": "6.4.0"
+    },
+    "dependencies": {
+        "co": "4.6.0",
+        "elasticio-node": "0.0.8",
+        "elasticio-sailor-nodejs": "2.1.0",
+        "q": "^1.5.0",
+        "request": "^2.76.0",
+        "request-promise": "4.1.1"
+    }
+}

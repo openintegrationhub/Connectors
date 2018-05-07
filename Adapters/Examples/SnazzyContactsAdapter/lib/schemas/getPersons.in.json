@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "properties": {
+        "address_contactperson_search": {
+            "type": "string",
+            "required": false,
+            "title": "Optional search string (for search in name, ID or phone number)"
+        }
+    }
+}

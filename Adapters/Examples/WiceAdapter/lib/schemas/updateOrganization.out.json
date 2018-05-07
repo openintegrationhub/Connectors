@@ -1,0 +1,55 @@
+{
+    "type": "object",
+    "properties": {
+        "rowid": {
+            "type": "string",
+            "required": true,
+            "title": "ID"
+        },
+        "name": {
+            "type": "string",
+            "required": true,
+            "title": "Name"
+        },
+        "town": {
+            "type": "string",
+            "required": false,
+            "title": "Town"
+        },
+        "street": {
+            "type": "string",
+            "required": false,
+            "title": "Street"
+        },
+        "street_number": {
+            "type": "string",
+            "required": false,
+            "title": "Street number"
+        },
+        "zip_code": {
+            "type": "string",
+            "required": false,
+            "title": "Postal code"
+        },
+        "country": {
+            "type": "string",
+            "required": false,
+            "title": "Country"
+        },
+        "state": {
+            "type": "string",
+            "required": false,
+            "title": "State"
+        },
+        "url": {
+            "type": "string",
+            "required": false,
+            "title": "Website URL"
+        },
+        "phone": {
+            "type": "string",
+            "required": false,
+            "title": "Phone"
+        }
+    }
+}

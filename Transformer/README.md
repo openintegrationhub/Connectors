@@ -25,7 +25,7 @@ _Note: As the Open Integration Hub is feasible of storing different data models,
 ## Transformation Language
 One way of transforming the JSON objects is the usage of a transformation language. As already mentioned our suggested transformation language is JSONata as it is especially built to transform one JSON object into another.
 
-For detailed information on transformation language and JSONata as well as a general example please have a look at [TransformationLanguage](/TransformationLanguage.md)
+For detailed information on transformation language and JSONata as well as a general example please have a look at [TransformationLanguage](https://github.com/openintegrationhub/Connectors/blob/master/Transformer/TransformationLanguage.md)
 
 ## Transformer Evolution
 Sometimes there is a need to change the existing data model to adjust to different requirements. In this case, a transformer needs to be adjusted/updated in order to be compatible with the newest version of the data model.

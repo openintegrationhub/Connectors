@@ -85,13 +85,13 @@ When looking for further information or support, please contact: philipp.hoegner
 - The governance model defines the workgroup members' roles into managers, committers or contributors
 
 ### Member
-| Workgroup  | Member Name |GitHub Alias|Email| Role |
+| Workgroup  | Member Name |GitHub Alias|Company| Role |
 | --- | --- | --- | --- | --- |
-| Connectors  | Philipp|[philecs](https://github.com/philecs)|philipp.hoegner@cloudecosystem.org| **Manager**  |
-|  | Robin Brinkmann |[RobinBrinkmann](https://github.com/RobinBrinkmann)|robin.brinkman@cloudecosystem.org | Committer   |
-|  | Jacob Horbulyk |[jhorbulyk](https://github.com/jhorbulyk)|jacob.horbulyk@elastic.io| Committer   |
-|  | Renat Zubairov|[zubairov](https://github.com/zubairov)|renat.zubairov@elastic.io| Contributor   |
-|  | Dennis Steiniger|[dennisCES](https://github.com/dennisCES)|dennis.steiniger@cloudecosystem.org| Contributor   |
+| Connectors  | Philipp|[philecs](https://github.com/philecs)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| **Manager**  |
+|  | Robin Brinkmann |[RobinBrinkmann](https://github.com/RobinBrinkmann)|[Cloud Ecosystem](http://www.cloudecosystem.org/) | Committer   |
+|  | Jacob Horbulyk |[jhorbulyk](https://github.com/jhorbulyk)|[Elastic.io](https://www.elastic.io/)| Committer   |
+|  | Renat Zubairov|[zubairov](https://github.com/zubairov)|[Elastic.io](https://www.elastic.io/)| Contributor   |
+|  | Dennis Steiniger|[dennisCES](https://github.com/dennisCES)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| Contributor   |
 
 ## Wording
 Within the project different terms and abbreviations are frequently used. All terms and abbrevations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).

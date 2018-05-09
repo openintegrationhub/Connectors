@@ -2,83 +2,87 @@
   <img src="https://github.com/openintegrationhub/Connectors/blob/master/Assets/medium-oih-einzeilig-zentriert.jpg" alt="Sublime's custom image" width="400"/>
 </p>
 
-The revolution in data synchronization — the Open Integration Hub enables simple data synchronization between any software applications and thus accelerates digitalisation 
+The revolution in data synchronization — the Open Integration Hub enables simple data synchronization between any software applications and thus accelerates digitalisation
+
+Visit the official [Open Integration Hub homepage](https://www.openintegrationhub.de/)
 
 # Connector
 
 ## Table of Content
 
-- [Introduction](#Introduction)
-  - [Adapter](#adapter)
-  - [Transformer](#transformer)
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Content](#content)
-  - [Folders](#folders)
-  - [Documents](#documents)
-
-- [Workgroup](#workgroup)
-  - [Information](#information)
-  - [Member](#member)
-  
-- [Wording](#wording)
+- [Table of Content](#table-of-content)
+- [Introduction](#introduction)
+	- [Adapter](#adapter)
+	- [Transformer](#transformer)
 - [Contribution](#contribution)
-- [Contact](#contact)
+	- [Contribution Guidelines](#contribution-guidelines)
+	- [Code of Conduct](#code-of-conduct)
+- [Support](#support)
+- [Content](#content)
+	- [Folders](#folders)
+	- [Documents](#documents)
+- [Workgroup](#workgroup)
+	- [Information](#information)
+	- [Member](#member)
+- [Wording](#wording)
+
+<!-- /TOC -->
 
 ## Introduction
-A connector connects a software solution to the Open Integration Hub. It consists of two distinct parts, namely adapter and transformer. The purpose of a connector is to enable an application to interact with the Open Integration Hub. It contains different functionalities e.g. to fetch and transform data. These functionalities are further explained in the sections [adapter](#adapter) and [transformer](#transformer).
+The Open Integration Hub enables data synchronization across a variety of applications. To create a connection and enable interaction a link is needed between the software application and the Open Integration Hub - namely an Open Integration Hub connector.
+A connector connects a software solution to the Open Integration Hub. It consists of two distinct parts, namely adapter and transformer.  It contains different functionalities e.g. to fetch and transform data. These functionalities are further explained in the sections [adapter](#adapter) and [transformer](#transformer). In order to achieve our goal to establish a successful open source community we need to steadily increase the number of connectors. So join us and help us grow as an open source community!
 
 The following illustration provides a holistic overview of a connector:
 ![Connector](Assets/ConnectorsV2.svg)
 
-#### Adapter
+### Adapter
 An adapter is a module for the syntactic connection of an external application and its data to the Open Integration Hub. This includes protocol translation, data format transformation, etc.
 Furthermore it provides functionalities to perform e.g. CRUD operations within the source system.
 
 For further information please read through the information within the [adapter folder](/Adapters).
 
-#### Transformer
+### Transformer
 A transformer is responsible to semantically transform an incoming JSON object into another JSON object. Thus the mapping between two data models is done within the transformer.
 
 For further information please read through the information within the [transformer folder](/Transformer).
 
+## Contribution
+### Contribution Guidelines
+Before you contribute please read our [contribution guidelines](CONTRIBUTING.md).
+
+### Code of Conduct
+To see how members of the community are expected to behave, please read the [code of conduct](CODE_OF_CONDUCT.md). We apply the code of conduct defined by the Contributor Covenant, which is used across many open source projects, such as [NodeJS](https://github.com/nodejs/node), [Atom](https://github.com/atom/atom) and [Kubernetes](https://github.com/kubernetes/kubernetes).
+
+## Contact
+When looking for further information or support, please contact: philipp.hoegner@cloudecosystem.org.
+
 ## Content
-
-#### Folders
-
-- `Adapters`: Describes the adapters, their goals, standardized behavior and checklists for completing one adapter
+### Folders
+- `Adapters`: Describes the adapters, their goals, standardized behavior and checklists for building an adapter
 - `ApplicationDocuments`: Contains all application documents needed to apply for the funding of the creation of a connector
-- `Protocols`: Collection of all taken protocols
-- `Transformer`: Includes the transformer concept, language, evolution and suggestions for their possible implementation
+- `Protocols`: Collection of all taken protocols by the workgroup
+- `Transformer`: Includes the transformer concept, a basic introduction into the JSONata transformation language,  transformer evolution and suggestions for possible implementations
 
-#### Documents
-
-- `CONTRIBUTING`: Contains the contribution guideline
-
-
+### Documents
+- `CONTRIBUTING`: Contains the contribution guideline for the Open Integration Hub project
+- `CODE_OF_CONDUCT`: Contains an explanation of the expected behavior of the community members, following  the code of conduct defined by the Contributor Covenant
 
 ## Workgroup
-#### Information
+### Information
 - Each workgroup has atleast one status call every two weeks
 - Every committer must attend the status call
 - The governance model defines the workgroup members' roles into managers, committers or contributors
 
-
-#### Member
-| Workgroup  | Member Name | Role |
-| ------------- | ------------- | ------------- |
-| Connectors  | Philipp (@philecs)  | **Manager**  |
-|  | Robin (@RobinBrinkmann)  | Committer   |
-|  | Jacob (@jhorbulyk) | Committer   |
-|  | Renat (@zubairov) | Contributor   |
+### Member
+| Workgroup  | Member Name |GitHub Alias|Email| Role |
+| --- | --- | --- | --- | --- |
+| Connectors  | Philipp|[philecs](https://github.com/philecs)|philipp.hoegner@cloudecosystem.org| **Manager**  |
+|  | Robin Brinkmann |[RobinBrinkmann](https://github.com/RobinBrinkmann)|robin.brinkman@cloudecosystem.org | Committer   |
+|  | Jacob Horbulyk |[jhorbulyk](https://github.com/jhorbulyk)|jacob.horbulyk@elastic.io| Committer   |
+|  | Renat Zubairov|[zubairov](https://github.com/zubairov)|renat.zubairov@elastic.io| Contributor   |
+|  | Dennis Steiniger|[dennisCES](https://github.com/dennisCES)|dennis.steiniger@cloudecosystem.org| Contributor   |
 
 ## Wording
 Within the project different terms and abbreviations are frequently used. All terms and abbrevations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).
-
-## Contribution
-Before you contribute please read through the [contribution guidelines](/CONTRIBUTING.md).
-
-
-## Contact
-For more information please visit our [official homepage](http://www.openintegrationhub.de/connect.html).
-
-Please contact philipp.hoegner@cloudecosystem.org for additional information on connectors.

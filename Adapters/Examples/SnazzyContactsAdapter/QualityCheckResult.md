@@ -1,10 +1,6 @@
 # Quality Checks Results Template
 
-The purpose of this document is to unify the result format of the adapter quality checks. It provides a template to list all required properties which are currently missing, in order to build an adapter of high quality.
-The following sections help to structure the results and divide the required properties in logical coherent topics.
-
-In the first section the general template is provided. In the second section, an exemplary quality check on basis of the template is presented.
-
+This file presents the output from the quality check result of the SnazzyContacts Adapter.
 
 # Table of Contents
 

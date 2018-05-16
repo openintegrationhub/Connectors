@@ -48,24 +48,7 @@ Flow explanation:
 
 ## Findings
 
-
-The following behavior and results were observed during the process of developing and testing the [elasticio-snazzycontacts-component](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels/SnazzyContactsAdapter).
-
-
-1. According to [elastic.io](http://www.elastic.io "elastic.io platform") platform each flow should be executed in every **3 minutes**. In our case the flow is executing every **20 minutes**, which means that only one person is saved in **20 minutes**. This flow timing issue decreases the performance level.  
-2. Sometimes when the trigger ``getPerosns`` in [SilverERP component](http://www.silvererp.com/) is called the response from  [SilverERP API](http://www.silvererp.com/) contains values which do not match to the name (``name:value`` pairs). Therefore after calling [elastic.io Splitter  component](https://github.com/elasticio/splitter-component) and [elasticio-snazzycontacts-component](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels/SnazzyContactsAdapter) in the next step the person is saved in [Snazzy Contacts](https://snazzycontacts.com) with wrong data.
-```
-[{
-      "firstname": "ETF Elektronik GmbH"
-      "name": "Herr Schulz"
-      "rowid": "7855522711217"
-    },
-    {
-      "firstname": "DBS Electronics"
-      "name": ""
-      "rowid": "7855765147091"
-}]
-```
+In the most cases the process of calling functions in the component is synchronous. For instance, if we want to create a person in [Snazzy Contacts](https://snazzycontacts.com), we should invoke the action ``createPerson``, which first creates a session in [Snazzy Contacts](https://snazzycontacts.com). When the session is created, [Snazzy Contacts](https://snazzycontacts.com) returns a cookie which we have to use when we send request to [Snazzy Contacts](https://snazzycontacts.com) API endpoints. The next function in the action ``createPerson`` is ``checkForExistingUser()`` which checks if the person already exists. If yes, we update the person otherwise we create a new person. For these purposes we have used callback functions and the  promise library ([Q](https://www.npmjs.com/package/q)) to achieve the synchronous behavior. As you can see at the end of action ``createPerson``, we first call [Q](https://www.npmjs.com/package/q) and then the functions which must be executed one after other.
 
 ## Conclusion
 

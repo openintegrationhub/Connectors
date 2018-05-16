@@ -7,7 +7,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:openintegrationhub/Data-and-Domain-Models.git"
+        "url": "git@github.com:openintegrationhub/Connectors.git"
     },
     "author": "Wice GmbH",
     "license": "BSD-2-Clause",
@@ -16,10 +16,10 @@
     },
     "dependencies": {
         "co": "4.6.0",
-        "elasticio-node": "0.0.8",
-        "elasticio-sailor-nodejs": "2.1.0",
+        "elasticio-node": "0.0.9",
+        "elasticio-sailor-nodejs": "2.2.1",
         "q": "^1.5.0",
-        "request": "^2.76.0",
+        "request": "^2.85.0",
         "request-promise": "4.1.1"
     }
 }

@@ -18,8 +18,7 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-
-const snazzy = require('./snazzy.js');
+const snazzy = require('./snazzy');
 
 exports.process = processAction;
 
@@ -29,14 +28,13 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
 
-  let reply = {};
-  const self = this;
 
   snazzy.createSession(cfg, () => {
     if (cfg.mp_cookie) {
+      const self = this;
+      let reply = {};
 
       function updatePersonsOrganization() {
 
@@ -64,7 +62,6 @@ function processAction(msg, cfg) {
           "person": reply
         });
         self.emit('data', data);
-        // console.log(JSON.stringify(data, undefined, 2));
       }
 
       function emitError(e) {

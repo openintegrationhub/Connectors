@@ -28,17 +28,14 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
-
-  let reply = {};
-  const self = this;
 
   snazzy.createSession(cfg, () => {
     if (cfg.mp_cookie) {
+      const self = this;
+      let reply = {};
 
       function updatePerson() {
-
         return new Promise((resolve, reject) => {
           const requestOptions = {
             uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_update?mp_cookie=${cfg.mp_cookie}`,
@@ -51,6 +48,7 @@ function processAction(msg, cfg) {
           request.post(requestOptions)
             .then((res) => {
               reply = res;
+              console.log('Person has been updated...');
               resolve(reply);
             }).catch((e) => {
               reject(e);
@@ -63,7 +61,6 @@ function processAction(msg, cfg) {
           "person": reply
         });
         self.emit('data', data);
-        // console.log(JSON.stringify(data, undefined, 2));
       }
 
       function emitError(e) {

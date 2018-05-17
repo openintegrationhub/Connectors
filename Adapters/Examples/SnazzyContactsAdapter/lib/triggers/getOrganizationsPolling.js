@@ -12,14 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
- */
+*/
 
 "use strict";
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-
-const snazzy = require('../actions/snazzy.js');
+const snazzy = require('../actions/snazzy');
 
 exports.process = processTrigger;
 
@@ -29,24 +28,17 @@ exports.process = processTrigger;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processTrigger(msg, cfg) {
 
-  let organizations = [];
-  const self = this;
-
   snazzy.createSession(cfg, () => {
+    const self = this;
+    let organizations = [];
 
     function getOrganizations() {
-
       return new Promise((resolve, reject) => {
         const requestOptions = {
           uri: `https://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?mp_cookie=${cfg.mp_cookie}`,
           json: true,
-          // {
-          //   max_hits: 100,
-          //   print_address_data_only: 1
-          // },
           headers: {
             'X-API-KEY': cfg.apikey
           }
@@ -61,6 +53,7 @@ function processTrigger(msg, cfg) {
               reject('No organizations found ...');
             }
 
+            // TODO: Create a custom object which does not contain all fields
             organizations = res.content;
             resolve(organizations);
           }).catch((e) => {
@@ -91,6 +84,5 @@ function processTrigger(msg, cfg) {
       .then(emitData)
       .fail(emitError)
       .done(emitEnd);
-
   });
 }

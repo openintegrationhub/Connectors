@@ -17,23 +17,27 @@ limitations under the License.
 
 const request = require('request-promise');
 
+/**
+ * This method will create a session in Snazzy Contacts
+ *
+ * @param config configuration that is account information send from action or trigger
+ * @param continueOnSuccess is a callback function
+ */
 function createSession(config, continueOnSuccess) {
-  const apiKey = config.apikey;
-  const email = config.email;
-  const password = config.password;
-  console.log(`API KEY: ${apiKey}`);
 
+  const { apikey, email, password } = config;
+  console.log(`API KEY: ${apikey}`);
   const getTokenOptions = {
     uri: 'http://snazzycontacts.com/mp_base/json_login/login/get_token',
     headers: {
-      'X-API-KEY': apiKey
+      'X-API-KEY': apikey
     }
   };
 
   request.post(getTokenOptions)
     .then((res) => {
       const data = JSON.parse(res);
-      const token = data.content.token;
+      const { token } = data.content;
       const options = {
         uri: 'http://snazzycontacts.com/mp_base/json_login/login/verify_credentials',
         json: {
@@ -42,7 +46,7 @@ function createSession(config, continueOnSuccess) {
           password
         },
         headers: {
-          'X-API-KEY': apiKey
+          'X-API-KEY': apikey
         }
       };
       console.log(`Token: ${token}`);

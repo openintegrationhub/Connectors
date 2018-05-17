@@ -19,7 +19,7 @@ const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
 
-const snazzy = require('./snazzy.js');
+const snazzy = require('./snazzy');
 const BASE_URI = `https://snazzycontacts.com/mp_contact/json_respond`;
 
 exports.process = processAction;
@@ -30,54 +30,37 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
 
-  let reply = [];
-  let self = this;
-
-  // Create a session in snazzycontacts and then make a post request to create a new person in snazzycontacts
   snazzy.createSession(cfg, () => {
     if (cfg.mp_cookie) {
 
-      const apiKey = cfg.apikey;
-      const cookie = cfg.mp_cookie;
+      const self = this;
+      const { apikey } = cfg;
+      const { mp_cookie: cookie } = cfg;
       let existingRowid = 0;
+      let reply = [];
 
       function checkForExistingUser() {
-
         return new Promise((resolve, reject) => {
           const requestOptions = {
             uri: `${BASE_URI}/address_contactperson/json_mainview?&mp_cookie=${cookie}`,
-            json: true,
-            // {
-            //     max_hits: 100,
-            //     print_address_data_only: 1
-            // },
+            json: {
+              "address_contactperson_name": msg.body.name,
+              "address_contactperson_firstname": msg.body.firstname
+            },
             headers: {
-              'X-API-KEY': apiKey
+              'X-API-KEY': apikey
             }
           };
 
-          request.get(requestOptions)
+          request.post(requestOptions)
             .then((res) => {
-              res.content.forEach((person) => {
-
-                if (msg.body.name == person.name) {
-                  existingRowid = person.rowid;
-                  msg.body.rowid = existingRowid;
-                  console.log(`Person already exists ... ROWID: ${existingRowid}`);
-                }
-              });
-
-              // if (existingRowid == 0) {
-              //   console.log('Creating a person ...');
-              // } else {
-              //   msg.body.rowid = existingRowid;
-              //   console.log(`existingRowid: ${existingRowid}`);
-              //   console.log('Updating a person ...');
-              // }
-
+              if (res.content[0].rowid) {
+                existingRowid = res.content[0].rowid;
+                msg.body.rowid = existingRowid;
+                console.log(`Person already exists ... ROWID: ${existingRowid}`);
+              }              
               resolve(existingRowid);
             }).catch((e) => {
               reject(e);
@@ -86,12 +69,11 @@ function processAction(msg, cfg) {
       }
 
       function createPerson() {
-
         return new Promise((resolve, reject) => {
           const options = {
             json: msg.body,
             headers: {
-              'X-API-KEY': apiKey
+              'X-API-KEY': apikey
             }
           };
 
@@ -131,14 +113,12 @@ function processAction(msg, cfg) {
           const sameContactUri = `${BASE_URI}/same_contactperson/json_insert?&mp_cookie=${cookie}`;
           request(sameContactUri, {
             headers: {
-              'X-API-KEY': apiKey
+              'X-API-KEY': apikey
             }
           }, (err, res, body) => {
             if (err) {
               reject(err);
-              return;
             }
-
             const jsonDecode = JSON.parse(body);
             const sameContactId = jsonDecode.rowid;
             console.log(`sameContactId: ${sameContactId}`);
@@ -147,12 +127,11 @@ function processAction(msg, cfg) {
         });
       }
 
-      // Emit data from promise depending on the result
       function emitData() {
-          const data = messages.newMessageWithBody({
-            "person": reply
-          });
-          self.emit('data', data);
+        const data = messages.newMessageWithBody({
+          "person": reply
+        });
+        self.emit('data', data);
       }
 
       function emitError(e) {
@@ -166,11 +145,11 @@ function processAction(msg, cfg) {
       }
 
       Q()
-      .then(checkForExistingUser)
-      .then(createPerson)
-      .then(emitData)
-      .fail(emitError)
-      .done(emitEnd);
+        .then(checkForExistingUser)
+        .then(createPerson)
+        .then(emitData)
+        .fail(emitError)
+        .done(emitEnd);
     }
   });
 }

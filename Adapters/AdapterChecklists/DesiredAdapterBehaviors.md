@@ -38,21 +38,21 @@ All items in each list is a **should** have.
 - The API supports webhooks
 
 ### Triggers
-- [ ] `getObjectsPolling` including functionality to
+- [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-polling) including functionality to
   - [ ] supply the list of readable objects
-- [ ] `getObjectsWebhook` including functionality to
+- [ ] [getObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-webhook) including functionality to
   - [ ] supply the list of readable objects
   - [ ] supply the structure of the incoming objects
-- [ ] `getDeletedObjectsWebhook` including functionality to
+- [ ] [getDeletedObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-webhook) including functionality to
   - [ ] supply the list of deletable objects
 
 ### Actions
-- [ ] `upsertObject` including functionality to
+- [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including functionality to
   - [ ] supply the list of writable objects
   - [ ] supply the structure of the incoming object
-- [ ] `deleteObject` including functionality to
+- [ ] [deleteObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#delete-object) including functionality to
   - [ ] supply the list of deletable objects
-- [ ] `lookupObjectByField` including functionality to
+- [ ] [lookupObjectByField](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#lookup-object-by-fields) including functionality to
   - [ ] supply the list of readable objects
   - [ ] supply the list of fields that can be searched
 
@@ -62,18 +62,18 @@ All items in each list is a **should** have.
 - The API does not support webhooks
 
 ### Triggers
-- [ ] `getObjectsPolling` including functionality to
+- [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-polling) including functionality to
   - [ ] supply the list of readable objects
-- [ ] `getDeletedObjectsPolling` (if possible)
+- [ ] [getDeletedObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-polling) (if possible)
   - [ ] including functionality to supply the list of deletable objects
 
 ### Actions
-- [ ] `upsertObject` including functionality to
+- [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including functionality to
   - [ ] supply the list of writable objects
   - [ ] supply the structure of the incoming object
-- [ ] `deleteObject` including functionality to
+- [ ] [deleteObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#delete-object) including functionality to
   - [ ] supply the list of deletable objects
-- [ ] `lookupObjectByField` including functionality to
+- [ ] [lookupObjectByField](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#lookup-object-by-fields) including functionality to
   - [ ] supply the list of readable objects
   - [ ] supply the list of fields that can be searched
 
@@ -83,21 +83,21 @@ All items in each list is a **should** have.
 - The API supports webhooks
 
 ### Triggers
-- [ ] `getObjectsPolling` including
+- [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-polling) including
   - [ ] the static list of readable objects
-- [ ] `getObjectsWebhook` including
+- [ ] [getObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-webhook) including
   - [ ] the static list of readable objects
   - [ ] functionality to supply the structure of the incoming objects
-- [ ] `getDeletedObjectsWebhook` including
+- [ ] [getDeletedObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-webhook) including
   - [ ] the static list of deletable objects
 
 ### Actions
-- [ ] `upsertObject` including
+- [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
   - [ ] functionality to supply the structure of the incoming object
-- [ ] `deleteObject` including
+- [ ] [deleteObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#delete-object) including
   - [ ] the static list of deletable objects
-- [ ] `lookupObjectByField` including functionality to
+- [ ] [lookupObjectByField](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#lookup-object-by-fields) including functionality to
   - [ ] the static list of readable objects
   - [ ] supply the list of fields that can be searched
 
@@ -107,18 +107,18 @@ All items in each list is a **should** have.
 - The API does not support webhooks
 
 ### Triggers
-- [ ] `getObjectsPolling` including
+- [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-polling) including
   - [ ] the static list of readable objects
-- [ ] `getDeletedObjectsPolling` (if possible)
+- [ ] [getDeletedObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-polling) (if possible)
   - [ ] including the static list of readable objects
 
 ### Actions
-- [ ] `upsertObject` including
+- [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
   - [ ] functionality to supply the structure of the incoming object
-- [ ] `deleteObject` including
+- [ ] [deleteObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#delete-object) including
   - [ ] the static list of deletable objects
-- [ ] `lookupObjectByField` including functionality to
+- [ ] [lookupObjectByField](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#lookup-object-by-fields) including functionality to
   - [ ] the static list of readable objects
   - [ ] supply the list of fields that can be searched
 
@@ -128,21 +128,21 @@ All items in each list is a **should** have.
 - The API supports webhooks
 
 ### Triggers
-- [ ] `getObjectsPolling` including
+- [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-polling) including
   - [ ] the static list of readable objects
-- [ ] `getObjectsWebhook` including
+- [ ] [getObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-webhook) including
   - [ ] the static list of readable objects
   - [ ] the static structure of the incoming objects
-- [ ] `getDeletedObjectsWebhook` including
+- [ ] [getDeletedObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-webhook) including
   - [ ] the static list of deletable objects
 
 ### Actions
-- [ ] `upsertObject` including
+- [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
   - [ ] the static structure of the incoming object
-- [ ] `deleteObject` including
+- [ ] [deleteObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#delete-object) including
   - [ ] the static list of deletable objects
-- [ ] `lookupObjectByField` including functionality to
+- [ ] [lookupObjectByField](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#lookup-object-by-fields) including functionality to
   - [ ] the static list of readable objects
   - [ ] the static list of fields that can be searched
 
@@ -152,17 +152,17 @@ All items in each list is a **should** have.
 - The API does not support webhooks
 
 ### Triggers
-- [ ] `getObjectsPolling` including
+- [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-objects-polling) including
   - [ ] the static list of readable objects
-- [ ] `getDeletedObjectsPolling` (if possible)
+- [ ] [getDeletedObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-polling) (if possible)
   - [ ] including the static list of readable objects
 
 ### Actions
-- [ ] `upsertObject` including
+- [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
   - [ ] the static structure of the incoming object
-- [ ] `deleteObject` including
+- [ ] [deleteObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#delete-object) including
   - [ ] the static list of deletable objects
-- [ ] `lookupObjectByField` including functionality to
+- [ ] [lookupObjectByField](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#lookup-object-by-fields) including functionality to
   - [ ] the static list of readable objects
   - [ ] the static list of fields that can be searched

@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "rowid": {
+      "type": "string",
+      "required": true,
+      "title": "RowID"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "title": "Name"
+    },
+    "firstname": {
+      "type": "string",
+      "required": true,
+      "title": "First name"
+    }
+  }
+}

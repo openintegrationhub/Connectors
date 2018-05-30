@@ -35,7 +35,7 @@ function processTrigger(msg, cfg) {
   wice.createSession(cfg, () => {
 
     if (cfg.cookie) {
-      let contacts = [];
+      let deletedContacts = [];
       const self = this;
 
       function getPersons() {
@@ -51,37 +51,40 @@ function processTrigger(msg, cfg) {
             .then((res) => {
               const resObj = JSON.parse(res);
               let customPersonFormat;
+              let deletedPersons = [];
 
               if (resObj.loop_addresses == undefined) {
                 reject('No contacts found ...');
               }
 
               resObj.loop_addresses.forEach((user) => {
-                customPersonFormat = {
-                  rowid: user.rowid,
-                  for_rowid: user.for_rowid,
-                  name: user.name,
-                  firstname: user.firstname,
-                  email: user.email,
-                  title: user.title,
-                  salutation: user.salutation,
-                  birthday: user.birthday,
-                  private_street: user.private_street,
-                  private_street_number: user.private_street_number,
-                  private_zip_code: user.private_zip_code,
-                  private_town: user.private_town,
-                  private_state: user.private_state,
-                  private_country: user.private_country,
-                  house_post_code: user.house_post_code,
-                  phone: user.phone,
-                  fax: user.fax,
-                  private_phone: user.private_phone,
-                  private_mobile_phone: user.private_mobile_phone,
-                  private_email: user.private_email
-                };
-                contacts.push(customPersonFormat);
+                if (user.deactivated == 1) {
+                  customPersonFormat = {
+                    rowid: user.rowid,
+                    for_rowid: user.for_rowid,
+                    name: user.name,
+                    firstname: user.firstname,
+                    email: user.email,
+                    title: user.title,
+                    salutation: user.salutation,
+                    date_of_birth: user.date_of_birth,
+                    private_street: user.private_street,
+                    private_street_number: user.private_street_number,
+                    private_zip_code: user.private_zip_code,
+                    private_town: user.private_town,
+                    private_state: user.state,
+                    private_country: user.private_country,
+                    house_post_code: user.house_post_code,
+                    phone: user.phone,
+                    fax: user.fax,
+                    private_phone: user.private_phone,
+                    private_mobile_phone: user.private_mobile_phone,
+                    private_email: user.private_email
+                  };
+                  deletedContacts.push(customPersonFormat);
+                }
               });
-              resolve(contacts);
+              resolve(deletedContacts);
             }).catch((e) => {
               reject(e);
             });
@@ -90,7 +93,7 @@ function processTrigger(msg, cfg) {
 
       function emitData() {
         const data = messages.newMessageWithBody({
-          "persons": contacts
+          "persons": deletedContacts
         });
         self.emit('data', data);
       }

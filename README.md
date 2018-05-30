@@ -88,11 +88,12 @@ When looking for further information or support, please contact: philipp.hoegner
 #### Connectors
 |Member Name |GitHub Alias|Company| Role |
 | --- | --- | --- | --- |
-| Philipp Hoegner|[philecs](https://github.com/philecs)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| **Manager**  |
+| Dennis Steiniger|[dennisCES](https://github.com/dennisCES)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| **Manager**  |
+| Philipp Hoegner|[philecs](https://github.com/philecs)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| Committer  |
 | Robin Brinkmann |[RobinBrinkmann](https://github.com/RobinBrinkmann)|[Cloud Ecosystem](http://www.cloudecosystem.org/) | Committer   |
 | Jacob Horbulyk |[jhorbulyk](https://github.com/jhorbulyk)|[Elastic.io](https://www.elastic.io/)| Committer   |
 | Renat Zubairov|[zubairov](https://github.com/zubairov)|[Elastic.io](https://www.elastic.io/)| Contributor   |
-| Dennis Steiniger|[dennisCES](https://github.com/dennisCES)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| Contributor   |
+
 
 ## Wording
 Within the project different terms and abbreviations are frequently used. All terms and abbrevations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).

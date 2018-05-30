@@ -40,6 +40,15 @@
         "out": "./lib/schemas/getPersons.out.json"
       }
     },
+    "getDeletedPersonsPolling": {
+      "main": "./lib/triggers/getDeletedPersonsPolling.js",
+      "type": "polling",
+      "description": "Get all deleted persons",
+      "title": "Get deleted persons",
+      "metadata": {
+        "out": "./lib/schemas/getDeletedPersons.out.json"
+      }
+    },
     "getOrganizationsPolling": {
       "main": "./lib/triggers/getOrganizationsPolling.js",
       "type": "polling",

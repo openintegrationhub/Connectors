@@ -47,14 +47,46 @@ function processTrigger(msg, cfg) {
         request.get(requestOptions)
           .then((res) => {
             let customPersonFormat;
+            let result = [];
             const totalEntries = res.content[0].total_entries_readable_with_current_permissions;
 
             if (totalEntries == 0) {
               reject('No persons found ...');
             }
 
-            // TODO: Create a custom object which does not contain all fields
-            contacts = res.content;
+            res.content.forEach((person) => {
+              customPersonFormat = {
+                rowid: person.rowid,
+                firstname: person.firstname,
+                name: person.name,
+                email: person.email,
+                for_rowid: person.for_rowid,
+                same_contactperson: person.same_contactperson,
+                title: person.title,
+                salutation: person.salutation,
+                date_of_birth: person.date_of_birth,
+                private_street: person.private_street,
+                private_zip_code: person.private_zip_code,
+                private_town: person.private_town,
+                private_country: person.private_country,
+                house_post_code: person.house_post_code,
+                fax: person.fax,
+                phone: person.phone,
+                mobile_phone: person.mobile_phone,
+                private_mobile_phone: person.private_mobile_phone,
+                private_phone: person.private_phone,
+                private_email: person.private_email,
+                facebook_url: person.facebook_url,
+                linked_in_url: person.linked_in_url,
+                twitter_url: person.twitter_url,
+                googleplus_url: person.googleplus_url,
+                youtube_url: person.youtube_url,
+                url: person.url,
+                skype: person.skype
+              };
+              result.push(customPersonFormat);
+            });
+            contacts = result;
             resolve(contacts);
           }).catch((e) => {
             reject(e);

@@ -8,13 +8,15 @@
         "label": "API key for data sharing",
         "required": true,
         "viewClass": "TextFieldWithNoteView",
-        "note": "Please use <b>Snazzy Contacts</b> API key."
+        "note": "Please use <b>Snazzy Contacts</b> API key.",
+        "placeholder": "88k6q9nkr4hoxtbfljva70cl6gtf0mlz"
       },
       "email": {
         "label": "Your email",
         "required": true,
         "viewClass": "TextFieldView",
-        "note": "Use your email registerd in Snazzy Contacts"
+        "note": "Use your email registerd in Snazzy Contacts",
+        "placeholder": "youremail@mail.com"
       },
       "password": {
         "label": "Your password",

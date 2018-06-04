@@ -58,6 +58,15 @@
         "out": "./lib/schemas/getOrganizations.out.json"
       }
     },
+    "getDeletedOrganizationsPolling": {
+      "main": "./lib/triggers/getDeletedOrganizationsPolling.js",
+      "type": "polling",
+      "description": "Get all deleted organizations",
+      "title": "Get deleted organizations",
+      "metadata": {
+        "out": "./lib/schemas/getDeletedOrganizations.out.json"
+      }
+    },
     "getArticlesPolling": {
       "main": "./lib/triggers/getArticlesPolling.js",
       "type": "polling",

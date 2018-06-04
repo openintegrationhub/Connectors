@@ -19,7 +19,7 @@ const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
 
-const wice = require('./../actions/wice.js');
+const wice = require('./../actions/wice');
 
 exports.process = processTrigger;
 
@@ -33,15 +33,14 @@ function processTrigger(msg, cfg) {
 
   // Create a session in Wice
   wice.createSession(cfg, () => {
-
     if (cfg.cookie) {
-      let contacts = [];
+      let organizations = [];
       const self = this;
 
-      function getPersons() {
+      function getDeletedOrganizations(categoryId) {
         return new Promise((resolve, reject) => {
           const requestOptions = {
-            uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_persons&full_list=1&cookie=${cfg.cookie}`,
+            uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&full_list=1&address_category1=${categoryId}&select_category1=${categoryId}&ext_search_do=1&cookie=${cfg.cookie}`,
             headers: {
               'X-API-KEY': cfg.apikey
             }
@@ -50,46 +49,54 @@ function processTrigger(msg, cfg) {
           request.get(requestOptions)
             .then((res) => {
               const resObj = JSON.parse(res);
-              let customPersonFormat;
+              let customOrganizaiontFormat;
 
               if (resObj.loop_addresses == undefined) {
-                reject('No contacts found ...');
+                reject('No organizations found ...');
               }
 
-              resObj.loop_addresses.forEach((user) => {
-                customPersonFormat = {
-                  rowid: user.rowid,
-                  for_rowid: user.for_rowid,
-                  name: user.name,
-                  firstname: user.firstname,
-                  email: user.email,
-                  title: user.title,
-                  salutation: user.salutation,
-                  birthday: user.birthday,
-                  private_street: user.private_street,
-                  private_street_number: user.private_street_number,
-                  private_zip_code: user.private_zip_code,
-                  private_town: user.private_town,
-                  private_state: user.private_state,
-                  private_country: user.private_country,
-                  phone: user.phone,
-                  fax: user.fax,
-                  private_phone: user.private_phone,
-                  private_mobile_phone: user.private_mobile_phone,
-                  private_email: user.private_email
+              resObj.loop_addresses.forEach((organization) => {
+                customOrganizaiontFormat = {
+                  rowid: organization.rowid,
+                  name: organization.name,
+                  number_of_employees: organization.number_of_employees,
+                  email: organization.email,
+                  phone: organization.phone,
+                  fax: organization.fax,
+                  street: organization.street,
+                  street_number: organization.street_number,
+                  zip_code: organization.zip_code,
+                  p_o_box: organization.p_o_box,
+                  town: organization.town,
+                  town_area: organization.town_area,
+                  state: organization.state,
+                  country: organization.country
                 };
-                contacts.push(customPersonFormat);
+                organizations.push(customOrganizaiontFormat)
               });
-              resolve(contacts);
+              resolve(organizations);
             }).catch((e) => {
               reject(e);
             });
         });
       }
 
+      function getCategoryRowid() {
+        return new Promise((resolve, reject) => {
+          const uri = `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&cookie=${cfg.cookie}`;
+          request.get(uri)
+            .then((res) => {
+              const resObj = JSON.parse(res);
+              resolve(resObj.global_config.trash_address_company_category1);
+            }).catch((e) => {
+              reject(`ERROR: ${e}`);
+            });
+        });
+      }
+
       function emitData() {
         const data = messages.newMessageWithBody({
-          "persons": contacts
+          "organizations": organizations
         });
         self.emit('data', data);
       }
@@ -105,7 +112,8 @@ function processTrigger(msg, cfg) {
       }
 
       Q()
-        .then(getPersons)
+        .then(getCategoryRowid)
+        .then(getDeletedOrganizations)
         .then(emitData)
         .fail(emitError)
         .done(emitEnd);

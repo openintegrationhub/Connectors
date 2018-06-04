@@ -1,15 +1,14 @@
-**Attendees:** Jacob, Robin, Dennis, Philipp <br>
+**Attendees:** Jacob, Robin, Shterion, Philipp, Dennis <br>
 **Absent:** -
 
 ## Organistory
-- Vote about making Shterion a committer
+- Shterion was accepted as new committer
 
 ## Status Quality Checks
-
-
-## Status Transformer Implementation
+- Wice component is working now, input filled with hard coded data yet
 
 ## Next Steps (Derived from last call)
-- [ ] Perform quality check on Wice adapter **Jacob**
-- [ ] Revise quality check by Philipp for SnazzyContacts Adapter **Jacob**
-- [ ] Revise quality check by Jacob for Wice Adapter **Philipp**
+- [ ] Consolidating all existing knowledge considering Adapters at ElasticIO and differentiate what is important for the Open Integration Hub **Jacob**
+- [ ] Write the documentation for the transformer **Jacob**
+- [ ] Write the documentation for the Wice component **Shterion**
+- [ ] Structure a possible FAQ for the Wice component **Shterion**

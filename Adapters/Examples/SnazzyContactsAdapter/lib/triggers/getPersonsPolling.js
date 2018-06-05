@@ -69,7 +69,6 @@ function processTrigger(msg, cfg) {
                 private_zip_code: person.private_zip_code,
                 private_town: person.private_town,
                 private_country: person.private_country,
-                house_post_code: person.house_post_code,
                 fax: person.fax,
                 phone: person.phone,
                 mobile_phone: person.mobile_phone,

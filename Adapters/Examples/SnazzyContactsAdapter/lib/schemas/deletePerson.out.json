@@ -4,7 +4,9 @@
     "rowid": {
       "type": "string",
       "required": true,
-      "title": "ID"
+      "title": "Rowid",
+      "note": "Person's rowid which you want to delete",
+      "placeholder": "200308"
     }
   }
 }

@@ -38,7 +38,9 @@ function processTrigger(msg, cfg) {
       return new Promise((resolve, reject) => {
         const requestOptions = {
           uri: `https://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?mp_cookie=${cfg.mp_cookie}`,
-          json: true,
+          json: {
+            'print_deleted_entries_only': true
+          },
           headers: {
             'X-API-KEY': cfg.apikey
           }
@@ -53,24 +55,16 @@ function processTrigger(msg, cfg) {
             if (totalEntries == 0) {
               reject('No organizations found ...');
             }
+
             res.content.forEach((organization) => {
               customOrganizationFormat = {
                 rowid: organization.rowid,
                 name: organization.name,
-                email: organization.email,
-                phone: organization.phone,
-                fax: organization.fax,
-                street: organization.street,
-                street_number: organization.street_number,
-                zip_code: organization.zip_code,
-                p_o_box: organization.p_o_box,
-                town: organization.town,
-                town_area: organization.town_area,
-                state: organization.state,
-                country: organization.country
+                is_deleted: organization.is_deleted
               };
               result.push(customOrganizationFormat);
             });
+
             organizations = result;
             resolve(organizations);
           }).catch((e) => {

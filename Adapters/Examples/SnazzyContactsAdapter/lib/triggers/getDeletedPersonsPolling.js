@@ -32,13 +32,15 @@ function processTrigger(msg, cfg) {
 
   snazzy.createSession(cfg, () => {
     const self = this;
-    let organizations = [];
+    let contacts = [];
 
-    function getOrganizations() {
+    function getPersons() {
       return new Promise((resolve, reject) => {
         const requestOptions = {
-          uri: `https://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?mp_cookie=${cfg.mp_cookie}`,
-          json: true,
+          uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cfg.mp_cookie}`,
+          json: {
+            'print_deleted_entries_only': true
+          },
           headers: {
             'X-API-KEY': cfg.apikey
           }
@@ -46,33 +48,48 @@ function processTrigger(msg, cfg) {
 
         request.get(requestOptions)
           .then((res) => {
-            let customOrganizationFormat;
+            let customPersonFormat;
             let result = [];
             const totalEntries = res.content[0].total_entries_readable_with_current_permissions;
 
             if (totalEntries == 0) {
-              reject('No organizations found ...');
+              reject('No persons found ...');
             }
-            res.content.forEach((organization) => {
-              customOrganizationFormat = {
-                rowid: organization.rowid,
-                name: organization.name,
-                email: organization.email,
-                phone: organization.phone,
-                fax: organization.fax,
-                street: organization.street,
-                street_number: organization.street_number,
-                zip_code: organization.zip_code,
-                p_o_box: organization.p_o_box,
-                town: organization.town,
-                town_area: organization.town_area,
-                state: organization.state,
-                country: organization.country
+
+            res.content.forEach((person) => {
+              customPersonFormat = {
+                rowid: person.rowid,
+                firstname: person.firstname,
+                name: person.name,
+                email: person.email,
+                for_rowid: person.for_rowid,
+                same_contactperson: person.same_contactperson,
+                title: person.title,
+                salutation: person.salutation,
+                date_of_birth: person.date_of_birth,
+                private_street: person.private_street,
+                private_zip_code: person.private_zip_code,
+                private_town: person.private_town,
+                private_country: person.private_country,
+                house_post_code: person.house_post_code,
+                fax: person.fax,
+                phone: person.phone,
+                mobile_phone: person.mobile_phone,
+                private_mobile_phone: person.private_mobile_phone,
+                private_phone: person.private_phone,
+                private_email: person.private_email,
+                facebook_url: person.facebook_url,
+                linked_in_url: person.linked_in_url,
+                twitter_url: person.twitter_url,
+                googleplus_url: person.googleplus_url,
+                youtube_url: person.youtube_url,
+                url: person.url,
+                skype: person.skype
               };
-              result.push(customOrganizationFormat);
+              result.push(customPersonFormat);
             });
-            organizations = result;
-            resolve(organizations);
+            contacts = result;
+            resolve(contacts);
           }).catch((e) => {
             reject(e);
           });
@@ -81,7 +98,7 @@ function processTrigger(msg, cfg) {
 
     function emitData() {
       const data = messages.newMessageWithBody({
-        "organizations": organizations
+        "persons": contacts
       });
       self.emit('data', data);
     }
@@ -97,7 +114,7 @@ function processTrigger(msg, cfg) {
     }
 
     Q()
-      .then(getOrganizations)
+      .then(getPersons)
       .then(emitData)
       .fail(emitError)
       .done(emitEnd);

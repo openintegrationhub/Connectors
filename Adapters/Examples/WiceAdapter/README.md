@@ -1,6 +1,8 @@
 # elasticio-wice-component
 > [Wice CRM](https://wice.de/) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
 
+[Wice CRM](https://wice.de/) is a CRM(customer relationship management) Software which offers different modules for address management, tasks management, project management, calendars and a knowledge base for knowledge management. The software could be used to manage sales opportunities and offers too. In addition, [Wice CRM](https://wice.de/) offers the possibility to manage and create invoices, open items and incoming payments.
+
 This is a connector(*component*) which connects [Wice CRM](https://wice.de/) with [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this connector you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). The component supports **"Triggers"** (e.g. ``getPersons``, ``getOrganizations``) as well as **"Actions"** (e.g. ``updatePerson``, ``createOrganization``, ``updatePersonsOrganization``, etc.), therefore with this component you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
 
 ## Before you begin
@@ -20,6 +22,8 @@ The connector supports the following **actions** and **triggers**:
   - Get persons (```getPersonsPolling.js```)
   - Get organizations (```getOrganizationsPolling.js```)
   - Get articles(```getArticlesPolling.js```)
+  - Get organizations (```getOrganizationsPolling.js```)
+  - Get deleted persons (```getDeletedPersonsPolling.js```)
 
 #### Actions:
   - Create person (```createPerson.js```)
@@ -159,3 +163,5 @@ Delete article action (``deleteArticle.js``) deletes an article in [Wice CRM](ht
             |-- getArticlesPolling.js
             |-- getOrganizationsPolling.js
             |-- getPersonsPolling.js
+            |-- getDeletedPersonsPolling.js
+            |-- getDeletedOrganizationsPolling.js

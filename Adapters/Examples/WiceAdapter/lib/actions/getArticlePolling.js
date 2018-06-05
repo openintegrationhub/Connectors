@@ -53,13 +53,12 @@ function processTrigger(msg, cfg) {
               let resObj = JSON.parse(res);
               article = {
                 rowid: resObj.rowid,
+                number: resObj.number,
                 description: resObj.description,
                 sales_price: resObj.sales_price,
                 purchase_price: resObj.purchase_price,
                 in_stock: resObj.in_stock,
-                unit: resObj.unit,
-                price_list_highlight: resObj.price_list_highlight,
-                currency: resObj.currency
+                unit: resObj.unit
               };
               resolve(article);
             }).catch((e) => {

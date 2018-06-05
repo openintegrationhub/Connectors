@@ -53,9 +53,25 @@ function processTrigger(msg, cfg) {
               let resObj = JSON.parse(res);
               contact = {
                 rowid: resObj.rowid,
-                name: resObj.name,
+                for_rowid: resObj.for_rowid,
+                same_contactperson: resObj.same_contactperson,
                 firstname: resObj.firstname,
-                for_rowid: resObj.for_rowid
+                name: resObj.name,
+                email: resObj.email,
+                title: resObj.title,
+                salutation: resObj.salutation,
+                birthday: resObj.birthday,
+                private_street: resObj.private_street,
+                private_street_number: resObj.private_street_number,
+                private_zip_code: resObj.private_zip_code,
+                private_town: resObj.private_town,
+                private_state: resObj.private_state,
+                private_country: resObj.private_country,
+                phone: resObj.phone,
+                fax: resObj.fax,
+                private_phone: resObj.private_phone,
+                private_mobile_phone: resObj.private_mobile_phone,
+                private_email: resObj.private_email
               };
               resolve(contact);
             }).catch((e) => {

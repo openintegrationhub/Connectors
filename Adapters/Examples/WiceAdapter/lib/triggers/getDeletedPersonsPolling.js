@@ -74,7 +74,6 @@ function processTrigger(msg, cfg) {
                     private_town: user.private_town,
                     private_state: user.state,
                     private_country: user.private_country,
-                    house_post_code: user.house_post_code,
                     phone: user.phone,
                     fax: user.fax,
                     private_phone: user.private_phone,

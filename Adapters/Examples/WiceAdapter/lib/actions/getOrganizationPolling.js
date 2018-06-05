@@ -54,10 +54,16 @@ function processTrigger(msg, cfg) {
               organization = {
                 rowid: resObj.rowid,
                 name: resObj.name,
+                email: resObj.email,
+                phone: resObj.phone,
+                fax: resObj.fax,
                 street: resObj.street,
-                street_number: resObj.streetnumber,
+                street_number: resObj.street_number,
+                zip_code: resObj.zip_code,
+                p_o_box: resObj.p_o_box,
                 town: resObj.town,
-                country: resObj.country,
+                state: resObj.state,
+                country: resObj.country
               };
               resolve(organization);
             }).catch((e) => {

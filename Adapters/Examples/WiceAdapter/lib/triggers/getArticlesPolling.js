@@ -64,8 +64,7 @@ function processTrigger(msg, cfg) {
                   sales_price: article.sales_price,
                   purchase_price: article.purchase_price,
                   in_stock: article.in_stock,
-                  unit: article.unit,
-                  price_list_highlight: article.price_list_highlight
+                  unit: article.unit
                 };
                 articles.push(customArticleFormat);
                 resolve(articles);

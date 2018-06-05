@@ -4,7 +4,9 @@
     "rowid": {
       "type": "string",
       "required": true,
-      "title": "rowid"
+      "title": "Rowid",
+      "note": "Organization's rowid",
+      "placeholder": "200148"
     }
   }
 }

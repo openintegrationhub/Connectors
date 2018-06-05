@@ -60,6 +60,7 @@ function processTrigger(msg, cfg) {
                 customPersonFormat = {
                   rowid: user.rowid,
                   for_rowid: user.for_rowid,
+                  same_contactperson: user.same_contactperson,
                   name: user.name,
                   firstname: user.firstname,
                   email: user.email,

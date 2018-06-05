@@ -20,6 +20,8 @@ The connector supports the following **actions** and **triggers**:
 #### Triggers:
   - Get persons (```getPersonsPolling.js```)
   - Get organizations (```getOrganizationsPolling.js```)
+  - Get deleted persons (```getDeletedPersonsPolling.js```)
+  - Get deleted organizations (```getDeletedOrganizationsPolling.js```)
 
 #### Actions:
   - Create person (```createPerson.js```)
@@ -123,3 +125,5 @@ Update organization action (``updateOrganization.js``) updates a specific organi
         |-- triggers
             |-- getOrganizationsPolling.js
             |-- getPersonsPolling.js
+            |-- getDeletedPersonsPolling.js
+            |-- getDeletedOrganizationsPolling.js

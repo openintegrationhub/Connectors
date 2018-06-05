@@ -37,6 +37,19 @@ function processTrigger(msg, cfg) {
       let organizations = [];
       const self = this;
 
+      function getCategoryRowid() {
+        return new Promise((resolve, reject) => {
+          const uri = `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&cookie=${cfg.cookie}`;
+          request.get(uri)
+            .then((res) => {
+              const resObj = JSON.parse(res);
+              resolve(resObj.global_config.trash_address_company_category1);
+            }).catch((e) => {
+              reject(`ERROR: ${e}`);
+            });
+        });
+      }
+
       function getDeletedOrganizations(categoryId) {
         return new Promise((resolve, reject) => {
           const requestOptions = {
@@ -77,19 +90,6 @@ function processTrigger(msg, cfg) {
               resolve(organizations);
             }).catch((e) => {
               reject(e);
-            });
-        });
-      }
-
-      function getCategoryRowid() {
-        return new Promise((resolve, reject) => {
-          const uri = `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&cookie=${cfg.cookie}`;
-          request.get(uri)
-            .then((res) => {
-              const resObj = JSON.parse(res);
-              resolve(resObj.global_config.trash_address_company_category1);
-            }).catch((e) => {
-              reject(`ERROR: ${e}`);
             });
         });
       }

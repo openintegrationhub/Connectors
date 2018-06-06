@@ -59,7 +59,6 @@ function processTrigger(msg, cfg) {
                 customOrganizaiontFormat = {
                   rowid: organization.rowid,
                   name: organization.name,
-                  number_of_employees: organization.number_of_employees,
                   email: organization.email,
                   phone: organization.phone,
                   fax: organization.fax,
@@ -68,7 +67,6 @@ function processTrigger(msg, cfg) {
                   zip_code: organization.zip_code,
                   p_o_box: organization.p_o_box,
                   town: organization.town,
-                  town_area: organization.town_area,
                   state: organization.state,
                   country: organization.country
                 };

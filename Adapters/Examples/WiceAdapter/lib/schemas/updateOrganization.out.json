@@ -1,55 +1,89 @@
 {
-    "type": "object",
-    "properties": {
-        "rowid": {
-            "type": "string",
-            "required": true,
-            "title": "ID"
-        },
-        "name": {
-            "type": "string",
-            "required": true,
-            "title": "Name"
-        },
-        "town": {
-            "type": "string",
-            "required": false,
-            "title": "Town"
-        },
-        "street": {
-            "type": "string",
-            "required": false,
-            "title": "Street"
-        },
-        "street_number": {
-            "type": "string",
-            "required": false,
-            "title": "Street number"
-        },
-        "zip_code": {
-            "type": "string",
-            "required": false,
-            "title": "Postal code"
-        },
-        "country": {
-            "type": "string",
-            "required": false,
-            "title": "Country"
-        },
-        "state": {
-            "type": "string",
-            "required": false,
-            "title": "State"
-        },
-        "url": {
-            "type": "string",
-            "required": false,
-            "title": "Website URL"
-        },
-        "phone": {
-            "type": "string",
-            "required": false,
-            "title": "Phone"
-        }
+  "type": "object",
+  "properties": {
+    "rowid": {
+      "type": "string",
+      "required": true,
+      "title": "Rowid",
+      "note": "Organization's rowid",
+      "placeholder": "200148"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "title": "Name",
+      "note": "Organization name",
+      "placeholder": "West Company Ltd."
+    },
+    "email": {
+      "type": "string",
+      "required": true,
+      "title": "Email",
+      "note": "Organization's email",
+      "placeholder": "info@companyltd.com"
+    },
+    "phone": {
+      "type": "string",
+      "required": true,
+      "title": "Phone",
+      "note": "Organization's phone",
+      "placeholder": "0409661270"
+    },
+    "fax": {
+      "type": "string",
+      "required": true,
+      "title": "Fax",
+      "note": "Organization's fax",
+      "placeholder": "0407650194"
+    },
+    "street": {
+      "type": "string",
+      "required": true,
+      "title": "Street",
+      "note": "Organization's address street name",
+      "placeholder": "Main Str."
+    },
+    "street_number": {
+      "type": "string",
+      "required": true,
+      "title": "Street number",
+      "note": "Organization's address street number",
+      "placeholder": "120"
+    },
+    "zip_code": {
+      "type": "string",
+      "required": true,
+      "title": "Zip code",
+      "note": "Organization's address zip code",
+      "placeholder": "28507"
+    },
+    "p_o_box": {
+      "type": "string",
+      "required": true,
+      "title": "PO Box",
+      "note": "Organization's post-office box",
+      "placeholder": "27341"
+    },
+    "town": {
+      "type": "string",
+      "required": true,
+      "title": "Town",
+      "note": "Organization's town",
+      "placeholder": "Hamburg"
+    },
+    "state": {
+      "type": "string",
+      "required": true,
+      "title": "State",
+      "note": "Organization's state",
+      "placeholder": "HH"
+    },
+    "country": {
+      "type": "string",
+      "required": true,
+      "title": "Coutry",
+      "note": "Organization's country",
+      "placeholder": "Germany"
     }
+  }
 }

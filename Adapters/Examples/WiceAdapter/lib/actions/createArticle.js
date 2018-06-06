@@ -64,7 +64,7 @@ function processAction(msg, cfg) {
               const resObj = JSON.parse(res);
               if (resObj.loop_articles) {
                 existingRowid = resObj.loop_articles[0].rowid;
-                console.log(`Article alredy exists ... Rowid: ${existingRowid}`);
+                console.log(`Article already exists ... Rowid: ${existingRowid}`);
               }
               resolve(existingRowid);
             })

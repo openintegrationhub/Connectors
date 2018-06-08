@@ -24,6 +24,7 @@ The connector supports the following **actions** and **triggers**:
   - Get articles(```getArticlesPolling.js```)
   - Get organizations (```getOrganizationsPolling.js```)
   - Get deleted persons (```getDeletedPersonsPolling.js```)
+  - Get deleted organizations (```getDeletedOrganizationsPolling.js```)
 
 #### Actions:
   - Create person (```createPerson.js```)
@@ -66,6 +67,14 @@ Get organization action (```getOrganizationPolling.js```) performs a request whi
 ##### Get article
 
 Get article action (```getArticlePolling.js```) performs a request which gets an article by id from [Wice CRM](https://wice.de/). The response is an object.
+
+##### Get deleted persons
+
+Get deleted persons trigger (```getDeletedPersonsPolling.js```) performs a request which gets all deleted/deactivated persons by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all persons and their attributes.
+
+##### Get deleted organizations
+
+Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) performs a request which gets all deleted organizations by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all organizations and their attributes.
 
 ##### Create person
 

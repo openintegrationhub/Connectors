@@ -44,6 +44,14 @@ Get persons trigger (```getPersonsPolling.js```) performs a request which fetch 
 
 Get organizations trigger (```getOrganizationsPolling.js```) performs a request which fetch all organizations saved by a user in [Snazzy Contacts](https://snazzycontacts.com). The response consist of an **array of objects** with all organizations and their attributes.
 
+##### Get deleted persons
+
+Get deleted persons trigger (```getDeletedPersonsPolling.js```) performs a request which gets all deleted/deactivated persons by a user in [Snazzy Contacts](https://snazzycontacts.com). The response consist of an **array of objects** with all persons and their attributes.
+
+##### Get deleted organizations
+
+Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) performs a request which gets all deleted organizations by a user in [Snazzy Contacts](https://snazzycontacts.com) The response consist of an **array of objects** with all organizations and their attributes.
+
 ##### Create person
 
 Create person action (``createPerson.js``) creates a person in [Snazzy Contacts](https://snazzycontacts.com). At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.

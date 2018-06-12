@@ -38,7 +38,7 @@ A connector connects a software solution to the Open Integration Hub. It consist
 
 
 The following illustration provides a holistic overview of a connector:
-![Connector](Assets/ConnectorsV2.svg)
+![Connector](Assets/ConnectorsV3.png)
 
 ### Adapter
 

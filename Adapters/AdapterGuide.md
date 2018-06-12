@@ -20,7 +20,7 @@ should aim at covering 100% of the objects provided by the API.
  a SOAP API, a SQL (or other) DB connection, etc.
 
 
-![API Classification3](/Adapters/Assets/ApiClassification.png)
+![API Classification3](/Adapters/Assets/ApiClassificationCI.png)
 A checklist for each case exists in the document
 [AdapterCompletenessChecklist.md](/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 

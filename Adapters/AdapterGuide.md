@@ -1,7 +1,6 @@
 # Guide for creating an Adapter
 
-This guide explains the problems which an
-adapter must solve and the recommended way doing so.
+This guide helps to classify an API and to derive a set of functionalities that can be performed by an Adapter with the given API.
 
 # Table of Contents
 

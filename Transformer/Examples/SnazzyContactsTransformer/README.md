@@ -1,5 +1,5 @@
-# wice-jsonata-transform-component [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> Dedicated [Wice CRM](https://wice.de/) data transformation component for elastic.io platform based on JSONata
+# snazzycontacts-jsonata-transform-component [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+> Dedicated [Snazzy Contacts](https://snazzycontacts.com) data transformation component for elastic.io platform based on JSONata
 
 ## Authentication
 
@@ -10,7 +10,7 @@ This component requires no authentication.
 The component supports two actions - **Transform to OIH** and **Transform from OIH**. This means that the component takes the incoming message body from the previous step and creates a new expression in a ``JSON`` format. The new generated ``JSON`` object has specific properties which represent the input/output for the next/previous component in the flow.
 The uses a fact that JSONata expression is a superset of JSON document so that by default any valid JSON document is a valid JSONata expression.
 
-Let's see how the action **Transform from OIH** works. For example let's take this sample incoming message body from **OIH Database component** and transform it to a valid [Wice](https://wice.de) object:
+Let's see how the action **Transform from OIH** works. For example let's take this sample incoming message body and transform it to a valid [Snazzy Contacts](https://snazzycontacts.com) object:
 
 ```js
 {
@@ -19,9 +19,10 @@ Let's see how the action **Transform from OIH** works. For example let's take th
   "name": msg.body.lastName,
   "firstname": msg.body.firstName,
   "salutation": msg.body.salutation,
-  "birthday": msg.body.birthday
+  "date_of_birth": msg.body.birthday
 }
 ```
+
 The result of that transformation will be the following JSON document:
 
 ```json
@@ -35,7 +36,7 @@ The result of that transformation will be the following JSON document:
 }
 ```
 
-The action **Transform to OIH** works the same way. Let's take this incoming message body from [Wice](https://wice.de) component:
+The action **Transform to OIH** works the same way. Let's take this incoming message body from [Snazzy Contacts](https://snazzycontacts.com) component:
 
 ```js
 {
@@ -44,7 +45,7 @@ The action **Transform to OIH** works the same way. Let's take this incoming mes
   "lastName": msg.body.name,
   "firstName": msg.body.firstname,
   "salutation": msg.body.salutation,
-  "birthday": msg.body.birthday,
+  "birthday": msg.body.date_of_birth,
 }
 ```
 
@@ -60,7 +61,6 @@ The result of that transofrmation will be the following JSON document:
   "birthday": "04.11.1980"
 }
 ```
-
 
 ## License
 

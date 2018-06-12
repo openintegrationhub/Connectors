@@ -1,20 +1,57 @@
-# Adapter Documentation
+## Table of Contents
+- [Adapter concept](#adapter-concept)
+- [Adapter tasks](#adapter-tasks)
+  - [Exposing endpoints](#exposes-an-endpoint)
+  - [Manipulating stored data](#manipulating-data-stored-by-a-system)
+- [Getting started](#getting-started)
+  - [Testing](#testing)
+  
+## Adapter Concept
+The Adapter is a single, reusable piece of functionality that stands between your solution’s API and the Transformer. To enable communication between you and Open Integration Hub, the Adapter syntactically normalizes and transforms your applications data into a JSON object. For example, transforming CSV-, JS-, XML- files into JSON objects. The Adapter exposes the endpoint of your SaaS solution’s API via pre-defined actions and triggers(see elastic.io's definition of a component.json file[]). Those make sure that the four basic operations of persistent storage are available, such as create, read, update and delete a file.
 
-* If you are not familiar with adapters, the document [`AdapterGuide.md`](/Adapters/AdapterGuide.md) is
-designed to be a starting point.  It explains the problems which an adapter must
-solve and the recommended way of solving those problems.
+![Adapter](Assets/Adapter.png)
 
-* There is an additional folder
-[`AdapterChecklists`](/Adapters/AdapterChecklists/)
-which contains checklists which can be used to verify adapter completeness as
-well as to identify the API provider requirements.
+## Adapter Tasks
+There are two ways in which an adapter can expose the API functionality:
+### Exposes an Endpoint
+In this approach, the API exposes an endpoint and the adaptor provides actions
+as a way to call that endpoint from a flow.  For example, [Mandrill's API
+contains the Send Message API
+endpoint](https://mandrillapp.com/api/docs/messages.JSON.html#method=send).
+This endpoint expects parameters related to email sending and tracking to be
+provided to the endpoint.  An adapter exposes this functionality by allowing the
+values for all of these parameters to be configured by an integrator.  In this
+case, the adapter is responsible for the following:
+* Knowing/building the URL to which the request is provided
+* Handling any authentication required by the request
+* Exposing all inputs to the integration platform
+* Carrying out the request, provide the results of the request back to the
+platform and handling any errors that occur in the process
 
-* There is an additional folder
-[`AdapterBehaviorStandardization`](/Adapters/AdapterBehaviorStandardization)
-which describes the various forms of behavior that a component can perform and
-the standard way of exposing that functionality.
+### Manipulating Data Stored by a System
+In this approach, the external system is a system which stores data that can be
+read and manipulated through an API.  The adapter, instead of providing explicit
+access to API mechanisms, provides actions and triggers which facilitate the
+reading and manipulation of the underlying data.  For instance, consider
+[Salesforce's REST
+API](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm).
+This API exposes many endpoints where the purpose of most of the endpoints is to
+read and manipulate data in Salesforce.  While it is possible to expose these
+endpoints using method 1, doing so is generally not useful as it requires the
+integrator to have a deep understanding of the mechanisms specific to this API.
+Therefore, the adapter should encapsulate/abstract away the mechanics of the API
+by making actions and triggers available to the integrator so that the
+integrator can manipulate data.  This is in addition to all of the
+responsibilities of approach 1.
+*Note: Within any given adapter, it is possible to combine the two approaches if
+doing so makes sense.*
 
-* There is an additional document
-[`OpenQuestionsForOtherOIHWorkgroups.md`](/Adapters/OpenQuestionsForOtherOIHWorkgroups.md).
-This document outlines potential design decisions made by other workgroups which
-would effect some of the design decisions related to connector standardization.
+## Getting Started
+If you are planning to write your own Adapter while not being familiar with them, the document [`AdapterGuide`](/Adapters) is designed to be the starting point.  It explains the concept of the Adapter, how it works, the problems which an Adapter must solve and the recommended way of doing so. This document also includes a decision tree as well, helping you to discover which case your API falls into, respectively, how your Adapter should behave.<br>
+After that you will find further information such as pre-defined actions and triggers for each case of the decision tree within the [`DesiredAdapterBehavior`](/AdapterChecklists/DesiredAdapterBehaviors).<br>
+[`AdapterBehaviorStandardization`](/Adapters/AdapterBehaviorStandardization) will then describe the various actions and triggers in detail, additional functionalities that an Adapter can perform and the standard way of exposing those. <br> To ensure high documentation quality please follow the [`documentation guidelines`](/AdapterChecklists/AdapterDescriptionAndDocumentationChecklist.md). 
+For actual implementations of Adapters, please checkout our examples for [`SnazzyContacts`](/Examples/SnazzyContactsAdapter) and [`Wice`](/Examples/WiceAdapter)! 
+Once you have finished creating an Adapter there is a file called [AdapterFunctionalityChecklist](/AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.
+
+### Testing
+In order to test your component, different resources must be provided. These resources are listed within the [RequirementsToTestOrBuildAnAdapter](/AdapterChecklists/RequirementsToTestOrBuildAnAdapter.md) file.

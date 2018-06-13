@@ -116,61 +116,6 @@ Delete article action (``deleteArticle.js``) deletes an article in [Wice CRM](ht
 
 ***
 
-### Component tree structure
+## License
 
-    |-- .gitignore
-    |-- README.md
-    |-- component.json
-    |-- logo.png
-    |-- package-lock.json
-    |-- package.json
-    |-- verifyCredentials.js
-    |-- lib
-        |-- actions
-        |   |-- createArticle.js
-        |   |-- createOrganization.js
-        |   |-- createPerson.js
-        |   |-- deleteArticle.js
-        |   |-- deleteOrganization.js
-        |   |-- deletePerson.js
-        |   |-- getArticlePolling.js
-        |   |-- getOrganizationPolling.js
-        |   |-- getPersonPolling.js
-        |   |-- wice.js
-        |   |-- updateArticle.js
-        |   |-- updateOrganization.js
-        |   |-- updatePerson.js
-        |-- schemas
-        |   |-- createArticle.in.json
-        |   |-- createArticle.out.json
-        |   |-- createOrganization.in.json
-        |   |-- createOrganization.out.json
-        |   |-- createPerson.in.json
-        |   |-- createPerson.out.json
-        |   |-- deleteArticle.in.json
-        |   |-- deleteArticle.out.json
-        |   |-- deleteOrganization.in.json
-        |   |-- deleteOrganization.out.json
-        |   |-- deletePerson.in.json
-        |   |-- deletePerson.out.json
-        |   |-- getArticle.in.json
-        |   |-- getArticle.out.json
-        |   |-- getArticles.out.json
-        |   |-- getOrganization.in.json
-        |   |-- getOrganization.out.json
-        |   |-- getOrganizations.out.json
-        |   |-- getPerson.in.json
-        |   |-- getPerson.out.json
-        |   |-- getPersons.out.json
-        |   |-- updateArticle.in.json
-        |   |-- updateArticle.out.json
-        |   |-- updateOrganization.in.json
-        |   |-- updateOrganization.out.json
-        |   |-- updatePerson.in.json
-        |   |-- updatePerson.out.json
-        |-- triggers
-            |-- getArticlesPolling.js
-            |-- getOrganizationsPolling.js
-            |-- getPersonsPolling.js
-            |-- getDeletedPersonsPolling.js
-            |-- getDeletedOrganizationsPolling.js
+Apache-2.0 © [Wice GmbH](https://wice.de/)

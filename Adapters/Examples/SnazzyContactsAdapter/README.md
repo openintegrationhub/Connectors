@@ -93,45 +93,6 @@ Update organization action (``updateOrganization.js``) updates a specific organi
 
 ***
 
-### Component tree structure
+## License
 
-    |-- .gitignore
-    |-- README.md
-    |-- component.json
-    |-- logo.png
-    |-- package-lock.json
-    |-- package.json
-    |-- verifyCredentials.js
-    |-- lib
-        |-- actions
-        |   |-- createOrganization.js
-        |   |-- createPerson.js
-        |   |-- deleteOrganization.js
-        |   |-- deletePerson.js
-        |   |-- snazzy.js
-        |   |-- updateOrganization.js
-        |   |-- updatePerson.js
-        |   |-- updatePersonsOrganization.js
-        |-- schemas
-        |   |-- createOrganization.in.json
-        |   |-- createOrganization.out.json
-        |   |-- createPerson.in.json
-        |   |-- createPerson.out.json
-        |   |-- deleteOrganization.in.json
-        |   |-- deleteOrganization.out.json
-        |   |-- deletePerson.in.json
-        |   |-- deletePerson.out.json
-        |   |-- getOrganizations.out.json
-        |   |-- getPersons.in.json
-        |   |-- getPersons.out.json
-        |   |-- updateOrganization.in.json
-        |   |-- updateOrganization.out.json
-        |   |-- updatePerson.in.json
-        |   |-- updatePerson.out.json
-        |   |-- updatePersonsOrganization.in.json
-        |   |-- updatePersonsOrganization.out.json
-        |-- triggers
-            |-- getOrganizationsPolling.js
-            |-- getPersonsPolling.js
-            |-- getDeletedPersonsPolling.js
-            |-- getDeletedOrganizationsPolling.js
+Apache-2.0 © [Wice GmbH](https://wice.de/)

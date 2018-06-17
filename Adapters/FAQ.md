@@ -2,7 +2,7 @@
 
 ## In this section you will find the problems which we faced during the component's development
 
-##### 1. Why does the component save only the first object from the incoming array of objects?
+#### 1. Why does the component save only the first object from the incoming array of objects?
 Imagine that we have the following scenario, which should get all persons from [Snazzy Contacts](https://snazzycontacts.com) and then transfer them in [Wice CRM](https://wice.de/). The flow should looks like this:
 
 [Snazzy Contacts Component](https://snazzycontacts.com) :arrow_right: [Splitter Component](https://github.com/elasticio/splitter-component) :arrow_right: [Wice Component](https://wice.de/)

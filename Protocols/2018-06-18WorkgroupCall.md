@@ -14,7 +14,7 @@
   
  
 
-## Onboarding / Next Steps
+## Onboarding Workshop
 - We will have a workshop within the first two weeks of July (Jacob will be on vac. in 3rd/4th week):
   --> Goal: "What do I have to do in order to connect..?"
   --> Target group will be developers
@@ -24,10 +24,10 @@
 ## Project Communication / Reminder 
 - Communicate results more often in slack!
 
-## Next Steps (from 04.06)
+## Next Steps
 - [ ] Consolidate existing knowledge considering Adapters at ElasticIO and differentiate what is important for the Open Integration Hub **Jacob**
 - [ ] Proceed writing the documentation for the transformer **Stherion + Philipp**
-- [ ] Improve the pre-structured FAQ for the Wice component **Shterion** + Philipp**
-- [ ] Jacob will have a look at the FAQ from Shterion and Philipp, maybe adding some points **Jacob**
-- [ ] Robin will send out the invitations for the planned workshop in July 
+- [ ] Improve the pre-structured FAQ for the Wice component **Shterion + Philipp**
+- [ ] Jacob will have a look on the FAQ from Shterion and Philipp, maybe adding some points **Jacob**
+- [ ] Send out the invitations for the planned workshop in July **Robin** 
 

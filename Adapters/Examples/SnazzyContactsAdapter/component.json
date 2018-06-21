@@ -21,14 +21,14 @@
       "password": {
         "label": "Your password",
         "required": true,
-        "viewClass": "TextFieldView",
+        "viewClass": "PasswordFieldView",
         "note": "Use your password for Snazzy Contacts"
       }
     }
   },
   "triggers": {
-    "getPersonsPolling": {
-      "main": "./lib/triggers/getPersonsPolling.js",
+    "getPersons": {
+      "main": "./lib/triggers/getPersons.js",
       "type": "polling",
       "description": "Fetch all persons from snazzycontacts saved by the user",
       "title": "Get persons",
@@ -36,8 +36,8 @@
         "out": "./lib/schemas/getPersons.out.json"
       }
     },
-    "getDeletedPersonsPolling": {
-      "main": "./lib/triggers/getDeletedPersonsPolling.js",
+    "getDeletedPersons": {
+      "main": "./lib/triggers/getDeletedPersons.js",
       "type": "polling",
       "description": "Fetch all deleted persons from snazzycontacts saved by the user",
       "title": "Get deleted persons",
@@ -45,8 +45,8 @@
         "out": "./lib/schemas/getDeletedPersons.out.json"
       }
     },
-    "getOrganizationsPolling": {
-      "main": "./lib/triggers/getOrganizationsPolling.js",
+    "getOrganizations": {
+      "main": "./lib/triggers/getOrganizations.js",
       "type": "polling",
       "description": "Fetch all organizations from snazzycontacts saved by the user",
       "title": "Get organizations",
@@ -54,8 +54,8 @@
         "out": "./lib/schemas/getOrganizations.out.json"
       }
     },
-    "getDeletedOrganizationsPolling": {
-      "main": "./lib/triggers/getDeletedOrganizationsPolling.js",
+    "getDeletedOrganizations": {
+      "main": "./lib/triggers/getDeletedOrganizations.js",
       "type": "polling",
       "description": "Fetch all deleted organizations from snazzycontacts saved by the user",
       "title": "Get deleted organizations",

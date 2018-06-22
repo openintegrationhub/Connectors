@@ -24,8 +24,7 @@ async function verifyCredentials(credentials, cb) {
     const cfg = {
       apikey: credentials.apikey,
       email: credentials.email,
-      password: credentials.password,
-      path: credentials.path
+      password: credentials.password
     };
     const token = await getToken(cfg);
     const cookie = await getCookie(token, cfg);

@@ -39,17 +39,15 @@ function processTrigger(msg, cfg) {
       const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
 
       if (totalEntries == 0) {
-        throw new Error('No persons found ...');
+        throw new Error('No deleted persons found ...');
       }
 
       persons.content.forEach((person) => {
         const currentPerson = customPerson(person);
         result.push(currentPerson);
       });
-      console.log(JSON.stringify(result.length, undefined, 2));
       return result;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
@@ -87,13 +85,13 @@ function processTrigger(msg, cfg) {
     return customUserFormat;
   }
 
-  async function getPersons() {
+  async function getDeletedPersons() {
     try {
       const cookie = await createSession(cfg);
       const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
       const requestOptions = {
         uri,
-        json: { 'max_hits': 100 }, // just for testing purposes
+        json: { 'print_deleted_entries_only': true },
         headers: { 'X-API-KEY': cfg.apikey }
       };
       contacts = await fetchAll(requestOptions);
@@ -112,7 +110,6 @@ function processTrigger(msg, cfg) {
   }
 
   function emitError(e) {
-    console.log(`ERROR: ${e}`);
     self.emit('error', e);
   }
 
@@ -122,7 +119,7 @@ function processTrigger(msg, cfg) {
   }
 
   Q()
-    .then(getPersons)
+    .then(getDeletedPersons)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

@@ -78,12 +78,8 @@ function processTrigger(msg, cfg) {
       const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
       const requestOptions = {
         uri,
-        json: {
-          'max_hits': 100 // just for testing purposes
-        },
-        headers: {
-          'X-API-KEY': cfg.apikey
-        }
+        json: { 'max_hits': 100 }, // just for testing purposes
+        headers: { 'X-API-KEY': cfg.apikey }
       };
       organizations = await fetchAll(requestOptions);
       return organizations;

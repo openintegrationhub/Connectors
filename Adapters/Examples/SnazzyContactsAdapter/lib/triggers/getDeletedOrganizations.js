@@ -30,23 +30,22 @@ exports.process = processTrigger;
  */
 function processTrigger(msg, cfg) {
   const self = this;
-  let contacts = [];
+  let organizations = [];
 
   async function fetchAll(options) {
     try {
       let result = [];
-      const persons = await request.post(options);
-      const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
+      const organizations = await request.post(options);
+      const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
 
       if (totalEntries == 0) {
-        throw new Error('No persons found ...');
+        throw new Error('No deleted organizations found ...');
       }
 
-      persons.content.forEach((person) => {
-        const currentPerson = customPerson(person);
-        result.push(currentPerson);
+      organizations.content.forEach((organization) => {
+        const currentOrganization = customOrganization(organization);
+        result.push(currentOrganization);
       });
-      console.log(JSON.stringify(result.length, undefined, 2));
       return result;
     } catch (e) {
       console.log(`ERROR: ${e}`);
@@ -54,50 +53,36 @@ function processTrigger(msg, cfg) {
     }
   }
 
-  function customPerson(person) {
-    const customUserFormat = {
-      rowid: person.rowid,
-      firstname: person.firstname,
-      name: person.name,
-      email: person.email,
-      for_rowid: person.for_rowid,
-      same_contactperson: person.same_contactperson,
-      title: person.title,
-      salutation: person.salutation,
-      date_of_birth: person.date_of_birth,
-      private_street: person.private_street,
-      private_zip_code: person.private_zip_code,
-      private_town: person.private_town,
-      private_country: person.private_country,
-      house_post_code: person.house_post_code,
-      fax: person.fax,
-      phone: person.phone,
-      mobile_phone: person.mobile_phone,
-      private_mobile_phone: person.private_mobile_phone,
-      private_phone: person.private_phone,
-      private_email: person.private_email,
-      facebook_url: person.facebook_url,
-      linked_in_url: person.linked_in_url,
-      twitter_url: person.twitter_url,
-      googleplus_url: person.googleplus_url,
-      youtube_url: person.youtube_url,
-      url: person.url,
-      skype: person.skype
+  function customOrganization(organization) {
+    const customOrganizationFormat = {
+      rowid: organization.rowid,
+      name: organization.name,
+      email: organization.email,
+      phone: organization.phone,
+      fax: organization.fax,
+      street: organization.street,
+      street_number: organization.street_number,
+      zip_code: organization.zip_code,
+      p_o_box: organization.p_o_box,
+      town: organization.town,
+      town_area: organization.town_area,
+      state: organization.state,
+      country: organization.country
     };
-    return customUserFormat;
+    return customOrganizationFormat;
   }
 
-  async function getPersons() {
+  async function getDeletedOrganizations() {
     try {
       const cookie = await createSession(cfg);
-      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
+      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
       const requestOptions = {
         uri,
-        json: { 'max_hits': 100 }, // just for testing purposes
+        json: { 'print_deleted_entries_only': true },
         headers: { 'X-API-KEY': cfg.apikey }
       };
-      contacts = await fetchAll(requestOptions);
-      return contacts;
+      organizations = await fetchAll(requestOptions);
+      return organizations;
     } catch (e) {
       console.log(`ERROR: ${e}`);
       throw new Error(e);
@@ -106,7 +91,7 @@ function processTrigger(msg, cfg) {
 
   function emitData() {
     const data = messages.newMessageWithBody({
-      "persons": contacts
+      "organizations": organizations
     });
     self.emit('data', data);
   }
@@ -122,7 +107,7 @@ function processTrigger(msg, cfg) {
   }
 
   Q()
-    .then(getPersons)
+    .then(getDeletedOrganizations)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

@@ -18,7 +18,8 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-const snazzy = require('./snazzy');
+
+const { createSession } = require('./../utils/snazzy');
 const BASE_URI = `https://snazzycontacts.com/mp_contact/json_respond`;
 
 exports.process = processAction;
@@ -30,98 +31,92 @@ exports.process = processAction;
  * @param cfg configuration that is account information and configuration field values
  */
 function processAction(msg, cfg) {
+  const self = this;
+  const headers = {
+    'X-API-KEY': cfg.apikey
+  };
+  let reply = [];
 
-  snazzy.createSession(cfg, () => {
-    if (cfg.mp_cookie) {
-
-      const self = this;
-      const { apikey } = cfg;
-      const { mp_cookie: cookie } = cfg;
+  async function checkForExistingOrganization(organization, cookie) {
+    try {
       let existingRowid = 0;
-      let reply = [];
-
-      function checkForExistingOrganization() {
-        return new Promise((resolve, reject) => {
-          const requestOptions = {
-            uri: `${BASE_URI}/address_company/json_mainview?&mp_cookie=${cookie}`,
-            json: {
-              "address_company_name": msg.body.name
-            },
-            headers: {
-              'X-API-KEY': apikey
-            }
-          };
-
-          request.post(requestOptions)
-            .then((res) => {
-              if (res.content[0].rowid) {
-                existingRowid = res.content[0].rowid;
-                msg.body.rowid = existingRowid;
-                console.log(`Organization already exists ... ROWID: ${existingRowid}`);
-              }
-              resolve(existingRowid);
-            }).catch((e) => {
-              reject(e);
-            })
-        });
+      const requestOptions = {
+        uri: `${BASE_URI}/address_company/json_mainview?&mp_cookie=${cookie}`,
+        json: {
+          "address_company_name": msg.body.name
+        },
+        headers
+      };
+      const getExistingRowid = await request.post(requestOptions);
+      if (getExistingRowid.content[0].rowid) {
+        existingRowid = getExistingRowid.content[0].rowid;
+        console.log(`Organization already exists ... ROWID: ${existingRowid}`);
       }
-
-      function createOrganization() {
-        return new Promise((resolve, reject) => {
-          const options = {
-            json: msg.body,
-            headers: {
-              'X-API-KEY': apikey
-            }
-          };
-
-          if (existingRowid > 0) {
-            const uri = `${BASE_URI}/address_company/json_update?mp_cookie=${cookie}`;
-            request.post(uri, options)
-              .then((res) => {
-                reply.push(res);
-                console.log('Updating an organization ...');
-                resolve(reply);
-              }).catch((e) => {
-                reject(e);
-              })
-          } else {
-            let uri = `${BASE_URI}/address_company/json_insert?mp_cookie=${cookie}`;
-            request.post(uri, options)
-              .then((res) => {
-                reply.push(res);
-                console.log('Creating an organization ...');
-                resolve(reply);
-              }).catch((e) => {
-                reject(e);
-              });
-          }
-        });
-      }
-
-      function emitData() {
-        const data = messages.newMessageWithBody({
-          "organization": reply
-        });
-        self.emit('data', data);
-      }
-
-      function emitError(e) {
-        console.log('Oops! Error occurred');
-        self.emit('error', e);
-      }
-
-      function emitEnd() {
-        console.log('Finished execution');
-        self.emit('end');
-      }
-
-      Q()
-        .then(checkForExistingOrganization)
-        .then(createOrganization)
-        .then(emitData)
-        .fail(emitError)
-        .done(emitEnd);
+      return existingRowid;
+    } catch (e) {
+      console.log(`ERROR: ${e}`);
+      throw new Error(e);
     }
-  });
+  }
+
+  async function createOrUpdateOrganization(existingRowid, cookie) {
+    try {
+      const requestOptions = {
+        json: msg.body,
+        headers
+      };
+      if (existingRowid == 0) {
+        console.log('Creating organization ...');
+        requestOptions.uri = `${BASE_URI}/address_company/json_insert?&mp_cookie=${cookie}`;
+        const organization = await request.post(requestOptions);
+        console.log(JSON.stringify(organization, undefined, 2));
+        return organization;
+      } else {
+        console.log('Updating organization ... ');
+        requestOptions.uri = `${BASE_URI}/address_company/json_update?mp_cookie=${cookie}`;
+        msg.body.rowid = existingRowid;
+        const organization = await request.post(requestOptions);
+        console.log(JSON.stringify(organization, undefined, 2));
+        return organization;
+      }
+    } catch (e) {
+      console.log(`ERROR: ${e}`);
+      throw new Error(e);
+    }
+  }
+
+  async function executeRequest() {
+    try {
+      const cookie = await createSession(cfg);
+      const existingRowid = await checkForExistingOrganization(msg.body, cookie);
+      reply = await createOrUpdateOrganization(existingRowid, cookie);
+      return reply;
+    } catch (e) {
+      console.log(`ERROR: ${e}`);
+      throw new Error(e);
+    }
+  }
+
+  function emitData() {
+    const data = messages.newMessageWithBody({
+      "organization": reply
+    });
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(executeRequest)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
 }

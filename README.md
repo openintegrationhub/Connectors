@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://github.com/openintegrationhub/Connectors/blob/master/Assets/medium-oih-einzeilig-zentriert.jpg" alt="Sublime's custom image" width="400"/>
-
+<p/>
 
 The revolution in data synchronization — the Open Integration Hub enables simple data synchronization between any software applications and thus accelerates digitalisation
 
@@ -44,7 +44,7 @@ The following illustration provides a holistic overview of a connector:
 
 An adapter is a module for the syntactic connection of an external application and its data to the Open Integration Hub. This includes protocol translation, data format transformation, etc.
 Furthermore it provides functionalities to perform e.g. CRUD operations within the source system.
-<p/>
+
 For further information please read through the information within the [adapter folder](/Adapters).
 
 

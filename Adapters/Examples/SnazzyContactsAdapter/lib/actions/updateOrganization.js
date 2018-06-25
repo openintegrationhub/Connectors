@@ -18,7 +18,8 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-const snazzy = require('./snazzy');
+
+const { createSession } = require('./../utils/snazzy');
 
 exports.process = processAction;
 
@@ -29,55 +30,57 @@ exports.process = processAction;
  * @param cfg configuration that is account information and configuration field values
  */
 function processAction(msg, cfg) {
+  const self = this;
+  let reply = [];
 
-  snazzy.createSession(cfg, () => {
-    if (cfg.mp_cookie) {
-      const self = this;
-      let reply = {};
-
-      function updateOrganization() {
-        return new Promise((resolve, reject) => {
-          const requestOptions = {
-            uri: `https://snazzycontacts.com/mp_contact/json_respond/address_company/json_update?mp_cookie=${cfg.mp_cookie}`,
-            json: msg.body,
-            headers: {
-              'X-API-KEY': cfg.apikey
-            }
-          };
-
-          request.post(requestOptions)
-            .then((res) => {
-              reply = res;
-              console.log('Organization has been updated...');
-              resolve(reply);
-            }).catch((e) => {
-              reject(e);
-            });
-        });
+  async function updateOrganization(cookie) {
+    const options = {
+      uri: `https://snazzycontacts.com/mp_contact/json_respond/address_company/json_update?mp_cookie=${cookie}`,
+      json: msg.body,
+      headers: {
+        'X-API-KEY': cfg.apikey
       }
+    };
 
-      function emitData() {
-        const data = messages.newMessageWithBody({
-          "organization": reply
-        });
-        self.emit('data', data);
-      }
-
-      function emitError(e) {
-        console.log('Oops! Error occurred');
-        self.emit('error', e);
-      }
-
-      function emitEnd() {
-        console.log('Finished execution');
-        self.emit('end');
-      }
-
-      Q()
-        .then(updateOrganization)
-        .then(emitData)
-        .fail(emitError)
-        .done(emitEnd);
+    try {
+      const updatedOrganization = await request.post(options);
+      return updatedOrganization;
+    } catch (e) {
+      throw new Error(`No organization with ROWID: ${msg.body.rowid} found!`);
     }
-  });
+  }
+
+  async function executeRequest() {
+    try {
+      const cookie = await createSession(cfg);
+      reply =  await updateOrganization(cookie);
+      console.log(`Organization with ROWID: ${msg.body.rowid} has been updated!`);
+      return reply;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  function emitData() {
+    const data = messages.newMessageWithBody({
+      "organization": reply
+    });
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(executeRequest)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
 }

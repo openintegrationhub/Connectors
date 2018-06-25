@@ -18,7 +18,8 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-const snazzy = require('./snazzy');
+
+const { createSession } = require('./../utils/snazzy');
 
 exports.process = processAction;
 
@@ -29,57 +30,57 @@ exports.process = processAction;
  * @param cfg configuration that is account information and configuration field values
  */
 function processAction(msg, cfg) {
+  const self = this;
+  let reply = [];
 
-  snazzy.createSession(cfg, () => {
-    if (cfg.mp_cookie) {
-      const self = this;
-      const body = msg.body;
-      let reply = {};
-      body.is_deleted = 1;
-
-      function deletePerson() {
-        return new Promise((resolve, reject) => {
-          const requestOptions = {
-            uri: `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_update?mp_cookie=${cfg.mp_cookie}`,
-            json: body,
-            headers: {
-              'X-API-KEY': cfg.apikey
-            }
-          };
-
-          request.post(requestOptions)
-            .then((res) => {
-              reply = res;
-              console.log('Person has been deleted.');
-              resolve(reply);
-            }).catch((e) => {
-              reject(e);
-            });
-        });
+  async function deletePerson(cookie) {
+    msg.body.is_deleted = 1;
+    const options = {
+      uri: `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_update?mp_cookie=${cookie}`,
+      json: msg.body,
+      headers: {
+        'X-API-KEY': cfg.apikey
       }
-
-      function emitData() {
-        const data = messages.newMessageWithBody({
-          "person": reply
-        });
-        self.emit('data', data);
-      }
-
-      function emitError(e) {
-        console.log('Oops! Error occurred');
-        self.emit('error', e);
-      }
-
-      function emitEnd() {
-        console.log('Finished execution');
-        self.emit('end');
-      }
-
-      Q()
-        .then(deletePerson)
-        .then(emitData)
-        .fail(emitError)
-        .done(emitEnd);
+    };
+    try {
+      const deletedPerson = await request.post(options);
+      return deletedPerson;
+    } catch (e) {
+      throw new Error(`No person with ROWID: ${msg.body.rowid} found!`);
     }
-  });
+  }
+
+  async function  executeRequest() {
+    try {
+      const cookie = await createSession(cfg);
+      reply = await deletePerson(cookie);
+      console.log(`Person with ${msg.body.rowid} has been deleted!`);
+      return reply;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  function emitData() {
+    const data = messages.newMessageWithBody({
+      "person": reply
+    });
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(executeRequest)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
 }

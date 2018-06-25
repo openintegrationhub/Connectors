@@ -18,7 +18,8 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-const snazzy = require('./snazzy');
+
+const { createSession } = require('./../utils/snazzy');
 
 exports.process = processAction;
 
@@ -29,56 +30,57 @@ exports.process = processAction;
  * @param cfg configuration that is account information and configuration field values
  */
 function processAction(msg, cfg) {
+  const self = this;
+  let reply = [];
 
-
-  snazzy.createSession(cfg, () => {
-    if (cfg.mp_cookie) {
-      const self = this;
-      let reply = {};
-
-      function updatePersonsOrganization() {
-
-        return new Promise((resolve, reject) => {
-          const requestOptions = {
-            uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_insert?mp_cookie=${cfg.mp_cookie}`,
-            json: msg.body,
-            headers: {
-              'X-API-KEY': cfg.apikey
-            }
-          };
-
-          request.post(requestOptions)
-            .then((res) => {
-              reply = res;
-              resolve(reply);
-            }).catch((e) => {
-              reject(e);
-            });
-        });
+  async function updatePersonsOrganization(cookie) {
+    const options = {
+      uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_insert?mp_cookie=${cookie}`,
+      json: msg.body,
+      headers: {
+        'X-API-KEY': cfg.apikey
       }
+    };
 
-      function emitData() {
-        const data = messages.newMessageWithBody({
-          "person": reply
-        });
-        self.emit('data', data);
-      }
-
-      function emitError(e) {
-        console.log('Oops! Error occurred');
-        self.emit('error', e);
-      }
-
-      function emitEnd() {
-        console.log('Finished execution');
-        self.emit('end');
-      }
-
-      Q()
-        .then(updatePersonsOrganization)
-        .then(emitData)
-        .fail(emitError)
-        .done(emitEnd);
+    try {
+      const updatedPerson = await request.post(options);
+      return updatedPerson;
+    } catch (e) {
+      throw new Error(`No user with ROWID: ${user.rowid} found!`);
     }
-  });
+  }
+
+  async function executeRequest() {
+    try {
+      const cookie = await createSession(cfg);
+      reply =  await updatePersonsOrganization(cookie);
+      console.log(`Person's organization has been updated!`);
+      return reply;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  function emitData() {
+    const data = messages.newMessageWithBody({
+      "person": reply
+    });
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(executeRequest)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
 }

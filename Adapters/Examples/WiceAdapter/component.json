@@ -11,31 +11,31 @@
         "note": "Please use <b>WICE</b> API key.",
         "placeholder": "m3n8qxl42fmxlhqln8c6rwblb4x9m51r"
       },
-      "mandant": {
-        "label": "Mandant",
+      "client": {
+        "label": "Client",
         "required": true,
         "viewClass": "TextFieldWithNoteView",
-        "note": "Please use <b>Wice</b> mandant.",
+        "note": "Please use <b>WICE</b> client.",
         "placeholder": "wicegmbh"
       },
       "username": {
         "label": "Your username",
         "required": true,
         "viewClass": "TextFieldView",
-        "note": "Use your username registerd in Wice",
+        "note": "Use your username registerd in <b>WICE</b>",
         "placeholder": "johndoe"
       },
       "password": {
         "label": "Your password",
         "required": true,
-        "viewClass": "TextFieldView",
+        "viewClass": "PasswordFieldView",
         "note": "Use your password for Wice"
       }
     }
   },
   "triggers": {
-    "getPersonsPolling": {
-      "main": "./lib/triggers/getPersonsPolling.js",
+    "getPersons": {
+      "main": "./lib/triggers/getPersons.js",
       "type": "polling",
       "description": "Get all persons saved by the user",
       "title": "Get persons",

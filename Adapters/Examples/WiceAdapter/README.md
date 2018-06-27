@@ -42,7 +42,7 @@ The connector supports the following **actions** and **triggers**:
 
   > **NOTE:** As mentioned before, to perform an action or call a trigger you have to be a registered [Wice CRM](https://wice.de/) user and you have to pass your **API Key** when you send a request.
 
-  In each trigger or action, before sending a request we create a session in [Wice CRM](https://wice.de/) via calling a function ```createSession()``` from ```wice.js``` file, which is located in directory **actions**. This function creates a session and as a second parameter accepts a callback function ```continueOnSuccess()``` which calls the certain trigger or the action.
+  In each trigger and action, before sending a request we create a session in [Wice CRM](https://wice.de/) via calling the function ```createSession()``` from ```wice.js``` file, which is located in directory **utils**. This function returns a cookie which is used when we send a request to [Wice CRM](https://wice.de/)
 
 ##### Get persons
 

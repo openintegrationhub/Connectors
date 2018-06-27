@@ -34,7 +34,8 @@ The connector supports the following **actions** and **triggers**:
 
 > **NOTE:** As mentioned before, to perform an action or a call trigger you have to be a registered [Snazzy Contacts](https://snazzycontacts.com) user and you have to pass your **API Key** (in [Snazzy Contacts](https://snazzycontacts.com) named *Data Sharing Key*) when you send a request.
 
-In each trigger or action, before sending a request we create a session in [Snazzy Contacts](https://snazzycontacts.com) via calling a function ```createSession()``` from ```snazzy.js``` file, which is located in directory **actions**. This function creates a session and as a second parameter accepts a callback function ```continueOnSuccess()``` which calls the certain trigger or the action.
+In each trigger and action, before sending a request we create a session in [Snazzy Contacts](https://snazzycontacts.com) via calling the function ```createSession()``` from ```snazzy.js``` file, which is located in directory **utils**. This function returns a cookie which is used when we send a request to
+[Snazzy Contacts](https://snazzycontacts.com).
 
 ##### Get persons
 

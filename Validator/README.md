@@ -31,7 +31,7 @@ Exemplary flow:<br>
 
 After you successfully created the subsequent steps you need to select the Validator component:
 
-![validator](Assets/SelectValidator.png)
+![validator](Assets/SelectValidator.PNG)
 
 ## Choose Action
 
@@ -43,11 +43,11 @@ Based on the type of object you select you need to select the relating action wi
 
 `Valid JSON object:` Validation successful & Sample was retrieved from validator
 
-![successful](Assets/valid.png)
+![successful](Assets/valid.PNG)
 <br>
 <br>
-![successful2](Assets/valid2.png)
+![successful2](Assets/valid2.PNG)
 
 `Invalid JSON object:` Error message that includes the specific error
 
-![failed](Assets/invalid.png)
+![failed](Assets/invalid.PNG)

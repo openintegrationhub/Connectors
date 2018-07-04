@@ -21,8 +21,7 @@ async function verifyCredentials(credentials, cb) {
   console.log('Credentials passed for verification %j', credentials)
   try {
     const cfg = {
-      apikey: credentials.apikey,
-      mandant_name: credentials.client,
+      mandant_name: credentials.mandant_name,
       username: credentials.username,
       password: credentials.password,
       apikey: credentials.apikey
@@ -32,7 +31,7 @@ async function verifyCredentials(credentials, cb) {
 
     if (session) {
       cb(null, { verified: true });
-      console.log('Credentials verified successfully');
+      console.log('Credentials verified successfully!');
       return true;
     }
 

@@ -41,7 +41,7 @@ module.exports.getExpression = function(msg) {
     "jobTitle": msg.body.position,
     "photo": msg.body.picture_url,
     "anniversary": "",
-    "address": [{
+    "addresses": [{
       "street": (msg.body.private_street === null) ? undefined : jsonata(`$trim($substringBefore("${msg.body.private_street}", $split("${msg.body.private_street}", ' ')[-1]))`).evaluate(),
       "streetNumber": (msg.body.private_street === null) ? undefined : jsonata(`$number($split("${msg.body.private_street}", " ")[-1])`).evaluate(),
       "unit": "",

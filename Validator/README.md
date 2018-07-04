@@ -7,14 +7,14 @@ The revolution in data synchronization — the Open Integration Hub enables simp
 Visit the official [Open Integration Hub homepage](https://www.openintegrationhub.de/)
 
 ## Table of Content
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-	- [Table of Content](#table-of-content)
-	- [How it works](#how-it-works)
-	- [Configuration](#configuration)
-		- [Select Validator](#select-validator)
-	- [Choose Action](#choose-action)
-	- [Possible Outputs](#possible-outputs)
+- [Table of Content](#table-of-content)
+- [How it works](#how-it-works)
+- [Configuration](#configuration)
+	- [Select Validator](#select-validator)
+- [Choose Action](#choose-action)
+- [Possible Outputs](#possible-outputs)
 
 <!-- /TOC -->
 

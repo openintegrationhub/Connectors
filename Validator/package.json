@@ -1,0 +1,37 @@
+{
+  "name": "oihvalidator",
+  "version": "0.0.1",
+  "description": "Component for the validation of json objects against OIH master data models",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/openintegrationhub/data-and-domain-models.git"
+  },
+  "author": "Cloud Ecosystem e.V.",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "engines": {
+    "node": "8.6.0",
+    "npm": ">=5.4"
+  },
+  "dependencies": {
+    "elasticio-sailor-nodejs": "2.2.1",
+    "elasticio-node": "0.0.8",
+    "co": "4.6.0",
+    "request": "2.76.0",
+    "request-promise": "4.1.1",
+    "ajv": "^6.5.2"
+  },
+  "bugs": {
+    "url": "https://github.com/openintegrationhub/data-and-domain-models/issues"
+  },
+  "homepage": "https://github.com/openintegrationhub/data-and-domain-models#readme",
+  "main": "",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "ajv": "^6.5.2"
+  }
+}

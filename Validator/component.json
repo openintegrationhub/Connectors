@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "validatePersonAddress": {
+      "main": "./lib/actions/validatePersonAddressV2.js",
+      "description": "Validate incoming Person object against master data model",
+      "title": "Address model V2 - Validate Person",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "validateOrganizationAddress": {
+      "main": "./lib/actions/validateOrganizationAddressV2.js",
+      "description": "Validate incoming Organization object against master data model",
+      "title": "Address model V2 - Validate Organization",
+      "metadata": {
+        "out": {}
+      }
+    }
+  }
+}

@@ -31,6 +31,8 @@ exports.process = processAction;
  */
 
 function processAction(msg, cfg) {
+  const self = this;
+  let reply = [];
 
   const options = {
     method: 'POST',
@@ -40,8 +42,6 @@ function processAction(msg, cfg) {
     }
   };
 
-  let reply = [];
-  let self = this;
   msg.body.same_contactperson = 'auto';
 
   async function checkForExistingPerson(person, cookie) {
@@ -67,25 +67,27 @@ function processAction(msg, cfg) {
   }
 
   async function createOrUpdatePerson(existingRowid, cookie) {
-    const person = JSON.stringify(msg.body);
     try {
-      options.form = {
-        cookie,
-        data: person
-      };
       if (existingRowid == 0) {
         console.log('Creating person ...');
-        options.form.method = 'insert_contact';
+        const input = JSON.stringify(msg.body);
+        options.form = {
+          method: 'insert_contact',
+          data: input,
+          cookie
+        };
         const person = await request.post(options);
-        // console.log(JSON.stringify(person, undefined, 2));
-        return person;
+        return JSON.parse(person);
       } else {
         console.log('Updating person ...');
         msg.body.rowid = existingRowid;
-        options.form.method = 'update_contact';
-        options.form.data = JSON.stringify(msg.body);
+        options.form = {
+          method: 'update_contact',
+          data: JSON.stringify(msg.body),
+          cookie
+        };
         const person = await request.post(options);
-        return person;
+        return JSON.parse(person);
       }
     } catch (e) {
       throw new Error(e);
@@ -95,7 +97,6 @@ function processAction(msg, cfg) {
   async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      console.log(`HERE: ${typeof msg.body}`);
       const existingRowid = await checkForExistingPerson(msg.body, cookie);
       reply = await createOrUpdatePerson(existingRowid, cookie);
     } catch (e) {

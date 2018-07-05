@@ -19,7 +19,7 @@ const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
 
-const wice = require('./wice.js');
+const { createSession } = require('./../utils/wice');
 
 exports.process = processAction;
 
@@ -31,104 +31,98 @@ exports.process = processAction;
  */
 
 function processAction(msg, cfg) {
-
-  let reply = [];
   const self = this;
+  let reply = [];
 
-  // First create a session in Wice
-  wice.createSession(cfg, () => {
-    if (cfg.cookie) {
-
-      const organization = JSON.stringify(msg.body);
-      let existingRowid = 0;
-
-      let options = {
-        method: 'POST',
-        uri: 'https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json',
-        headers: {
-          'X-API-KEY': cfg.apikey
-        }
-      };
-
-      // Check if the organization alredy exists
-      function checkForExistingOrganization() {
-        options.form = {
-          method: 'get_all_companies',
-          cookie: cfg.cookie,
-          ext_search_do: 1,
-          name: msg.body.name
-        };
-
-        return new Promise((resolve, reject) => {
-          request.post(options)
-            .then((res) => {
-              const resObj = JSON.parse(res);
-
-              if (resObj.loop_addresses) {
-                existingRowid = resObj.loop_addresses[0].rowid;
-                console.log(`Organization already exists ... Rowid: ${existingRowid}`);
-              }
-              resolve(existingRowid);
-            })
-            .catch((e) => {
-              reject(e);
-            });
-        });
-      };
-
-      function createOrganization() {
-
-        return new Promise((resolve, reject) => {
-            if (existingRowid > 0) {
-              msg.body.rowid = existingRowid;
-              options.form = {
-                method: 'update_company',
-                cookie: cfg.cookie,
-                data: organization
-              };
-              console.log('Updating an organization ...');
-            } else {
-              options.form = {
-                method: 'insert_company',
-                cookie: cfg.cookie,
-                data: organization
-              };
-              console.log('Creating an organization ...');
-            }
-
-            request.post(options).then((res) => {
-              const obj = JSON.parse(res);
-              reply.push(obj);
-              resolve(reply);
-            }).catch((e) => {
-              reject(e);
-            });
-        });
-      }
-
-      function emitData() {
-        const data = messages.newMessageWithBody({
-          "organization": reply
-        });
-        self.emit('data', data);
-      }
-
-      function emitError(e) {
-        console.log('Oops! Error occurred');
-        self.emit('error', e);
-      }
-
-      function emitEnd() {
-        console.log('Finished execution');
-        self.emit('end');
-      }
-
-      Q()
-      .then(checkForExistingOrganization)
-      .then(createOrganization)
-      .then(emitData)
-      .fail(emitError)
-      .done(emitEnd);
+  const options = {
+    method: 'POST',
+    uri: 'https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json',
+    headers: {
+      'X-API-KEY': cfg.apikey
     }
-  });
+  };
+
+
+  async function checkForExistingOrganization(organization, cookie) {
+    let existingRowid = 0;
+    try {
+      options.form = {
+        method: 'get_all_companies',
+        cookie,
+        ext_search_do: 1,
+        name: organization.name
+      };
+
+      const rowid = await request.post(options);
+      const rowidObj = JSON.parse(rowid);
+      if (rowidObj.loop_addresses) {
+        existingRowid = rowidObj.loop_addresses[0].rowid;
+        console.log(`Organization already exists ... ROWID: ${existingRowid}`);
+      }
+      return existingRowid;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async function createOrUpdateOrganization(existingRowid, cookie) {
+    try {
+      if (existingRowid == 0) {
+        console.log('Creating organization ...');
+        const input = JSON.stringify(msg.body);
+        options.form = {
+          method: 'insert_company',
+          data: input,
+          cookie
+        }
+        const organization = await request.post(options);
+        return JSON.parse(organization);
+      } else {
+        console.log('Updating organization ...');
+        msg.body.rowid = existingRowid;
+        options.form = {
+          method: 'update_company',
+          data: JSON.stringify(msg.body),
+          cookie
+        };
+        const organization = await request.post(options);
+        return JSON.parse(organization);
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async function executeRequest() {
+    try {
+      const cookie = await createSession(cfg);
+      const existingRowid = await checkForExistingOrganization(msg.body, cookie);
+      reply = await createOrUpdateOrganization(existingRowid, cookie);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  function emitData() {
+    const data = messages.newMessageWithBody({
+      "organization": reply
+    });
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(executeRequest)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
 }

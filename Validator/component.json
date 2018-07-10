@@ -1,4 +1,5 @@
 {
+  "title": "Open Integration Hub Quality Assurance",
   "actions": {
     "validatePersonAddress": {
       "main": "./lib/actions/validatePersonAddressV2.js",

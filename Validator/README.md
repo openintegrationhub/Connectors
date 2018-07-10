@@ -13,7 +13,7 @@ Visit the official [Open Integration Hub homepage](https://www.openintegrationhu
 - [How it works](#how-it-works)
 - [Configuration](#configuration)
 	- [Select Validator](#select-validator)
-- [Choose Action](#choose-action)
+	- [Choose Action](#choose-action)
 - [Possible Outputs](#possible-outputs)
 
 <!-- /TOC -->
@@ -33,7 +33,7 @@ After you successfully created the subsequent steps you need to select the Valid
 
 ![validator](Assets/SelectValidator.PNG)
 
-## Choose Action
+### Choose Action
 
 Based on the type of object you select you need to select the relating action within the validator to validate the object against the correct schema:
 

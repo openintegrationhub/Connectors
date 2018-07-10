@@ -18,14 +18,14 @@
       "sales_price": {
         "type": "string",
         "required": false,
-        "title": "Price",
+        "title": "Sales price",
         "note": "Sales price",
         "placeholder": "11.99"
       },
       "purchase_price": {
         "type": "string",
         "required": false,
-        "title": "Price",
+        "title": "Purchase price",
         "note": "Article's purchased price",
         "placeholder": "10.99"
       },

@@ -27,10 +27,14 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
+ * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg) {
+function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
   let contacts = [];
+
+  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
+  console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
   async function fetchAll(options) {
     try {
@@ -38,18 +42,16 @@ function processTrigger(msg, cfg) {
       const persons = await request.post(options);
       const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
 
-      if (totalEntries == 0) {
-        throw new Error('No persons found ...');
-      }
+      if (totalEntries == 0) throw 'No persons found ...';
 
-      persons.content.forEach((person) => {
+      persons.content.filter((person) => {
         const currentPerson = customPerson(person);
-        result.push(currentPerson);
+        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
       });
-      console.log(JSON.stringify(result.length, undefined, 2));
+
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
@@ -62,6 +64,8 @@ function processTrigger(msg, cfg) {
       email: person.email,
       for_rowid: person.for_rowid,
       same_contactperson: person.same_contactperson,
+      last_update: person.last_update,
+      is_deleted: person.is_deleted,
       title: person.title,
       salutation: person.salutation,
       date_of_birth: person.date_of_birth,
@@ -97,22 +101,31 @@ function processTrigger(msg, cfg) {
         headers: { 'X-API-KEY': cfg.apikey }
       };
       contacts = await fetchAll(requestOptions);
+
+      if (!contacts || !Array.isArray(contacts)) {
+        throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+      }
+
       return contacts;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "persons": contacts
-    });
-    self.emit('data', data);
+    console.log(`Found ${contacts.length} new records.`);
+
+    if (contacts.length > 0) {
+      contacts.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
+      });
+      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    }
   }
 
   function emitError(e) {
-    console.log(`ERROR: ${e}`);
     self.emit('error', e);
   }
 

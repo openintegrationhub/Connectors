@@ -17,13 +17,12 @@ limitations under the License.
 /* eslint no-invalid-this: 0 no-console: 0 */
 const eioUtils = require('elasticio-node').messages;
 const { getExpression } = require('./../expressions/fromOih.js');
-const { transform } = require('./transform.js')
+const { transform } = require('./transform.js');
 
 /**
  * This method will be called from elastic.io platform providing following data
  *
  * @param msg incoming message object that contains ``body`` with payload
- * @param cfg configuration that is account information and configuration field values
  */
 async function processAction(msg) {
   try {

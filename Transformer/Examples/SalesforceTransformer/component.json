@@ -1,0 +1,19 @@
+{
+  "title": "Salesforce Transformer",
+  "actions": {
+    "transformContactFromOIH": {
+      "main": "./lib/actions/transformContactFromOIH.js",
+      "title": "Transform from OIH",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "transformContactToOIH": {
+      "main": "./lib/actions/transformContactToOIH.js",
+      "title": "Transform to OIH",
+      "metadata": {
+        "out": {}
+      }
+    }
+  }
+}

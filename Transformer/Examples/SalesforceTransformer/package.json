@@ -1,0 +1,46 @@
+{
+  "name": "@elasticio/petstore-component-nodejs",
+  "version": "0.0.1",
+  "description": "elastic.io component for the Petstore API",
+  "homepage": "https://www.elastic.io",
+  "author": {
+    "name": "elastic.io GmbH",
+    "email": "info@elastic.io",
+    "url": "https://www.elastic.io"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "jsonata",
+    "elasticio",
+    "ipaas",
+    "integration",
+    "elasticio-component"
+  ],
+  "dependencies": {
+    "@elastic.io/jsonata-moment": "1.0.15",
+    "elasticio-node": "0.0.9",
+    "elasticio-sailor-nodejs": "^2.2.1",
+    "jsonata": "^1.5.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.1.1",
+    "eslint-config-xo-space": "^0.15.0",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-mocha": "^4.12.1",
+    "mocha": "^5.2.0"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "mocha": true
+    }
+  },
+  "engines": {
+    "node": "8.1.3"
+  },
+  "repository": "elasticio/jsonata-transform-component",
+  "license": "Apache-2.0"
+}

@@ -10,6 +10,10 @@ This component requires no authentication.
 The component supports two actions - **Transform to OIH** and **Transform from OIH**. This means that the component takes the incoming message body from the previous step and creates a new expression in a ``JSON`` format. The new generated ``JSON`` object has specific properties which represent the input/output for the next/previous component in the flow.
 The uses a fact that JSONata expression is a superset of JSON document so that by default any valid JSON document is a valid JSONata expression.
 
+**Actions** in the elastic.io graphical interface:
+
+![actions](Assets/Actions.png)
+
 Let's see how the action **Transform from OIH** works.
 
 ```js

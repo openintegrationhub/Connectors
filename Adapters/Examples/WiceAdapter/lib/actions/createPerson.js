@@ -29,7 +29,6 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
   const self = this;
   let reply = [];

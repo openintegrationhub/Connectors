@@ -30,7 +30,7 @@
     "eslint-config-xo-space": "^0.15.0",
     "eslint-plugin-json": "^1.2.0",
     "eslint-plugin-mocha": "^4.12.1",
-    "mocha": "^3.5.3"
+    "mocha": "^5.2.0"
   },
   "eslintConfig": {
     "extends": "xo-space",

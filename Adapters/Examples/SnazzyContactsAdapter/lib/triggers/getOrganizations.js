@@ -27,10 +27,14 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
+ * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg) {
+function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
   let organizations = [];
+
+  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
+  console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
   async function fetchAll(options) {
     try {
@@ -38,15 +42,14 @@ function processTrigger(msg, cfg) {
       const organizations = await request.post(options);
       const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
 
-      if (totalEntries == 0) {
-        throw new Error('No organizations found ...');
-      }
+      if (totalEntries == 0) throw new Error('No organizations found ...');
 
-      organizations.content.forEach((organization) => {
+      organizations.content.filter((organization) => {
         const currentOrganization = customOrganization(organization);
-        result.push(currentOrganization);
+        currentOrganization.last_update > snapshot.lastUpdated && result.push(currentOrganization);
       });
-      console.log(JSON.stringify(result.length, undefined, 2));
+
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
     } catch (e) {
       throw new Error(e);
@@ -56,6 +59,7 @@ function processTrigger(msg, cfg) {
   function customOrganization(organization) {
     const customOrganizationFormat = {
       rowid: organization.rowid,
+      last_update: organization.last_update,
       name: organization.name,
       email: organization.email,
       phone: organization.phone,
@@ -78,10 +82,15 @@ function processTrigger(msg, cfg) {
       const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
       const requestOptions = {
         uri,
-        json: { 'max_hits': 100 }, // just for testing purposes
+        json: {
+          'max_hits': 100 // just for testing purposes
+        },
         headers: { 'X-API-KEY': cfg.apikey }
       };
       organizations = await fetchAll(requestOptions);
+
+      if (!organizations || !Array.isArray(organizations)) throw `Expected records array. Instead received: ${JSON.stringify(organizations)}`;
+
       return organizations;
     } catch (e) {
       console.log(e);
@@ -90,10 +99,16 @@ function processTrigger(msg, cfg) {
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "organizations": organizations
-    });
-    self.emit('data', data);
+    console.log(`Found ${organizations.length} new records.`);
+
+    if (organizations.length > 0) {
+      organizations.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
+      });
+      snapshot.lastUpdated = organizations[organizations.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    }
   }
 
   function emitError(e) {

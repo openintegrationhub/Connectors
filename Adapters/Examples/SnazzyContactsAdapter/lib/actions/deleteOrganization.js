@@ -63,9 +63,7 @@ function processAction(msg, cfg) {
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "organization": reply
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 

@@ -28,7 +28,7 @@
   },
   "triggers": {
     "getPersons": {
-      "main": "./lib/triggers/getPersons.js",
+      "main": "./lib/triggers/getPersonsPolling.js",
       "type": "polling",
       "description": "Fetch all persons from snazzycontacts saved by the user",
       "title": "Get persons",
@@ -37,7 +37,7 @@
       }
     },
     "getDeletedPersons": {
-      "main": "./lib/triggers/getDeletedPersons.js",
+      "main": "./lib/triggers/getDeletedPersonsPolling.js",
       "type": "polling",
       "description": "Fetch all deleted persons from snazzycontacts saved by the user",
       "title": "Get deleted persons",
@@ -46,7 +46,7 @@
       }
     },
     "getOrganizations": {
-      "main": "./lib/triggers/getOrganizations.js",
+      "main": "./lib/triggers/getOrganizationsPolling.js",
       "type": "polling",
       "description": "Fetch all organizations from snazzycontacts saved by the user",
       "title": "Get organizations",
@@ -55,7 +55,7 @@
       }
     },
     "getDeletedOrganizations": {
-      "main": "./lib/triggers/getDeletedOrganizations.js",
+      "main": "./lib/triggers/getDeletedOrganizationsPolling.js",
       "type": "polling",
       "description": "Fetch all deleted organizations from snazzycontacts saved by the user",
       "title": "Get deleted organizations",
@@ -66,8 +66,8 @@
   },
   "actions": {
     "createPerson": {
-      "main": "./lib/actions/createPerson.js",
-      "title": "Create person",
+      "main": "./lib/actions/upsertPerson.js",
+      "title": "Upsert person",
       "description": "Create a new person in snazzycontacts",
       "metadata": {
         "in": "./lib/schemas/createPerson.in.json",
@@ -75,8 +75,8 @@
       }
     },
     "createOrganization": {
-      "main": "./lib/actions/createOrganization.js",
-      "title": "Create organization",
+      "main": "./lib/actions/upsertOrganization.js",
+      "title": "Upsert organization",
       "description": "Create an organization in snazzycontacts",
       "metadata": {
         "in": "./lib/schemas/createOrganization.in.json",

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;

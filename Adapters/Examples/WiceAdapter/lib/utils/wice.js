@@ -22,7 +22,7 @@ async function createSession(cfg) {
     uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json`,
     form: {
       "method": "login",
-      "mandant_name": cfg.mandant_name,
+      "mandant_name": cfg.client_name,
       "username": cfg.username,
       "password": cfg.password
     },

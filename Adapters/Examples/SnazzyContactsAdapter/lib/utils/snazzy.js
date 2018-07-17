@@ -13,8 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
-
+ 
 "use strict";
+
 const request = require('request-promise');
 const BASE_URI = 'http://snazzycontacts.com/mp_base/json_login/login';
 

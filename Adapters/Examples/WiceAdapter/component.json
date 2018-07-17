@@ -11,7 +11,7 @@
         "note": "Please use <b>WICE</b> API key.",
         "placeholder": "m3n8qxl42fmxlhqln8c6rwblb4x9m51r"
       },
-      "mandant_name": {
+      "client_name": {
         "label": "Client",
         "required": true,
         "viewClass": "TextFieldWithNoteView",

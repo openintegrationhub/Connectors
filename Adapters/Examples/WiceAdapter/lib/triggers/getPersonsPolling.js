@@ -18,8 +18,7 @@ limitations under the License.
 
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
 exports.process = processTrigger;
@@ -29,10 +28,14 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
+ * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg) {
+function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
   let contacts = [];
+
+  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
+  console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
   async function fetchAll(options) {
     try {
@@ -40,14 +43,14 @@ function processTrigger(msg, cfg) {
       const persons = await request.get(options);
       const personsObj = JSON.parse(persons);
 
-      if (personsObj.loop_addresses == undefined) {
-        throw new Error('No contacts found...');
-      }
+      if (personsObj.loop_addresses === undefined) throw 'No persons found ...';
 
-      personsObj.loop_addresses.forEach((person) => {
+      personsObj.loop_addresses.filter((person) => {
         const currentPerson = customPerson(person);
-        result.push(currentPerson);
-      });
+        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
+      })
+
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
     } catch (e) {
       throw new Error(e);
@@ -59,6 +62,8 @@ function processTrigger(msg, cfg) {
       rowid: person.rowid,
       for_rowid: person.for_rowid,
       same_contactperson: person.same_contactperson,
+      last_update: person.last_update,
+      deactivated: person.deactivated,
       name: person.name,
       firstname: person.firstname,
       email: person.email,
@@ -89,6 +94,8 @@ function processTrigger(msg, cfg) {
       };
 
       contacts = await fetchAll(options);
+      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+
       return contacts;
     } catch (e) {
       throw new Error(e);
@@ -96,10 +103,18 @@ function processTrigger(msg, cfg) {
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "persons": contacts
-    });
-    self.emit('data', data);
+    console.log(`Found ${contacts.length} new records.`);
+
+    if (contacts.length > 0) {
+      contacts.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
+      });
+      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
+    }
   }
 
   function emitError(e) {

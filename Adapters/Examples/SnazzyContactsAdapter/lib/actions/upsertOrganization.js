@@ -19,7 +19,6 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-
 const { createSession } = require('./../utils/snazzy');
 const BASE_URI = `https://snazzycontacts.com/mp_contact/json_respond`;
 

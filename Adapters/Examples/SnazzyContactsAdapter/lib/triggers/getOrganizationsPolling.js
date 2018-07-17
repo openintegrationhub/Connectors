@@ -18,7 +18,7 @@ limitations under the License.
 
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 
 exports.process = processTrigger;

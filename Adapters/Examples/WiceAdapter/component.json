@@ -1,6 +1,6 @@
 {
   "title": "WiceCRM",
-  "description": "Wice component for the elastic.io platform",
+  "description": "WiceCRM component for the elastic.io platform",
   "docsUrl": "https://wice.de/",
   "credentials": {
     "fields": {
@@ -8,34 +8,34 @@
         "label": "API key for data sharing",
         "required": true,
         "viewClass": "TextFieldWithNoteView",
-        "note": "Please use <b>WICE</b> API key.",
+        "note": "Please use <b>WiceCRM</b> API key.",
         "placeholder": "m3n8qxl42fmxlhqln8c6rwblb4x9m51r"
       },
       "client_name": {
         "label": "Client",
         "required": true,
         "viewClass": "TextFieldWithNoteView",
-        "note": "Please use <b>WICE</b> client.",
+        "note": "Please use <b>WiceCRM</b> client.",
         "placeholder": "wicegmbh"
       },
       "username": {
         "label": "Your username",
         "required": true,
         "viewClass": "TextFieldView",
-        "note": "Use your username registerd in <b>WICE</b>",
+        "note": "Use your username registerd in <b>WiceCRM</b>",
         "placeholder": "johndoe"
       },
       "password": {
         "label": "Your password",
         "required": true,
         "viewClass": "PasswordFieldView",
-        "note": "Use your password for Wice"
+        "note": "Use your password for <b>WiceCRM</b>"
       }
     }
   },
   "triggers": {
-    "getPersons": {
-      "main": "./lib/triggers/getPersons.js",
+    "getPersonsPolling": {
+      "main": "./lib/triggers/getPersonsPolling.js",
       "type": "polling",
       "description": "Get all persons saved by the user",
       "title": "Get persons",
@@ -52,8 +52,8 @@
         "out": "./lib/schemas/getDeletedPersons.out.json"
       }
     },
-    "getOrganizations": {
-      "main": "./lib/triggers/getOrganizations.js",
+    "getOrganizationsPolling": {
+      "main": "./lib/triggers/getOrganizationsPolling.js",
       "type": "polling",
       "description": "Get all organizations saved by the user",
       "title": "Get organizations",
@@ -70,8 +70,8 @@
         "out": "./lib/schemas/getDeletedOrganizations.out.json"
       }
     },
-    "getArticles": {
-      "main": "./lib/triggers/getArticles.js",
+    "getArticlesPolling": {
+      "main": "./lib/triggers/getArticlesPolling.js",
       "type": "polling",
       "description": "Get all articles saved by the user",
       "title": "Get articles",

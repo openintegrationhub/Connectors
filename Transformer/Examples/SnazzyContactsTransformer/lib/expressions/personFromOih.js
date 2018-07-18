@@ -14,21 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// const jsonata = require('jsonata');
-
-module.exports.getExpression = function(msg) {
+module.exports.getExpression = (msg) => {
   const expression = {
     "rowid": msg.body.applicationRecordUid,
-    "tenant": 617,
-    "for_rowid": 199978,
+    "tenant": "",
+    "for_rowid": "",
     "for_table": "",
     "firstname": msg.body.firstName,
     "department": "",
     "position": "",
     "phone2": "",
     "phone3": "",
-    "standard_person": msg.body.standard_person ? msg.body.standard_person : "",
-    "title": msg.body.title ? msg.body.title : "",
+    "standard_person":  "",
+    "title": msg.body.title,
     "name": msg.body.lastName,
     "phone": "1234566",
     "email": "test@mail.com",
@@ -87,7 +85,7 @@ module.exports.getExpression = function(msg) {
     "youtube_url": "",
     "url": "",
     "company_name": "Test WICE GmbH",
-    "name_and_firstname": "HobbsJackTest WICE GmbH",
+    "name_and_firstname": "Test WICE GmbH",
     "total_entries_readable_with_current_permissions": 239
   };
   return expression;

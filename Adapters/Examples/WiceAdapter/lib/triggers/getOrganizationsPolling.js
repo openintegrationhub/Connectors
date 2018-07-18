@@ -76,7 +76,6 @@ function processTrigger(msg, cfg, snapshot = {}) {
     return customOrganizaiontFormat;
   }
 
-
   async function getOrganizations() {
     try {
       const cookie = await createSession(cfg);

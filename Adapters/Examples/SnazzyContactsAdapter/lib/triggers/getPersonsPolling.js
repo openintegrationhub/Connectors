@@ -69,18 +69,25 @@ function processTrigger(msg, cfg, snapshot = {}) {
       is_deleted: person.is_deleted,
       title: person.title,
       salutation: person.salutation,
+      position: person.position,
       date_of_birth: person.date_of_birth,
       private_street: person.private_street,
       private_zip_code: person.private_zip_code,
       private_town: person.private_town,
+      private_state: person.private_state,
       private_country: person.private_country,
+      private_country_symbol: person.private_country_symbol,
       house_post_code: person.house_post_code,
       fax: person.fax,
       phone: person.phone,
+      phone: person.phone2,
+      phone: person.phone3,
       mobile_phone: person.mobile_phone,
       private_mobile_phone: person.private_mobile_phone,
       private_phone: person.private_phone,
       private_email: person.private_email,
+      picture_url: person.picture_url,
+      xing_url: person.xing_url,
       facebook_url: person.facebook_url,
       linked_in_url: person.linked_in_url,
       twitter_url: person.twitter_url,
@@ -103,9 +110,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       };
       contacts = await fetchAll(requestOptions);
 
-      if (!contacts || !Array.isArray(contacts)) {
-        throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
-      }
+      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
 
       return contacts;
     } catch (e) {
@@ -122,6 +127,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
       });
       snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
       console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
       self.emit('snapshot', snapshot);
     }
   }

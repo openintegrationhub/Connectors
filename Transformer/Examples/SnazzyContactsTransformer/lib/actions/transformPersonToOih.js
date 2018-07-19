@@ -27,7 +27,7 @@ const { transform } = require('./transform.js');
 async function processAction(msg) {
   try {
     const expression = getExpression(msg);
-    const result = await transform(msg, expression);
+    const result = await transform(expression);
     return eioUtils.newMessageWithBody(result.body);
   } catch (e) {
     console.log(`ERROR: ${e}`);

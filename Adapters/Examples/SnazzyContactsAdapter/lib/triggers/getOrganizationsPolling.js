@@ -109,6 +109,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
       snapshot.lastUpdated = organizations[organizations.length - 1].last_update;
       console.log(`New snapshot: ${snapshot.lastUpdated}`);
       self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
     }
   }
 

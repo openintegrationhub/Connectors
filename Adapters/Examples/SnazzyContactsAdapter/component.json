@@ -15,14 +15,14 @@
         "label": "Your email",
         "required": true,
         "viewClass": "TextFieldView",
-        "note": "Use your email registerd in Snazzy Contacts",
+        "note": "Use your email registerd in <b>Snazzy Contacts</b>",
         "placeholder": "youremail@mail.com"
       },
       "password": {
         "label": "Your password",
         "required": true,
         "viewClass": "PasswordFieldView",
-        "note": "Use your password for Snazzy Contacts"
+        "note": "Use your password for <b>Snazzy Contacts</b>"
       }
     }
   },
@@ -30,7 +30,7 @@
     "getPersons": {
       "main": "./lib/triggers/getPersonsPolling.js",
       "type": "polling",
-      "description": "Fetch all persons from snazzycontacts saved by the user",
+      "description": "Fetch all persons from Snazzy Contacts saved by the user",
       "title": "Get persons",
       "metadata": {
         "out": "./lib/schemas/getPersons.out.json"
@@ -39,7 +39,7 @@
     "getDeletedPersons": {
       "main": "./lib/triggers/getDeletedPersonsPolling.js",
       "type": "polling",
-      "description": "Fetch all deleted persons from snazzycontacts saved by the user",
+      "description": "Fetch all deleted persons from Snazzy Contacts saved by the user",
       "title": "Get deleted persons",
       "metadata": {
         "out": "./lib/schemas/getDeletedPersons.out.json"
@@ -48,7 +48,7 @@
     "getOrganizations": {
       "main": "./lib/triggers/getOrganizationsPolling.js",
       "type": "polling",
-      "description": "Fetch all organizations from snazzycontacts saved by the user",
+      "description": "Fetch all organizations from Snazzy Contacts saved by the user",
       "title": "Get organizations",
       "metadata": {
         "out": "./lib/schemas/getOrganizations.out.json"
@@ -57,7 +57,7 @@
     "getDeletedOrganizations": {
       "main": "./lib/triggers/getDeletedOrganizationsPolling.js",
       "type": "polling",
-      "description": "Fetch all deleted organizations from snazzycontacts saved by the user",
+      "description": "Fetch all deleted organizations from Snazzy Contacts saved by the user",
       "title": "Get deleted organizations",
       "metadata": {
         "out": "./lib/schemas/getDeletedOrganizations.out.json"
@@ -68,7 +68,7 @@
     "createPerson": {
       "main": "./lib/actions/upsertPerson.js",
       "title": "Upsert person",
-      "description": "Create a new person in snazzycontacts",
+      "description": "Create a new person in Snazzy Contacts",
       "metadata": {
         "in": "./lib/schemas/createPerson.in.json",
         "out": "./lib/schemas/createPerson.out.json"
@@ -77,7 +77,7 @@
     "createOrganization": {
       "main": "./lib/actions/upsertOrganization.js",
       "title": "Upsert organization",
-      "description": "Create an organization in snazzycontacts",
+      "description": "Create an organization in Snazzy Contacts",
       "metadata": {
         "in": "./lib/schemas/createOrganization.in.json",
         "out": "./lib/schemas/createOrganization.out.json"
@@ -86,7 +86,7 @@
     "updatePerson": {
       "main": "./lib/actions/updatePerson.js",
       "title": "Update person",
-      "description": "Update a person in snazzycontacts",
+      "description": "Update a person in Snazzy Contacts",
       "metadata": {
         "in": "./lib/schemas/updatePerson.in.json",
         "out": "./lib/schemas/updatePerson.out.json"
@@ -95,7 +95,7 @@
     "updateOrganization": {
       "main": "./lib/actions/updateOrganization.js",
       "title": "Update organization",
-      "description": "Update an organization in snazzycontacts",
+      "description": "Update an organization in Snazzy Contacts",
       "metadata": {
         "in": "./lib/schemas/updateOrganization.in.json",
         "out": "./lib/schemas/updateOrganization.out.json"
@@ -113,7 +113,7 @@
     "deletePerson": {
       "main": "./lib/actions/deletePerson.js",
       "title": "Delete person",
-      "description": "Delete a person in snazzycontacts",
+      "description": "Delete a person in Snazzy Contacts",
       "metadata": {
         "in": "./lib/schemas/deletePerson.in.json",
         "out": "./lib/schemas/deletePerson.out.json"
@@ -122,7 +122,7 @@
     "deleteOrganization": {
       "main": "./lib/actions/deleteOrganization.js",
       "title": "Delete organization",
-      "description": "Delete an organization in snazzycontacts",
+      "description": "Delete an organization in Snazzy Contacts",
       "metadata": {
         "in": "./lib/schemas/deleteOrganization.in.json",
         "out": "./lib/schemas/deleteOrganization.out.json"

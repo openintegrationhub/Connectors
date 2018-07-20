@@ -45,7 +45,6 @@ function processTrigger(msg, cfg, snapshot = {}) {
 
       if (totalEntries == 0) throw 'No deleted persons found ...';
 
-
       persons.content.filter((person) => {
         const currentPerson = customPerson(person);
         currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
@@ -125,6 +124,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
       });
       snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
       console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
       self.emit('snapshot', snapshot);
     }
   }

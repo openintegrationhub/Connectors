@@ -16,7 +16,7 @@ limitations under the License.
 
 const jsonata = require('jsonata');
 
-module.exports.getExpression = function(msg) {
+module.exports.getExpression = (msg) => {
   const expression = {
     "updated_date": jsonata("$now()").evaluate(),
     "address_category2": "",

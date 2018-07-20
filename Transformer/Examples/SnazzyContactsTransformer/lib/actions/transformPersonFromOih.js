@@ -30,6 +30,7 @@ async function processAction(msg) {
     const result = await transform(expression);
     return eioUtils.newMessageWithBody(result.body);
   } catch (e) {
+    throw new Error(e);
     console.log(`ERROR: ${e}`);
   }
 }

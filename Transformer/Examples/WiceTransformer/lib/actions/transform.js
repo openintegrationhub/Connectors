@@ -41,14 +41,13 @@ const PASSTHROUGH_BODY_PROPERTY = 'elasticio';
 /**
  * This method will be called from elastic.io platform providing following data
  *
- * @param msg incoming message object that contains ``body`` with payload
- * @param cfg configuration that is account information and configuration field values
+ * @param exp incoming expression object
  */
-module.exports.transform = function (msg, exp) {
+module.exports.transform = (exp) => {
   const stringifiedExpression = JSON.stringify(exp);
   const compiledExpression = jsonata(stringifiedExpression);
 
-  handlePassthrough(msg);
+  handlePassthrough(exp);
   console.log('Evaluating expression="%s" on body=%j', stringifiedExpression, exp);
   const result = compiledExpression.evaluate(exp);
   console.log('Evaluation completed, result=%j', result);
@@ -77,5 +76,3 @@ function handlePassthrough(message) {
   }
   return message;
 }
-
-// module.exports.process = processAction;

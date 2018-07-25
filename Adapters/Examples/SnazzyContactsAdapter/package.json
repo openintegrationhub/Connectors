@@ -1,6 +1,6 @@
 {
   "name": "snazzycontacts",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "elastic.io Snazzy Contacts component",
   "scripts": {
     "test": "exit 0"

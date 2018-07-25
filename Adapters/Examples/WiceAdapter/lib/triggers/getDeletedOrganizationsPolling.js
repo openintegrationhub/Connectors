@@ -54,7 +54,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       const organizations = await request.get(options);
       const organizationsObj = JSON.parse(organizations);
 
-      if (organizationsObj.loop_addresses === undefined) throw 'No organizations found ...';
+      if (organizationsObj.loop_addresses === undefined) return result;
 
       organizationsObj.loop_addresses.filter((organization) => {
         const currentOrganization = customOrganization(organization);

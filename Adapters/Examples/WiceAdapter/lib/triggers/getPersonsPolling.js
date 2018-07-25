@@ -43,7 +43,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       const persons = await request.get(options);
       const personsObj = JSON.parse(persons);
 
-      if (personsObj.loop_addresses === undefined) throw 'No persons found ...';
+      if (personsObj.loop_addresses === undefined) return result;
 
       personsObj.loop_addresses.filter((person) => {
         const currentPerson = customPerson(person);

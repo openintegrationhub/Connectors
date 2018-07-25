@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
 const messages = require('elasticio-node').messages;
-
 const wice = require('./wice.js');
 
 exports.process = processAction;
@@ -29,7 +29,6 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
 
   // Create a session in Wice

@@ -43,7 +43,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       const organizations = await request.get(options);
       const organizationsObj = JSON.parse(organizations);
 
-      if (organizationsObj.loop_addresses == undefined) throw 'No organizations found ...';
+      if (organizationsObj.loop_addresses == undefined) return result;
 
       organizationsObj.loop_addresses.filter((organization) => {
         const currentOrganization = customOrganization(organization);
@@ -76,6 +76,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
     return customOrganizaiontFormat;
   }
 
+
   async function getOrganizations() {
     try {
       const cookie = await createSession(cfg);
@@ -83,8 +84,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
         uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&full_list=1&cookie=${cookie}`,
         headers: { 'X-API-KEY': cfg.apikey }
       };
-
       organizations = await fetchAll(options);
+
       if (!organizations || !Array.isArray(organizations)) throw `Expected records array. Instead received: ${JSON.stringify(organizations)}`;
 
       return organizations;
@@ -95,6 +96,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
 
   function emitData() {
     console.log(`Found ${organizations.length} new records.`);
+
     if (organizations.length > 0) {
       organizations.forEach(elem => {
         self.emit('data', messages.newMessageWithBody(elem));

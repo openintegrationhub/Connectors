@@ -15,11 +15,11 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
-const wice = require('./wice.js');
+const { messages } = require('elasticio-node');
+const { createSession } = require('./../utils/wice');
 
 exports.process = processAction;
 
@@ -29,67 +29,62 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
+  const self = this;
+  let reply = [];
 
-
-  // Create a session in Wice
-  wice.createSession(cfg, () => {
-    if (cfg.cookie) {
-
-      let reply = [];
-      const self = this;
-
-      function deleteOrganization() {
-
-        return new Promise((resolve, reject) => {
-          const organization = JSON.stringify(msg.body);
-          const options = {
-            method: 'POST',
-            uri: 'https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json',
-            form: {
-              method: 'delete_company',
-              cookie: cfg.cookie,
-              data: organization
-            },
-            headers: {
-              'X-API-KEY': cfg.apikey
-            }
-          };
-
-          // Send a request to delete the organization
-          request.post(options).then((res) => {
-            reply = res;
-            console.log('Organization has been deleted...');
-            resolve(reply);
-          }).catch((e) => {
-            reject(e);
-          });
-        });
+  async function deleteOrganization(cookie) {
+    const data = JSON.stringify(msg.body);
+    const options = {
+      method: 'POST',
+      uri: 'https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json',
+      form: {
+        method: 'delete_company',
+        cookie,
+        data
+      },
+      headers: {
+        'X-API-KEY': cfg.apikey
       }
+    };
 
-      function emitData() {
-        const data = messages.newMessageWithBody({
-          "organization": reply
-        });
-        self.emit('data', data);
-      }
-
-      function emitError(e) {
-        console.log('Oops! Error occurred');
-        self.emit('error', e);
-      }
-
-      function emitEnd() {
-        console.log('Finished execution');
-        self.emit('end');
-      }
-
-      Q()
-        .then(deleteOrganization)
-        .then(emitData)
-        .fail(emitError)
-        .done(emitEnd);
+    try {
+      const deletedOrganization = await request.post(options);
+      return JSON.parse(deletedOrganization);
+    } catch (e) {
+      throw new Error(`No organization with ROWID: ${msg.body.rowid} found!`);
     }
-  });
+  }
+
+  async function executeRequest() {
+    try {
+      const cookie = await createSession(cfg);
+      reply = await deleteOrganization(cookie);
+      console.log(`Organization with ${msg.body.rowid} has been deleted!`);
+      return reply;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  function emitData() {
+    const data = messages.newMessageWithBody(reply);
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(executeRequest)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
 }

@@ -28,32 +28,19 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
- * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg, snapshot = {}) {
+function processTrigger(msg, cfg) {
+  let reply = [];
   const self = this;
-  let contacts = [];
 
-  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
-  console.log(`Last Updated: ${snapshot.lastUpdated}`);
-
-  async function fetchAll(options) {
+  async function getPerson(options) {
     try {
-      let result = [];
-      const persons = await request.get(options);
-      const personsObj = JSON.parse(persons);
+      const person = await request.get(options);
+      const personObj = JSON.parse(person);
 
-      if (personsObj.loop_addresses === undefined) return result;
+      if (!personObj.rowid) throw `No person with ROWID: ${msg.body.rowid} found...`;
 
-      personsObj.loop_addresses.filter((person) => {
-        if (person.deactivated == 1) {
-          const currentPerson = customPerson(person);
-          currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
-        }
-      })
-
-      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
-      return result;
+      return customPerson(personObj);
     } catch (e) {
       throw new Error(e);
     }
@@ -87,41 +74,30 @@ function processTrigger(msg, cfg, snapshot = {}) {
     return customUserFormat;
   }
 
-  async function getDeletedPersons() {
+  async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
       const options = {
-        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_persons&full_list=1&cookie=${cookie}`,
-        headers: { 'X-API-KEY': cfg.apikey }
+        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_person&cookie=${cookie}&pkey=${msg.body.rowid}`,
+        headers: {
+          'X-API-KEY': cfg.apikey
+        }
       };
-      contacts = await fetchAll(options);
-
-      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
-
-      return contacts;
+      reply = await getPerson(options);
+      console.log(`Person: ${JSON.stringify(reply)}`);
+      return reply;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
 
   function emitData() {
-    console.log(`Found ${contacts.length} new records.`);
-
-    if (contacts.length > 0) {
-      contacts.forEach(elem => {
-        self.emit('data', messages.newMessageWithBody(elem));
-      });
-      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
-      console.log(`New snapshot: ${snapshot.lastUpdated}`);
-      self.emit('snapshot', snapshot);
-    } else {
-      self.emit('snapshot', snapshot);
-    }
+    const data = messages.newMessageWithBody(reply);
+    self.emit('data', data);
   }
 
   function emitError(e) {
-    console.log(`ERROR: ${e}`);
+    console.log('Oops! Error occurred');
     self.emit('error', e);
   }
 
@@ -131,7 +107,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getDeletedPersons)
+    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

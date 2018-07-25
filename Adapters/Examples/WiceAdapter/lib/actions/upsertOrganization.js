@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
 exports.process = processAction;
@@ -41,23 +41,21 @@ function processAction(msg, cfg) {
     }
   };
 
-  msg.body.same_contactperson = 'auto';
-
-  async function checkForExistingPerson(person, cookie) {
+  async function checkForExistingOrganization(organization, cookie) {
     let existingRowid = 0;
     try {
       options.form = {
-        method: 'get_all_persons',
+        method: 'get_all_companies',
         cookie,
         ext_search_do: 1,
-        name: person.name
+        name: organization.name
       };
 
       const rowid = await request.post(options);
       const rowidObj = JSON.parse(rowid);
       if (rowidObj.loop_addresses) {
         existingRowid = rowidObj.loop_addresses[0].rowid;
-        console.log(`Person already exists ... ROWID: ${existingRowid}`);
+        console.log(`Organization already exists ... ROWID: ${existingRowid}`);
       }
       return existingRowid;
     } catch (e) {
@@ -65,28 +63,28 @@ function processAction(msg, cfg) {
     }
   }
 
-  async function createOrUpdatePerson(existingRowid, cookie) {
+  async function createOrUpdateOrganization(existingRowid, cookie) {
     try {
       if (existingRowid == 0) {
-        console.log('Creating person ...');
+        console.log('Creating organization ...');
         const input = JSON.stringify(msg.body);
         options.form = {
-          method: 'insert_contact',
+          method: 'insert_company',
           data: input,
           cookie
-        };
-        const person = await request.post(options);
-        return JSON.parse(person);
+        }
+        const organization = await request.post(options);
+        return JSON.parse(organization);
       } else {
-        console.log('Updating person ...');
+        console.log('Updating organization ...');
         msg.body.rowid = existingRowid;
         options.form = {
-          method: 'update_contact',
+          method: 'update_company',
           data: JSON.stringify(msg.body),
           cookie
         };
-        const person = await request.post(options);
-        return JSON.parse(person);
+        const organization = await request.post(options);
+        return JSON.parse(organization);
       }
     } catch (e) {
       throw new Error(e);
@@ -96,17 +94,15 @@ function processAction(msg, cfg) {
   async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingPerson(msg.body, cookie);
-      reply = await createOrUpdatePerson(existingRowid, cookie);
+      const existingRowid = await checkForExistingOrganization(msg.body, cookie);
+      reply = await createOrUpdateOrganization(existingRowid, cookie);
     } catch (e) {
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "person": reply
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 

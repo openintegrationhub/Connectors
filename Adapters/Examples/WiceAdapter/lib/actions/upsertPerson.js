@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
 exports.process = processAction;
@@ -29,7 +29,6 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
   const self = this;
   let reply = [];
@@ -42,22 +41,23 @@ function processAction(msg, cfg) {
     }
   };
 
-  msg.body.number = 'auto';
+  msg.body.same_contactperson = 'auto';
 
-  async function checkForExistingArticle(article, cookie) {
+  async function checkForExistingPerson(person, cookie) {
     let existingRowid = 0;
     try {
       options.form = {
-        method: 'get_all_articles',
+        method: 'get_all_persons',
         cookie,
-        search_filter: article.description
+        ext_search_do: 1,
+        name: person.name
       };
 
       const rowid = await request.post(options);
       const rowidObj = JSON.parse(rowid);
-      if (rowidObj.loop_articles) {
-        existingRowid = rowidObj.loop_articles[0].rowid;
-        console.log(`Article already exists ... Rowid: ${existingRowid}`);
+      if (rowidObj.loop_addresses) {
+        existingRowid = rowidObj.loop_addresses[0].rowid;
+        console.log(`Person already exists ... ROWID: ${existingRowid}`);
       }
       return existingRowid;
     } catch (e) {
@@ -65,28 +65,28 @@ function processAction(msg, cfg) {
     }
   }
 
-  async function createOrUpdateArticle(existingRowid, cookie) {
+  async function createOrUpdatePerson(existingRowid, cookie) {
     try {
       if (existingRowid == 0) {
-        console.log('Creating article ...');
+        console.log('Creating person ...');
         const input = JSON.stringify(msg.body);
         options.form = {
-          method: 'insert_article',
+          method: 'insert_contact',
           data: input,
           cookie
         };
-        const article = await request.post(options);
-        return JSON.parse(article);
+        const person = await request.post(options);
+        return JSON.parse(person);
       } else {
-        console.log('Updating article ...');
+        console.log('Updating person ...');
         msg.body.rowid = existingRowid;
         options.form = {
-          method: 'update_article',
+          method: 'update_contact',
           data: JSON.stringify(msg.body),
           cookie
         };
-        const article = await request.post(options);
-        return JSON.parse(article);
+        const person = await request.post(options);
+        return JSON.parse(person);
       }
     } catch (e) {
       throw new Error(e);
@@ -96,17 +96,15 @@ function processAction(msg, cfg) {
   async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingArticle(msg.body, cookie);
-      reply = await createOrUpdateArticle(existingRowid, cookie);
+      const existingRowid = await checkForExistingPerson(msg.body, cookie);
+      reply = await createOrUpdatePerson(existingRowid, cookie);
     } catch (e) {
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "article": reply
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 

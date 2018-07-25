@@ -28,30 +28,19 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
- * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg, snapshot = {}) {
-  let articles = [];
+function processTrigger(msg, cfg) {
+  let reply = [];
   const self = this;
 
-  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
-  console.log(`Last Updated: ${snapshot.lastUpdated}`)
-
-  async function fetchAll(options) {
+  async function getArticle(options) {
     try {
-      let result = [];
-      const articles = await request.get(options);
-      const articlesObj = JSON.parse(articles);
+      const article = await request.get(options);
+      const articleObj = JSON.parse(article);
 
-      if (articlesObj.loop_articles == undefined) return result;
+      if (!articleObj.rowid) throw `No article with ROWID: ${msg.body.rowid} found...`;
 
-      articlesObj.loop_articles.filter((article) => {
-        const currentArticle = customArticle(article);
-        currentArticle.last_update > snapshot.lastUpdated && result.push(currentArticle);
-      });
-
-      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
-      return result;
+      return customArticle(articleObj);
     } catch (e) {
       throw new Error(e);
     }
@@ -60,50 +49,40 @@ function processTrigger(msg, cfg, snapshot = {}) {
   function customArticle(article) {
     const customArticleFormat = {
       rowid: article.rowid,
-      last_update: article.last_update,
-      number: article.number,
       description: article.description,
       sales_price: article.sales_price,
       purchase_price: article.purchase_price,
       in_stock: article.in_stock,
-      unit: article.unit
+      unit: article.unit,
+      price_list_highlight: article.price_list_highlight
     };
     return customArticleFormat;
   }
 
-  async function getArticles() {
+  async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
       const options = {
-        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_articles&cookie=${cookie}`,
-        headers: { 'X-API-KEY': cfg.apikey }
+        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_article&cookie=${cookie}&show_detailview=${msg.body.rowid}`,
+        headers: {
+          'X-API-KEY': cfg.apikey
+        }
       };
-
-      articles = await fetchAll(options);
-      if (!articles || !Array.isArray(articles)) throw `Expected records array. Instead received: ${JSON.stringify(articles)}`;
-
-      return articles;
+      reply = await getArticle(options);
+      console.log(`Article: ${JSON.stringify(reply)}`);
+      return reply;
     } catch (e) {
       throw new Error(e);
     }
   }
 
   function emitData() {
-    console.log(`Found ${articles.length} new records.`);
-    if (articles.length > 0) {
-      articles.forEach(elem => {
-        self.emit('data', messages.newMessageWithBody(elem));
-      });
-      snapshot.lastUpdated = articles[articles.length - 1].last_update;
-      console.log(`New snapshot: ${snapshot.lastUpdated}`);
-      self.emit('snapshot', snapshot);
-    } else {
-      self.emit('snapshot', snapshot);
-    }
+    const data = messages.newMessageWithBody(reply);
+    self.emit('data', data);
   }
 
   function emitError(e) {
-    console.log(`ERROR: ${e}`);
+    console.log('Oops! Error occurred');
     self.emit('error', e);
   }
 
@@ -113,7 +92,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getArticles)
+    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

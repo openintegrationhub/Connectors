@@ -28,6 +28,4 @@ function createSession (config, continueOnSuccess) {
       console.log(`ERROR: ${e}`);
     });
 }
-module.exports = {
-  createSession
-};
+module.exports = { createSession };

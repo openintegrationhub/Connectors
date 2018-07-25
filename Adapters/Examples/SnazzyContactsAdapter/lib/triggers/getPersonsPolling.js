@@ -43,7 +43,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       const persons = await request.post(options);
       const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
 
-      if (totalEntries == 0) throw 'No persons found ...';
+      if (totalEntries == 0) return result;
 
       persons.content.filter((person) => {
         const currentPerson = customPerson(person);

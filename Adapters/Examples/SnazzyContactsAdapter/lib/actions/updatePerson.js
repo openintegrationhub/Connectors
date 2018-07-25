@@ -34,27 +34,27 @@ function processAction(msg, cfg) {
   let reply = [];
 
   async function updatePerson(cookie) {
-      const options = {
-        uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_update?mp_cookie=${cookie}`,
-        json: msg.body,
-        headers: {
-          'X-API-KEY': cfg.apikey
-        }
-      };
-
-      try {
-        const updatedPerson = await request.post(options);
-        console.log(`UPDATED PERSON: ${JSON.stringify(updatedPerson, undefined, 2)}`);
-        return updatedPerson;
-      } catch (e) {
-        throw new Error(`No person with ROWID: ${msg.body.rowid} found!`);
+    const options = {
+      uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_update?mp_cookie=${cookie}`,
+      json: msg.body,
+      headers: {
+        'X-API-KEY': cfg.apikey
       }
+    };
+
+    try {
+      const updatedPerson = await request.post(options);
+      console.log(`UPDATED PERSON: ${JSON.stringify(updatedPerson, undefined, 2)}`);
+      return updatedPerson;
+    } catch (e) {
+      throw new Error(`No person with ROWID: ${msg.body.rowid} found!`);
+    }
   }
 
   async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      reply =  await updatePerson(cookie);
+      reply = await updatePerson(cookie);
       console.log(`Person with ROWID: ${msg.body.rowid} has been updated!`);
       return reply;
     } catch (e) {

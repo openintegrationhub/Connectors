@@ -42,8 +42,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
       let result = [];
       const organizations = await request.post(options);
       const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
-
-      if (totalEntries == 0) throw new Error('No organizations found ...');
+      
+      if (totalEntries == 0) return result;
 
       organizations.content.filter((organization) => {
         const currentOrganization = customOrganization(organization);

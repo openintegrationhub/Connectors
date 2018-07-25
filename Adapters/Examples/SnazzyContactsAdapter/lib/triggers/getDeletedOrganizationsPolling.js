@@ -43,7 +43,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       const organizations = await request.post(options);
       const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
 
-      if (totalEntries == 0) throw 'No deleted organizations found ...';
+      if (totalEntries == 0) return result;
 
       organizations.content.filter((organization) => {
         const currentOrganization = customOrganization(organization);

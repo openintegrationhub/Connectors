@@ -52,4 +52,4 @@ In the most cases the process of calling functions in the component is synchrono
 
 ## Conclusion
 
-[elasticio-snazzycontacts-component](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels/SnazzyContactsAdapter) is deployed on [elastic.io](http://www.elastic.io "elastic.io platform") platform and its features could be use for generating flows. The component can be used for further development as well. The reason for the slow flow timing should be determined and thus  the performance of data transmission will be improved.
+[elasticio-snazzycontacts-component](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels/SnazzyContactsAdapter) is deployed on [elastic.io](http://www.elastic.io "elastic.io platform") platform and its features could be use for generating flows. The component can be used for further development as well. 

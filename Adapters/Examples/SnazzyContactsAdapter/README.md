@@ -3,7 +3,7 @@
 
 [Snazzy Contacts](https://snazzycontacts.com) is a smart contact management software for controlling, organizing and managing your contacts data. With [Snazzy Contacts](https://snazzycontacts.com) you could manage your entire team contacts(contacts and organizations) and work flexibly together with your colleagues. You are able to maintain your addresses on all devices from everywhere.
 
-This is a connector(*component*) which connects [Snazzy Contacts](https://snazzycontacts.com) with [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this connector you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). The component supports **"Triggers"** (e.g. ``getPersons``, ``getOrganizations``) as well as **"Actions"** (e.g. ``updatePerson``, ``createOrganization``, ``updatePersonsOrganization``, etc.), therefore with this component you could both read and fetch data from [Snazzy Contacts](https://snazzycontacts.com) and write and save data in [Snazzy Contacts](https://snazzycontacts.com) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
+This is an **adapter** which connects [Snazzy Contacts](https://snazzycontacts.com) with third-party applications via [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this **adapter** you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``deleteOrganization``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Snazzy Contacts](https://snazzycontacts.com) and write and save data in [Snazzy Contacts](https://snazzycontacts.com) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
 
 ## Before you begin
 
@@ -16,16 +16,19 @@ After you are already registered in [Snazzy Contacts](https://snazzycontacts.com
 Once the activation is done you have an access to **API Key** which is required for an authentication when you make a request to Snazzy Contacts.
 
 ## Actions and triggers
-The connector supports the following **actions** and **triggers**:
+The **adapter** supports the following **actions** and **triggers**:
+
 #### Triggers:
-  - Get persons (```getPersonsPolling.js```)
-  - Get organizations (```getOrganizationsPolling.js```)
-  - Get deleted persons (```getDeletedPersonsPolling.js```)
-  - Get deleted organizations (```getDeletedOrganizationsPolling.js```)
+  - Get persons - polling (```getPersonsPolling.js```)
+  - Get organizations - polling (```getOrganizationsPolling.js```)
+  - Get deleted persons - polling (```getDeletedPersonsPolling.js```)
+  - Get deleted organizations - polling (```getDeletedOrganizationsPolling.js```)
+
+  All triggers are of type '*polling'* which means that the **trigger** will be scheduled to execute periodically. It will fetch only these objects from the database that have been modified or created since the previous execution. Then it will emit one message per object that changes or is added since the last polling interval. For this case at the very beginning we just create an empty `snapshot` object. Later on we attach ``lastUpdated`` to it. At the end the entire object should be emitted as the message body.
 
 #### Actions:
-  - Create person (```createPerson.js```)
-  - Create organization(```createOrganization.js```)
+  - Upsert person (```upsertPerson.js```)
+  - Upsert organization(```upsertOrganization.js```)
   - Delete person (```deletePerson.js```)
   - Delete organization (```deleteOrganization.js```)
   - Update person (```updatePerson.js```)
@@ -39,37 +42,37 @@ In each trigger and action, before sending a request we create a session in [Sna
 
 ##### Get persons
 
-Get persons trigger (```getPersonsPolling.js```) performs a request which fetch all persons saved by a user in [Snazzy Contacts](https://snazzycontacts.com). The response consist of an **array of objects** with all persons and their attributes.
+Get persons trigger (```getPersonsPolling.js```) performs a request which fetch all new and updated persons saved by a user in [Snazzy Contacts](https://snazzycontacts.com).
 
 ##### Get organizations
 
-Get organizations trigger (```getOrganizationsPolling.js```) performs a request which fetch all organizations saved by a user in [Snazzy Contacts](https://snazzycontacts.com). The response consist of an **array of objects** with all organizations and their attributes.
+Get organizations trigger (```getOrganizationsPolling.js```) performs a request which fetch all new and updated organizations saved by a user in [Snazzy Contacts](https://snazzycontacts.com).
 
 ##### Get deleted persons
 
-Get deleted persons trigger (```getDeletedPersonsPolling.js```) performs a request which gets all deleted/deactivated persons by a user in [Snazzy Contacts](https://snazzycontacts.com). The response consist of an **array of objects** with all persons and their attributes.
+Get deleted persons trigger (```getDeletedPersonsPolling.js```) fetches all persons which have recently been deleted.
 
 ##### Get deleted organizations
 
-Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) performs a request which gets all deleted organizations by a user in [Snazzy Contacts](https://snazzycontacts.com) The response consist of an **array of objects** with all organizations and their attributes.
+Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) fetches all organizations which have recently been deleted.
 
-##### Create person
+##### Upsert person
 
-Create person action (``createPerson.js``) creates a person in [Snazzy Contacts](https://snazzycontacts.com). At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
+Upsert person action (``upsertPerson.js``) update an existing person if it already exists. Otherwise create a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
 
-##### Create organization
+##### Upsert organization
 
-Create organization action (``createOrganization.js``) creates a new organization in [Snazzy Contacts](https://snazzycontacts.com). This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
+Upsert organization action (``upsertOrganization.js``) update an existing organization if it already exists. Otherwise create a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
 
 ##### Delete person
 
-Delete person action (``deletePerson.js``) deletes a person in [Snazzy Contacts](https://snazzycontacts.com). The required parameter which must be passed is ``rowid`` of the person which you want to delete.
+Delete person action (``deletePerson.js``) deletes a person in [Snazzy Contacts](https://snazzycontacts.com). The required parameter is ``rowid`` of the person which you want to delete.
 
 >**NOTE**: We do ***NOT*** really delete the person from our database, we just set a value in field ``is_deleted`` to ``1`` which actually ***hides*** the person from the view.
 
 ##### Delete organization
 
-Delete organization action (``deleteOrganization.js``) deletes an organization in [Snazzy Contacts](https://snazzycontacts.com). The required parameter which must be passed is ``rowid`` of the organization which you want to delete.
+Delete organization action (``deleteOrganization.js``) deletes an organization in [Snazzy Contacts](https://snazzycontacts.com). The required parameter is ``rowid`` of the organization which you want to delete.
 
 >**NOTE**: We do ***NOT*** really delete the organization from our database, we just set a value in field ``is_deleted`` to ``1`` which actually ***hides*** the organization from the view.
 

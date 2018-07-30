@@ -27,60 +27,60 @@
     }
   },
   "triggers": {
-    "getPersons": {
-      "main": "./lib/triggers/getPersonsPolling.js",
+    "getPersonsPolling": {
+      "title": "Fetch new and updated persons(getPersons - Polling)",
+      "description": "Get Snazzy Contacts persons which have recently been modified or created",
       "type": "polling",
-      "description": "Fetch all persons from Snazzy Contacts saved by the user",
-      "title": "Get persons",
+      "main": "./lib/triggers/getPersonsPolling.js",
       "metadata": {
         "out": "./lib/schemas/getPersons.out.json"
       }
     },
-    "getDeletedPersons": {
-      "main": "./lib/triggers/getDeletedPersonsPolling.js",
+    "getDeletedPersonsPolling": {
+      "title": "Fetch deleted persons (getDeletedPersons - Polling)",
+      "description": "Get Snazzy Contacts persons which have recently been deleted",
       "type": "polling",
-      "description": "Fetch all deleted persons from Snazzy Contacts saved by the user",
-      "title": "Get deleted persons",
-      "metadata": {
+      "main": "./lib/triggers/getDeletedPersonsPolling.js",
+        "metadata": {
         "out": "./lib/schemas/getDeletedPersons.out.json"
       }
     },
-    "getOrganizations": {
-      "main": "./lib/triggers/getOrganizationsPolling.js",
+    "getOrganizationsPolling": {
+      "title": "Fetch new and updated organizations(getOrganizations- Polling)",
+      "description": "Get Snazzy Contacts organizations which have recently been modified or created",
       "type": "polling",
-      "description": "Fetch all organizations from Snazzy Contacts saved by the user",
-      "title": "Get organizations",
+      "main": "./lib/triggers/getOrganizationsPolling.js",
       "metadata": {
         "out": "./lib/schemas/getOrganizations.out.json"
       }
     },
-    "getDeletedOrganizations": {
-      "main": "./lib/triggers/getDeletedOrganizationsPolling.js",
+    "getDeletedOrganizationsPolling": {
+      "title": "Fetch deleted organizations (getDeletedOrganizations - Polling)",
+      "description": "Get Snazzy Contacts organizations which have recently been deleted",
       "type": "polling",
-      "description": "Fetch all deleted organizations from Snazzy Contacts saved by the user",
-      "title": "Get deleted organizations",
+      "main": "./lib/triggers/getDeletedOrganizationsPolling.js",
       "metadata": {
         "out": "./lib/schemas/getDeletedOrganizations.out.json"
       }
     }
   },
   "actions": {
-    "createPerson": {
-      "main": "./lib/actions/upsertPerson.js",
+    "upsertPerson": {
       "title": "Upsert person",
-      "description": "Create a new person in Snazzy Contacts",
+      "description": "Update an existing person if it already exists. Otherwise create a new one.",
+      "main": "./lib/actions/upsertPerson.js",
       "metadata": {
-        "in": "./lib/schemas/createPerson.in.json",
-        "out": "./lib/schemas/createPerson.out.json"
+        "in": "./lib/schemas/upsertPerson.in.json",
+        "out": "./lib/schemas/upsertPerson.out.json"
       }
     },
-    "createOrganization": {
-      "main": "./lib/actions/upsertOrganization.js",
+    "upsertOrganization": {
       "title": "Upsert organization",
-      "description": "Create an organization in Snazzy Contacts",
+      "description": "Update an existing organization if it already exists. Otherwise create a new one.",
+      "main": "./lib/actions/upsertOrganization.js",
       "metadata": {
-        "in": "./lib/schemas/createOrganization.in.json",
-        "out": "./lib/schemas/createOrganization.out.json"
+        "in": "./lib/schemas/upsertOrganization.in.json",
+        "out": "./lib/schemas/upsertOrganization.out.json"
       }
     },
     "updatePerson": {
@@ -103,7 +103,7 @@
     },
     "updatePersonsOrganization": {
       "main": "./lib/actions/updatePersonsOrganization.js",
-      "title": "Update person`s organization",
+      "title": "Update person's organization",
       "description": "Add a person to more than one organization",
       "metadata": {
         "in": "./lib/schemas/updatePersonsOrganization.in.json",
@@ -111,18 +111,18 @@
       }
     },
     "deletePerson": {
-      "main": "./lib/actions/deletePerson.js",
       "title": "Delete person",
-      "description": "Delete a person in Snazzy Contacts",
+      "description": "Given an id, deletes the corresponding person.",
+      "main": "./lib/actions/deletePerson.js",
       "metadata": {
         "in": "./lib/schemas/deletePerson.in.json",
         "out": "./lib/schemas/deletePerson.out.json"
       }
     },
     "deleteOrganization": {
-      "main": "./lib/actions/deleteOrganization.js",
       "title": "Delete organization",
-      "description": "Delete an organization in Snazzy Contacts",
+      "description": "Given an id, deletes the corresponding organization.",
+      "main": "./lib/actions/deleteOrganization.js",
       "metadata": {
         "in": "./lib/schemas/deleteOrganization.in.json",
         "out": "./lib/schemas/deleteOrganization.out.json"

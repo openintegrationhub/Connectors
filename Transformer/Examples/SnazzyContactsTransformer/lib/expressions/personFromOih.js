@@ -34,7 +34,7 @@ module.exports.getExpression = (msg) => {
     "phone": (jsonata(`$filter(${JSON.stringify(msg.body.contactData)}, function($v) { $v.description = 'primary'})`).evaluate()).value,
     "email": (jsonata(`$filter(${JSON.stringify(msg.body.contactData)}, function($v) { $v.description = 'private'})`).evaluate()).value,
     "fax": "",
-    "mobile_phone": "",
+    "mobile_phone": (jsonata(`$filter(${JSON.stringify(msg.body.contactData)}, function($v) { $v.description = 'secondary'})`).evaluate()).value,
     "remarks": "",
     "updated_by_user": "",
     "updated_by_user_group": "",

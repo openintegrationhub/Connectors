@@ -62,7 +62,7 @@
       }
     },
     "getDeletedOrganizationsPolling": {
-      "title": "Fetch deleted organizations (getDeletedPersons - Polling)",
+      "title": "Fetch deleted organizations (getDeletedOrganizations - Polling)",
       "description": "Get WiceCRM organizations which have recently been deleted",
       "type": "polling",
       "main": "./lib/triggers/getDeletedOrganizationsPolling.js",

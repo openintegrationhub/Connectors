@@ -18,14 +18,12 @@ const jsonata = require('jsonata');
 
 module.exports.getExpression = (msg) => {
   const expression = {
-    "oihUid": "53276",
-    "oihCreated": 7217281,
-    "oihLastModified": jsonata("$now()").evaluate(),
+    "oihUid": "",
+    "oihCreated": ,
+    "oihLastModified": "",
     "oihApplicationRecords": [{
-      "applicationUid": "60125",
-      "recordUid": msg.body.rowid,
-      "created": "",
-      "lastModified": msg.body.last_update
+      "applicationUid": "1",
+      "recordUid": msg.body.rowid
     }],
     "title": msg.body.title,
     "salutation": msg.body.salutation,

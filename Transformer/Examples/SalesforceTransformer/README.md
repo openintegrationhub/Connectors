@@ -1,5 +1,4 @@
 # SalesforceTransformer [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> Dedicated [Snazzy Contacts](https://snazzycontacts.com) data transformation component for elastic.io platform based on JSONata
 
 ## Authentication
 
@@ -7,7 +6,7 @@ This component requires no authentication.
 
 
 ## Source Application
-This transformer refers to the Salesforce CRM application.
+> Dedicated [Salesforce](https://www.salesforce.com) transformer for elastic.io platform based on JSONata.
 
 ## Relating Adapter
 This transformer interacts and transforms the incoming input of the Open Integration Hub and the [Salesforce adapter (component)](https://github.com/elasticio/salesforce-component)

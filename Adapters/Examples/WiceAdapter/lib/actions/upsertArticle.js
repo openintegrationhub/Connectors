@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
 exports.process = processAction;
@@ -29,7 +29,6 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-
 function processAction(msg, cfg) {
   const self = this;
   let reply = [];
@@ -42,22 +41,22 @@ function processAction(msg, cfg) {
     }
   };
 
+  msg.body.number = 'auto';
 
-  async function checkForExistingOrganization(organization, cookie) {
+  async function checkForExistingArticle(article, cookie) {
     let existingRowid = 0;
     try {
       options.form = {
-        method: 'get_all_companies',
+        method: 'get_all_articles',
         cookie,
-        ext_search_do: 1,
-        name: organization.name
+        search_filter: article.description
       };
 
       const rowid = await request.post(options);
       const rowidObj = JSON.parse(rowid);
-      if (rowidObj.loop_addresses) {
-        existingRowid = rowidObj.loop_addresses[0].rowid;
-        console.log(`Organization already exists ... ROWID: ${existingRowid}`);
+      if (rowidObj.loop_articles) {
+        existingRowid = rowidObj.loop_articles[0].rowid;
+        console.log(`Article already exists ... Rowid: ${existingRowid}`);
       }
       return existingRowid;
     } catch (e) {
@@ -65,28 +64,28 @@ function processAction(msg, cfg) {
     }
   }
 
-  async function createOrUpdateOrganization(existingRowid, cookie) {
+  async function createOrUpdateArticle(existingRowid, cookie) {
     try {
       if (existingRowid == 0) {
-        console.log('Creating organization ...');
+        console.log('Creating article ...');
         const input = JSON.stringify(msg.body);
         options.form = {
-          method: 'insert_company',
+          method: 'insert_article',
           data: input,
           cookie
-        }
-        const organization = await request.post(options);
-        return JSON.parse(organization);
+        };
+        const article = await request.post(options);
+        return JSON.parse(article);
       } else {
-        console.log('Updating organization ...');
+        console.log('Updating article ...');
         msg.body.rowid = existingRowid;
         options.form = {
-          method: 'update_company',
+          method: 'update_article',
           data: JSON.stringify(msg.body),
           cookie
         };
-        const organization = await request.post(options);
-        return JSON.parse(organization);
+        const article = await request.post(options);
+        return JSON.parse(article);
       }
     } catch (e) {
       throw new Error(e);
@@ -96,17 +95,15 @@ function processAction(msg, cfg) {
   async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingOrganization(msg.body, cookie);
-      reply = await createOrUpdateOrganization(existingRowid, cookie);
+      const existingRowid = await checkForExistingArticle(msg.body, cookie);
+      reply = await createOrUpdateArticle(existingRowid, cookie);
     } catch (e) {
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "organization": reply
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 

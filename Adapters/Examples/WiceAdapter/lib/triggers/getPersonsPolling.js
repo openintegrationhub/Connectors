@@ -46,10 +46,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
       if (personsObj.loop_addresses === undefined) return result;
 
       personsObj.loop_addresses.filter((person) => {
-        if (person.deactivated == 1) {
-          const currentPerson = customPerson(person);
-          currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
-        }
+        const currentPerson = customPerson(person);
+        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
       })
 
       result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
@@ -87,20 +85,19 @@ function processTrigger(msg, cfg, snapshot = {}) {
     return customUserFormat;
   }
 
-  async function getDeletedPersons() {
+  async function getPersons() {
     try {
       const cookie = await createSession(cfg);
       const options = {
         uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_persons&full_list=1&cookie=${cookie}`,
         headers: { 'X-API-KEY': cfg.apikey }
       };
-      contacts = await fetchAll(options);
 
+      contacts = await fetchAll(options);
       if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
 
       return contacts;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
@@ -131,7 +128,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getDeletedPersons)
+    .then(getPersons)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

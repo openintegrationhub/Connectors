@@ -2,18 +2,18 @@
   "title": "Snazzy Contacts Transformation",
   "description": "Generic Data Transformation Component",
   "actions": {
-    "transformFromOih": {
-      "title": "Transform from OIH",
+    "transformPersonFromOih": {
+      "title": "Transform a person from OIH",
       "description": "Transform the incoming data from OIH",
-      "main": "./lib/actions/transformFromOih.js",
+      "main": "./lib/actions/transformPersonFromOih.js",
       "metadata": {
         "out": {}
       }
     },
-    "transformToOih": {
-      "title": "Transform to OIH",
+    "transformPersonToOih": {
+      "title": "Transform a person to OIH",
       "description": "Transform the incoming data to OIH",
-      "main": "./lib/actions/transformToOih.js",
+      "main": "./lib/actions/transformPersonToOih.js",
       "metadata": {
         "out": {}
       }

@@ -1,9 +1,9 @@
 # elasticio-wice-component
 > [Wice CRM](https://wice.de/) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
 
-[Wice CRM](https://wice.de/) is a CRM(customer relationship management) Software which offers different modules for address management, tasks management, project management, calendars and a knowledge base for knowledge management. The software could be used to manage sales opportunities and offers too. In addition, [Wice CRM](https://wice.de/) offers the possibility to manage and create invoices, open items and incoming payments.
+[Wice CRM](https://wice.de/) is a CRM Software which offers different modules for address management, tasks management, project management, calendars and a knowledge base for knowledge management. The software could be used to manage sales opportunities and offers too. In addition, [Wice CRM](https://wice.de/) offers the possibility to manage and create invoices, open items and incoming payments.
 
-This is a connector(*component*) which connects [Wice CRM](https://wice.de/) with [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this connector you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). The component supports **"Triggers"** (e.g. ``getPersons``, ``getOrganizations``) as well as **"Actions"** (e.g. ``updatePerson``, ``createOrganization``, ``updatePersonsOrganization``, etc.), therefore with this component you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
+This is an **adapter** which connects [Wice CRM](https://wice.de/) which with third-party applications via [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this **adapter** you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``upsertArticle``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
 
 ## Before you begin
 
@@ -19,26 +19,27 @@ Once the activation is done you have an access to **API Key** which is required 
 The connector supports the following **actions** and **triggers**:
 
 #### Triggers:
-  - Get persons (```getPersonsPolling.js```)
-  - Get organizations (```getOrganizationsPolling.js```)
-  - Get articles(```getArticlesPolling.js```)
-  - Get organizations (```getOrganizationsPolling.js```)
-  - Get deleted persons (```getDeletedPersonsPolling.js```)
-  - Get deleted organizations (```getDeletedOrganizationsPolling.js```)
+  - Get persons - polling (```getPersonsPolling.js```)
+  - Get organizations - polling (```getOrganizationsPolling.js```)
+  - Get articles - polling (```getArticlesPolling.js```)
+  - Get deleted persons - polling (```getDeletedPersonsPolling.js```)
+  - Get deleted organizations - polling (```getDeletedOrganizationsPolling.js```)
+
+  All triggers are of type '*polling'* which means that the **trigger** will be scheduled to execute periodically. It will fetch only these objects from the database that have been modified or created since the previous execution. Then it will emit one message per object that changes or is added since the last polling interval. For this case at the very beginning we just create an empty `snapshot` object. Later on we attach ``lastUpdated`` to it. At the end the entire object should be emitted as the message body.
 
 #### Actions:
-  - Create person (```createPerson.js```)
-  - Create organization(```createOrganization.js```)
-  - Create article(```createArticle.js```)
+  - Upsert person (```upsertPerson.js```)
+  - Upsert organization(```upsertOrganization.js```)
+  - Upsert article(```upsertArticle.js```)
   - Update person (```updatePerson.js```)
   - Update organization (```updateOrganization.js```)  
   - Update article (```updateArticle.js```)  
   - Delete person (```deletePerson.js```)
   - Delete organization (```deleteOrganization.js```)
   - Delete article (```deleteArticle.js```)
-  - Get person by id (```getPersonPolling.js```)
-  - Get organization by id (```getOrganizationPolling.js```)
-  - Get article by id (```getArticlePolling.js```)
+  - Lookup person (```lookupPerson.js```)
+  - Lookup organization (```lookupOrganization.js```)
+  - Lookup article (```lookupArticle.js```)
 
   > **NOTE:** As mentioned before, to perform an action or call a trigger you have to be a registered [Wice CRM](https://wice.de/) user and you have to pass your **API Key** when you send a request.
 
@@ -46,47 +47,47 @@ The connector supports the following **actions** and **triggers**:
 
 ##### Get persons
 
-Get persons trigger (```getPersonsPolling.js```) performs a request which fetch all persons saved by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all persons and their attributes.
+Get persons trigger (```getPersonsPolling.js```) performs a request which fetches all new and updated persons saved by a user in [Wice CRM](https://wice.de/).
 
 ##### Get organizations
 
-Get organizations trigger (```getOrganizationsPolling.js```) performs a request which fetch all organizations saved by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all organizations and their attributes.
+Get organizations trigger (```getOrganizationsPolling.js```) performs a request which fetches all new and updated organizations saved by a user in [Wice CRM](https://wice.de/).
 
 ##### Get articles
 
-Get articles trigger (```getArticlesPolling.js```) performs a request which fetch all articles saved by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all articles and their attributes.
-
-##### Get person
-
-Get person action (```getPersonPolling.js```) performs a request which gets a user by id from [Wice CRM](https://wice.de/). The response is an object.
-
-##### Get organization
-
-Get organization action (```getOrganizationPolling.js```) performs a request which gets an organization by id from [Wice CRM](https://wice.de/). The response is an object.
-
-##### Get article
-
-Get article action (```getArticlePolling.js```) performs a request which gets an article by id from [Wice CRM](https://wice.de/). The response is an object.
+Get articles trigger (```getArticlesPolling.js```) performs a request which fetches all new and updated articles saved by a user in  [Wice CRM](https://wice.de/).
 
 ##### Get deleted persons
 
-Get deleted persons trigger (```getDeletedPersonsPolling.js```) performs a request which gets all deleted/deactivated persons by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all persons and their attributes.
+Get deleted persons trigger (```getDeletedPersonsPolling.js```) fetches all persons which have recently been deleted.
 
 ##### Get deleted organizations
 
-Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) performs a request which gets all deleted organizations by a user in [Wice CRM](https://wice.de/). The response consist of an **array of objects** with all organizations and their attributes.
+Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) fetches all organizations which have recently been deleted.
 
-##### Create person
+##### Lookup person
 
-Create person action (``createPerson.js``) creates a person in [Wice CRM](https://wice.de/). At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
+Lookup person action (```lookupPerson.js```) performs a request which fetches the corresponding person by given an id.
 
-##### Create organization
+##### Lookup organization
 
-Create organization action (``createOrganization.js``) creates a new organization in [Wice CRM](https://wice.de/). This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
+Lookup organization action (```lookupOrganization.js```) performs a request which fetches the corresponding organization by given an id.
 
-##### Create article
+##### Lookup article
 
-Create article action (``createArticle.js``) creates a new article in [Wice CRM](https://wice.de/). This function accepts as required parameter ``description``, but if you wish you can also pass ``number``, ``sales_price``, ``purchase_price``, ``in_stock``, ``unit``etc.
+Lookup article action (```lookupArticle.js```) performs a request which fetches the corresponding article by given an id.
+
+##### Upsert person
+
+Upsert person action (``upsertPerson.js``) update an existing person if it already exists. Otherwise create a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
+
+##### Upsert organization
+
+Upsert organization action (``upsertOrganization.js``) update an existing organization if it already exists. Otherwise create a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
+
+##### Upsert article
+
+Upsert article action (``upsertArticle.js``) update an existing article if it already exists. Otherwise create a new one. This function accepts as required parameter ``description``, but if you wish you can also pass ``number``, ``sales_price``, ``purchase_price``, ``in_stock``, ``unit``etc.
 
 ##### Update person
 
@@ -102,17 +103,17 @@ Update article action (``updateOrganization.js``) updates a specific article in 
 
 ##### Delete person
 
-Delete person action (``deletePerson.js``) deletes a person in [Wice CRM](https://wice.de/). The required parameter which must be passed is ``rowid`` of the person which you want to delete.
+Delete person action (``deletePerson.js``) deletes a person in [Wice CRM](https://wice.de/). The required parameter is ``rowid`` of the person which you want to delete.
 
 >**NOTE**: We do ***NOT*** really delete the person from our database, we just set a value in field ``deactivated`` to ``1`` which actually  marks the person as ***deactivated*** .
 
 ##### Delete organization
 
-Delete organization action (``deleteOrganization.js``) deletes an organization in [Wice CRM](https://wice.de/). The required parameter which must be passed is ``rowid`` of the organization which you want to delete.
+Delete organization action (``deleteOrganization.js``) deletes an organization in [Wice CRM](https://wice.de/). The required parameter is ``rowid`` of the organization which you want to delete.
 
 ##### Delete article
 
-Delete article action (``deleteArticle.js``) deletes an article in [Wice CRM](https://wice.de/). The required parameter which must be passed is ``rowid`` of the article which you want to delete.
+Delete article action (``deleteArticle.js``) deletes an article in [Wice CRM](https://wice.de/). The required parameter is ``rowid`` of the article which you want to delete.
 
 ***
 

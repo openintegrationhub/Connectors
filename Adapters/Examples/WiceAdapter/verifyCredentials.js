@@ -21,7 +21,7 @@ async function verifyCredentials(credentials, cb) {
   console.log('Credentials passed for verification %j', credentials)
   try {
     const cfg = {
-      mandant_name: credentials.mandant_name,
+      client_name: credentials.client_name,
       username: credentials.username,
       password: credentials.password,
       apikey: credentials.apikey

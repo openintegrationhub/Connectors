@@ -32,7 +32,7 @@ exports.process = processTrigger;
  */
 function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
-  let contacts = [];
+  let organizations = [];
 
   snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
   console.log(`Last Updated: ${snapshot.lastUpdated}`);
@@ -40,17 +40,15 @@ function processTrigger(msg, cfg, snapshot = {}) {
   async function fetchAll(options) {
     try {
       let result = [];
-      const persons = await request.get(options);
-      const personsObj = JSON.parse(persons);
+      const organizations = await request.get(options);
+      const organizationsObj = JSON.parse(organizations);
 
-      if (personsObj.loop_addresses === undefined) return result;
+      if (organizationsObj.loop_addresses == undefined) return result;
 
-      personsObj.loop_addresses.filter((person) => {
-        if (person.deactivated == 1) {
-          const currentPerson = customPerson(person);
-          currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
-        }
-      })
+      organizationsObj.loop_addresses.filter((organization) => {
+        const currentOrganization = customOrganization(organization);
+        currentOrganization.last_update > snapshot.lastUpdated && result.push(currentOrganization);
+      });
 
       result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
@@ -59,60 +57,51 @@ function processTrigger(msg, cfg, snapshot = {}) {
     }
   }
 
-  function customPerson(person) {
-    const customUserFormat = {
-      rowid: person.rowid,
-      for_rowid: person.for_rowid,
-      same_contactperson: person.same_contactperson,
-      last_update: person.last_update,
-      deactivated: person.deactivated,
-      name: person.name,
-      firstname: person.firstname,
-      email: person.email,
-      title: person.title,
-      salutation: person.salutation,
-      birthday: person.birthday,
-      private_street: person.private_street,
-      private_street_number: person.private_street_number,
-      private_zip_code: person.private_zip_code,
-      private_town: person.private_town,
-      private_state: person.private_state,
-      private_country: person.private_country,
-      phone: person.phone,
-      fax: person.fax,
-      private_phone: person.private_phone,
-      private_mobile_phone: person.private_mobile_phone,
-      private_email: person.private_email
+  function customOrganization(organization) {
+    const customOrganizaiontFormat = {
+      rowid: organization.rowid,
+      last_update: organization.last_update,
+      name: organization.name,
+      email: organization.email,
+      phone: organization.phone,
+      fax: organization.fax,
+      street: organization.street,
+      street_number: organization.street_number,
+      zip_code: organization.zip_code,
+      p_o_box: organization.p_o_box,
+      town: organization.town,
+      state: organization.state,
+      country: organization.country
     };
-    return customUserFormat;
+    return customOrganizaiontFormat;
   }
 
-  async function getDeletedPersons() {
+
+  async function getOrganizations() {
     try {
       const cookie = await createSession(cfg);
       const options = {
-        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_persons&full_list=1&cookie=${cookie}`,
+        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&full_list=1&cookie=${cookie}`,
         headers: { 'X-API-KEY': cfg.apikey }
       };
-      contacts = await fetchAll(options);
+      organizations = await fetchAll(options);
 
-      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+      if (!organizations || !Array.isArray(organizations)) throw `Expected records array. Instead received: ${JSON.stringify(organizations)}`;
 
-      return contacts;
+      return organizations;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
 
   function emitData() {
-    console.log(`Found ${contacts.length} new records.`);
+    console.log(`Found ${organizations.length} new records.`);
 
-    if (contacts.length > 0) {
-      contacts.forEach(elem => {
+    if (organizations.length > 0) {
+      organizations.forEach(elem => {
         self.emit('data', messages.newMessageWithBody(elem));
       });
-      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
+      snapshot.lastUpdated = organizations[organizations.length - 1].last_update;
       console.log(`New snapshot: ${snapshot.lastUpdated}`);
       self.emit('snapshot', snapshot);
     } else {
@@ -131,7 +120,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getDeletedPersons)
+    .then(getOrganizations)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

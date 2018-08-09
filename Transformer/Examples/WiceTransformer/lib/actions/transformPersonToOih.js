@@ -15,8 +15,9 @@ limitations under the License.
 */
 
 /* eslint no-invalid-this: 0 no-console: 0 */
+
 const eioUtils = require('elasticio-node').messages;
-const { getExpression } = require('./../expressions/fromOih.js');
+const { getExpression } = require('./../expressions/personToOih.js');
 const { transform } = require('./transform.js');
 
 /**
@@ -27,10 +28,11 @@ const { transform } = require('./transform.js');
 async function processAction(msg) {
   try {
     const expression = getExpression(msg);
-    const result = await transform(msg, expression);
+    const result = await transform(expression);
     return eioUtils.newMessageWithBody(result.body);
   } catch (e) {
-    console.log(`ERRPR: ${e}`);
+    throw new Error(e);
+    console.log(`ERROR: ${e}`);
   }
 }
 

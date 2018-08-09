@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 const BASE_URI = `https://snazzycontacts.com/mp_contact/json_respond`;
 
@@ -51,12 +51,10 @@ function processAction(msg, cfg) {
         headers
       };
       const getExistingRowid = await request.post(requestOptions);
-
       if (getExistingRowid.content[0].rowid) {
         existingRowid = getExistingRowid.content[0].rowid;
         console.log(`Person already exists... ROWID: ${existingRowid}`);
       }
-
       return existingRowid;
     } catch (e) {
       console.log(`ERROR: ${e}`);
@@ -86,6 +84,7 @@ function processAction(msg, cfg) {
         json: msg.body,
         headers
       };
+
       if (existingRowid == 0) {
         console.log('Creating person ...');
         requestOptions.uri = `${BASE_URI}/address_contactperson/json_insert?&mp_cookie=${cookie}`;
@@ -121,9 +120,7 @@ function processAction(msg, cfg) {
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "person": reply
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 

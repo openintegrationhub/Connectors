@@ -12,14 +12,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
- */
+*/
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
-const { createSession } = require('./../utils/wice');
+const { messages } = require('elasticio-node');
+const { createSession } = require('./../utils/snazzy');
 
 exports.process = processTrigger;
 
@@ -28,25 +28,29 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
+ * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg) {
+function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
   let organizations = [];
+
+  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
+  console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
   async function fetchAll(options) {
     try {
       let result = [];
-      const organizations = await request.get(options);
-      const organizationsObj = JSON.parse(organizations);
+      const organizations = await request.post(options);
+      const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
+      
+      if (totalEntries == 0) return result;
 
-      if (organizationsObj.loop_addresses == undefined) {
-        throw new Error('No organizations found ...');
-      }
-
-      organizationsObj.loop_addresses.forEach((organization) => {
+      organizations.content.filter((organization) => {
         const currentOrganization = customOrganization(organization);
-        result.push(currentOrganization);
+        currentOrganization.last_update > snapshot.lastUpdated && result.push(currentOrganization);
       });
+
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
     } catch (e) {
       throw new Error(e);
@@ -54,8 +58,9 @@ function processTrigger(msg, cfg) {
   }
 
   function customOrganization(organization) {
-    const customOrganizaiontFormat = {
+    const customOrganizationFormat = {
       rowid: organization.rowid,
+      last_update: organization.last_update,
       name: organization.name,
       email: organization.email,
       phone: organization.phone,
@@ -65,31 +70,48 @@ function processTrigger(msg, cfg) {
       zip_code: organization.zip_code,
       p_o_box: organization.p_o_box,
       town: organization.town,
+      town_area: organization.town_area,
       state: organization.state,
       country: organization.country
     };
-    return customOrganizaiontFormat;
+    return customOrganizationFormat;
   }
 
   async function getOrganizations() {
     try {
       const cookie = await createSession(cfg);
-      const options = {
-        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_companies&full_list=1&cookie=${cookie}`,
+      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
+      const requestOptions = {
+        uri,
+        json: {
+          'max_hits': 100 // just for testing purposes
+        },
         headers: { 'X-API-KEY': cfg.apikey }
       };
-      organizations = await fetchAll(options);
+      organizations = await fetchAll(requestOptions);
+
+      if (!organizations || !Array.isArray(organizations)) throw `Expected records array. Instead received: ${JSON.stringify(organizations)}`;
+
       return organizations;
     } catch (e) {
+      console.log(e);
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "organizations": organizations
-    });
-    self.emit('data', data);
+    console.log(`Found ${organizations.length} new records.`);
+
+    if (organizations.length > 0) {
+      organizations.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
+      });
+      snapshot.lastUpdated = organizations[organizations.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
+    }
   }
 
   function emitError(e) {

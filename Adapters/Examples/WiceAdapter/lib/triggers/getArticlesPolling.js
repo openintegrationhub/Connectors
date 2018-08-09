@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
 exports.process = processTrigger;
@@ -28,10 +28,14 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
+ * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg) {
+function processTrigger(msg, cfg, snapshot = {}) {
   let articles = [];
   const self = this;
+
+  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
+  console.log(`Last Updated: ${snapshot.lastUpdated}`)
 
   async function fetchAll(options) {
     try {
@@ -39,14 +43,14 @@ function processTrigger(msg, cfg) {
       const articles = await request.get(options);
       const articlesObj = JSON.parse(articles);
 
-      if (articlesObj.loop_articles == undefined) {
-        throw new Error(e);
-      }
+      if (articlesObj.loop_articles == undefined) return result;
 
-      articlesObj.loop_articles.forEach((article) => {
+      articlesObj.loop_articles.filter((article) => {
         const currentArticle = customArticle(article);
-        result.push(currentArticle);
+        currentArticle.last_update > snapshot.lastUpdated && result.push(currentArticle);
       });
+
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
     } catch (e) {
       throw new Error(e);
@@ -56,6 +60,7 @@ function processTrigger(msg, cfg) {
   function customArticle(article) {
     const customArticleFormat = {
       rowid: article.rowid,
+      last_update: article.last_update,
       number: article.number,
       description: article.description,
       sales_price: article.sales_price,
@@ -75,6 +80,8 @@ function processTrigger(msg, cfg) {
       };
 
       articles = await fetchAll(options);
+      if (!articles || !Array.isArray(articles)) throw `Expected records array. Instead received: ${JSON.stringify(articles)}`;
+
       return articles;
     } catch (e) {
       throw new Error(e);
@@ -82,10 +89,17 @@ function processTrigger(msg, cfg) {
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "articles": articles
-    });
-    self.emit('data', data);
+    console.log(`Found ${articles.length} new records.`);
+    if (articles.length > 0) {
+      articles.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
+      });
+      snapshot.lastUpdated = articles[articles.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
+    }
   }
 
   function emitError(e) {

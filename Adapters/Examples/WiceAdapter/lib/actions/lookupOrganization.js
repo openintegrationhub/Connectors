@@ -12,13 +12,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-const { createSession } = require('./../utils/snazzy');
+const { messages } = require('elasticio-node');
+const { createSession } = require('./../utils/wice');
 
 exports.process = processTrigger;
 
@@ -29,25 +30,17 @@ exports.process = processTrigger;
  * @param cfg configuration that is account information and configuration field values
  */
 function processTrigger(msg, cfg) {
+  let reply = [];
   const self = this;
-  let organizations = [];
 
-  async function fetchAll(options) {
+  async function getOrganization(options) {
     try {
-      let result = [];
-      const organizations = await request.post(options);
-      const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
+      const organization = await request.get(options);
+      const organizationObj = JSON.parse(organization);
 
-      if (totalEntries == 0) {
-        throw new Error('No organizations found ...');
-      }
+      if (!organizationObj.rowid) throw `No organization with ROWID: ${msg.body.rowid} found...`;
 
-      organizations.content.forEach((organization) => {
-        const currentOrganization = customOrganization(organization);
-        result.push(currentOrganization);
-      });
-      console.log(JSON.stringify(result.length, undefined, 2));
-      return result;
+      return customOrganization(organizationObj);
     } catch (e) {
       throw new Error(e);
     }
@@ -65,39 +58,36 @@ function processTrigger(msg, cfg) {
       zip_code: organization.zip_code,
       p_o_box: organization.p_o_box,
       town: organization.town,
-      town_area: organization.town_area,
       state: organization.state,
       country: organization.country
     };
     return customOrganizationFormat;
   }
 
-  async function getOrganizations() {
+  async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
-      const requestOptions = {
-        uri,
-        json: { 'max_hits': 100 }, // just for testing purposes
-        headers: { 'X-API-KEY': cfg.apikey }
+      const options = {
+        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_company&cookie=${cookie}&pkey=${msg.body.rowid}`,
+        headers: {
+          'X-API-KEY': cfg.apikey
+        }
       };
-      organizations = await fetchAll(requestOptions);
-      return organizations;
+      reply = await getOrganization(options);
+      console.log(`Organization: ${JSON.stringify(reply)}`);
+      return reply;
     } catch (e) {
-      console.log(e);
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "organizations": organizations
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 
   function emitError(e) {
-    console.log(`ERROR: ${e}`);
+    console.log('Oops! Error occurred');
     self.emit('error', e);
   }
 
@@ -107,7 +97,7 @@ function processTrigger(msg, cfg) {
   }
 
   Q()
-    .then(getOrganizations)
+    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

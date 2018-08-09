@@ -8,7 +8,21 @@ This component requires no authentication.
 ## How it works
 
 The component supports two actions - **Transform to OIH** and **Transform from OIH**. This means that the component takes the incoming message body from the previous step and creates a new expression in a ``JSON`` format. The new generated ``JSON`` object has specific properties which represent the input/output for the next/previous component in the flow.
-The uses a fact that JSONata expression is a superset of JSON document so that by default any valid JSON document is a valid JSONata expression.
+It uses a fact that JSONata expression is a superset of JSON document so that by default any valid JSON document is a valid JSONata expression.
+
+[Snazzy Contacts](https://snazzycontacts.com) **Transformer** on [elastic.io](http://elastic.io) graphical interface:
+
+![transformer](Assets/transformer.png)
+
+Both available **actions**:
+
+![actions](Assets/actions.png)
+
+The generated **sample** as a result:
+
+![sample](Assets/sample.png)  
+
+***  
 
 Let's see how the action **Transform from OIH** works. For example let's take this sample incoming message body and transform it to a valid [Snazzy Contacts](https://snazzycontacts.com) object:
 

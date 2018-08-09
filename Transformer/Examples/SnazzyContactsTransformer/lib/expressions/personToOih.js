@@ -16,16 +16,14 @@ limitations under the License.
 
 const jsonata = require('jsonata');
 
-module.exports.getExpression = function(msg) {
+module.exports.getExpression = (msg) => {
   const expression = {
     "oihUid": "",
     "oihCreated": "",
-    "oihLastModified": jsonata("$now()").evaluate(),
+    "oihLastModified": "",
     "oihApplicationRecords": [{
-      "applicationUid": "",
-      "recordUid": msg.body.rowid,
-      "created": "",
-      "lastModified": msg.body.last_update
+      "applicationUid": "3",
+      "recordUid": msg.body.rowid
     }],
     "title": msg.body.title,
     "salutation": msg.body.salutation,
@@ -42,8 +40,8 @@ module.exports.getExpression = function(msg) {
     "photo": msg.body.picture_url,
     "anniversary": "",
     "addresses": [{
-      "street": (msg.body.private_street === null) ? undefined : jsonata(`$trim($substringBefore("${msg.body.private_street}", $split("${msg.body.private_street}", ' ')[-1]))`).evaluate(),
-      "streetNumber": (msg.body.private_street === null) ? undefined : jsonata(`$number($split("${msg.body.private_street}", " ")[-1])`).evaluate(),
+      "street": msg.body.private_street === null ? undefined : jsonata(`$trim($substringBefore("${msg.body.private_street}", $split("${msg.body.private_street}", ' ')[-1]))`).evaluate(),
+      "streetNumber": msg.body.private_street === null ? undefined : jsonata(`$number($split("${msg.body.private_street}", " ")[-1])`).evaluate(),
       "unit": "",
       "zipCode": msg.body.private_zip_code,
       "city": msg.body.private_town,

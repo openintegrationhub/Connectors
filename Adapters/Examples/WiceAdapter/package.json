@@ -1,13 +1,13 @@
 {
-    "name": "wice_component",
-    "version": "0.1.0",
+    "name": "wice-component",
+    "version": "0.5.0",
     "description": "elastic.io Wice component",
     "scripts": {
         "test": "exit 0"
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:openintegrationhub/Data-and-Domain-Models.git"
+        "url": "git@github.com:openintegrationhub/Connectors.git"
     },
     "author": "Wice GmbH",
     "license": "Apache 2.0",
@@ -16,11 +16,11 @@
         "npm": ">=5.4"
     },
     "dependencies": {
-        "elasticio-sailor-nodejs": "2.2.1",
-        "elasticio-node": "0.0.8",
         "co": "4.6.0",
-        "request": "2.76.0",
-        "request-promise": "4.1.1",
-        "q": "^1.5.1"
+        "elasticio-node": "0.0.9",
+        "elasticio-sailor-nodejs": "2.2.1",
+        "q": "^1.5.1",
+        "request": "^2.87.0",
+        "request-promise": "4.1.1"
     }
 }

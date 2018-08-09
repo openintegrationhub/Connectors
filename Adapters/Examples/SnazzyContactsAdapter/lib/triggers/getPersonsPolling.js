@@ -15,9 +15,10 @@ limitations under the License.
 */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 
 exports.process = processTrigger;
@@ -27,10 +28,14 @@ exports.process = processTrigger;
  *
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
+ * @param snapshot saves the current state of integration step for the future reference
  */
-function processTrigger(msg, cfg) {
+function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
   let contacts = [];
+
+  snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
+  console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
   async function fetchAll(options) {
     try {
@@ -38,14 +43,14 @@ function processTrigger(msg, cfg) {
       const persons = await request.post(options);
       const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
 
-      if (totalEntries == 0) {
-        throw new Error('No deleted persons found ...');
-      }
+      if (totalEntries == 0) return result;
 
-      persons.content.forEach((person) => {
+      persons.content.filter((person) => {
         const currentPerson = customPerson(person);
-        result.push(currentPerson);
+        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
       });
+
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
       return result;
     } catch (e) {
       throw new Error(e);
@@ -60,20 +65,29 @@ function processTrigger(msg, cfg) {
       email: person.email,
       for_rowid: person.for_rowid,
       same_contactperson: person.same_contactperson,
+      last_update: person.last_update,
+      is_deleted: person.is_deleted,
       title: person.title,
       salutation: person.salutation,
+      position: person.position,
       date_of_birth: person.date_of_birth,
       private_street: person.private_street,
       private_zip_code: person.private_zip_code,
       private_town: person.private_town,
+      private_state: person.private_state,
       private_country: person.private_country,
+      private_country_symbol: person.private_country_symbol,
       house_post_code: person.house_post_code,
       fax: person.fax,
       phone: person.phone,
+      phone: person.phone2,
+      phone: person.phone3,
       mobile_phone: person.mobile_phone,
       private_mobile_phone: person.private_mobile_phone,
       private_phone: person.private_phone,
       private_email: person.private_email,
+      picture_url: person.picture_url,
+      xing_url: person.xing_url,
       facebook_url: person.facebook_url,
       linked_in_url: person.linked_in_url,
       twitter_url: person.twitter_url,
@@ -85,28 +99,38 @@ function processTrigger(msg, cfg) {
     return customUserFormat;
   }
 
-  async function getDeletedPersons() {
+  async function getPersons() {
     try {
       const cookie = await createSession(cfg);
       const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
       const requestOptions = {
         uri,
-        json: { 'print_deleted_entries_only': true },
+        json: { 'max_hits': 100 }, // just for testing purposes
         headers: { 'X-API-KEY': cfg.apikey }
       };
       contacts = await fetchAll(requestOptions);
+
+      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+
       return contacts;
     } catch (e) {
-      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "persons": contacts
-    });
-    self.emit('data', data);
+    console.log(`Found ${contacts.length} new records.`);
+
+    if (contacts.length > 0) {
+      contacts.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
+      });
+      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
+    }
   }
 
   function emitError(e) {
@@ -119,7 +143,7 @@ function processTrigger(msg, cfg) {
   }
 
   Q()
-    .then(getDeletedPersons)
+    .then(getPersons)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

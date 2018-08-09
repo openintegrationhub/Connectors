@@ -55,7 +55,14 @@
       "required": false,
       "title": "Street",
       "note": "Person's address street",
-      "placeholder": "Main Str. 120"
+      "placeholder": "Main Str. "
+    },
+    "private_street_number": {
+      "type": "string",
+      "required": false,
+      "title": "Street number",
+      "note": "Person's street number",
+      "placeholder": "120"
     },
     "private_zip_code": {
       "type": "string",

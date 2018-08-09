@@ -19,9 +19,9 @@ limitations under the License.
 const Q = require('q');
 const request = require('request-promise');
 const { messages } = require('elasticio-node');
-const { createSession } = require('./../utils/snazzy');
+const { createSession } = require('./../utils/wice');
 
-exports.process = processAction;
+exports.process = processTrigger;
 
 /**
  * This method will be called from elastic.io platform providing following data
@@ -29,33 +29,47 @@ exports.process = processAction;
  * @param msg incoming message object that contains ``body`` with payload
  * @param cfg configuration that is account information and configuration field values
  */
-function processAction(msg, cfg) {
-  const self = this;
+function processTrigger(msg, cfg) {
   let reply = [];
+  const self = this;
 
-  async function updatePerson(cookie) {
-    const options = {
-      uri: `https://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_update?mp_cookie=${cookie}`,
-      json: msg.body,
-      headers: {
-        'X-API-KEY': cfg.apikey
-      }
-    };
-
+  async function getArticle(options) {
     try {
-      const updatedPerson = await request.post(options);
-      console.log(`UPDATED PERSON: ${JSON.stringify(updatedPerson, undefined, 2)}`);
-      return updatedPerson;
+      const article = await request.get(options);
+      const articleObj = JSON.parse(article);
+
+      if (!articleObj.rowid) throw `No article with ROWID: ${msg.body.rowid} found...`;
+
+      return customArticle(articleObj);
     } catch (e) {
-      throw new Error(`No person with ROWID: ${msg.body.rowid} found!`);
+      throw new Error(e);
     }
+  }
+
+  function customArticle(article) {
+    const customArticleFormat = {
+      rowid: article.rowid,
+      description: article.description,
+      sales_price: article.sales_price,
+      purchase_price: article.purchase_price,
+      in_stock: article.in_stock,
+      unit: article.unit,
+      price_list_highlight: article.price_list_highlight
+    };
+    return customArticleFormat;
   }
 
   async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
-      reply = await updatePerson(cookie);
-      console.log(`Person with ROWID: ${msg.body.rowid} has been updated!`);
+      const options = {
+        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_article&cookie=${cookie}&show_detailview=${msg.body.rowid}`,
+        headers: {
+          'X-API-KEY': cfg.apikey
+        }
+      };
+      reply = await getArticle(options);
+      console.log(`Article: ${JSON.stringify(reply)}`);
       return reply;
     } catch (e) {
       throw new Error(e);

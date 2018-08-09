@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
 exports.process = processTrigger;
@@ -30,24 +30,17 @@ exports.process = processTrigger;
  * @param cfg configuration that is account information and configuration field values
  */
 function processTrigger(msg, cfg) {
+  let reply = [];
   const self = this;
-  let contacts = [];
 
-  async function fetchAll(options) {
+  async function getPerson(options) {
     try {
-      let result = [];
-      const persons = await request.get(options);
-      const personsObj = JSON.parse(persons);
+      const person = await request.get(options);
+      const personObj = JSON.parse(person);
 
-      if (personsObj.loop_addresses == undefined) {
-        throw new Error('No contacts found...');
-      }
+      if (!personObj.rowid) throw `No person with ROWID: ${msg.body.rowid} found...`;
 
-      personsObj.loop_addresses.forEach((person) => {
-        const currentPerson = customPerson(person);
-        result.push(currentPerson);
-      });
-      return result;
+      return customPerson(personObj);
     } catch (e) {
       throw new Error(e);
     }
@@ -58,6 +51,8 @@ function processTrigger(msg, cfg) {
       rowid: person.rowid,
       for_rowid: person.for_rowid,
       same_contactperson: person.same_contactperson,
+      last_update: person.last_update,
+      deactivated: person.deactivated,
       name: person.name,
       firstname: person.firstname,
       email: person.email,
@@ -79,30 +74,30 @@ function processTrigger(msg, cfg) {
     return customUserFormat;
   }
 
-  async function getPersons() {
+  async function executeRequest() {
     try {
       const cookie = await createSession(cfg);
       const options = {
-        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_all_persons&full_list=1&cookie=${cookie}`,
-        headers: { 'X-API-KEY': cfg.apikey }
+        uri: `https://oihwice.wice-net.de/plugin/wp_elasticio_backend/json?method=get_person&cookie=${cookie}&pkey=${msg.body.rowid}`,
+        headers: {
+          'X-API-KEY': cfg.apikey
+        }
       };
-
-      contacts = await fetchAll(options);
-      return contacts;
+      reply = await getPerson(options);
+      console.log(`Person: ${JSON.stringify(reply)}`);
+      return reply;
     } catch (e) {
       throw new Error(e);
     }
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "persons": contacts
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 
   function emitError(e) {
-    console.log(`ERROR: ${e}`);
+    console.log('Oops! Error occurred');
     self.emit('error', e);
   }
 
@@ -112,7 +107,7 @@ function processTrigger(msg, cfg) {
   }
 
   Q()
-    .then(getPersons)
+    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

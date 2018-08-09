@@ -15,9 +15,10 @@ limitations under the License.
 */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 
 exports.process = processTrigger;
@@ -34,7 +35,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   let contacts = [];
 
   snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
-  console.log(`Last Updated: ${snapshot.lastUpdated}`);
+  console.log(`Last updated: ${snapshot.lastUpdated}`);
 
   async function fetchAll(options) {
     try {
@@ -42,7 +43,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
       const persons = await request.post(options);
       const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
 
-      if (totalEntries == 0) throw 'No persons found ...';
+      if (totalEntries == 0) return result;
 
       persons.content.filter((person) => {
         const currentPerson = customPerson(person);
@@ -65,7 +66,6 @@ function processTrigger(msg, cfg, snapshot = {}) {
       for_rowid: person.for_rowid,
       same_contactperson: person.same_contactperson,
       last_update: person.last_update,
-      is_deleted: person.is_deleted,
       title: person.title,
       salutation: person.salutation,
       date_of_birth: person.date_of_birth,
@@ -91,23 +91,26 @@ function processTrigger(msg, cfg, snapshot = {}) {
     return customUserFormat;
   }
 
-  async function getPersons() {
+  async function getDeletedPersons() {
     try {
       const cookie = await createSession(cfg);
       const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
       const requestOptions = {
         uri,
-        json: { 'max_hits': 100 }, // just for testing purposes
-        headers: { 'X-API-KEY': cfg.apikey }
+        json: {
+          'print_deleted_entries_only': true
+        },
+        headers: {
+          'X-API-KEY': cfg.apikey
+        }
       };
       contacts = await fetchAll(requestOptions);
 
-      if (!contacts || !Array.isArray(contacts)) {
-        throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
-      }
+      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
 
       return contacts;
     } catch (e) {
+      console.log(`ERROR: ${e}`);
       throw new Error(e);
     }
   }
@@ -122,6 +125,8 @@ function processTrigger(msg, cfg, snapshot = {}) {
       snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
       console.log(`New snapshot: ${snapshot.lastUpdated}`);
       self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
     }
   }
 
@@ -135,7 +140,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getPersons)
+    .then(getDeletedPersons)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);

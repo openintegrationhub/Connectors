@@ -16,16 +16,14 @@ limitations under the License.
 
 const jsonata = require('jsonata');
 
-module.exports.getExpression = function(msg) {
+module.exports.getExpression = (msg) => {
   const expression = {
     "oihUid": "",
-    "oihCreated": "",
-    "oihLastModified": jsonata("$now()").evaluate(),
+    "oihCreated": ,
+    "oihLastModified": "",
     "oihApplicationRecords": [{
-      "applicationUid": "",
-      "recordUid": msg.body.rowid,
-      "created": "",
-      "lastModified": msg.body.last_update
+      "applicationUid": "1",
+      "recordUid": msg.body.rowid
     }],
     "title": msg.body.title,
     "salutation": msg.body.salutation,

@@ -15,10 +15,10 @@ limitations under the License.
  */
 
 "use strict";
+
 const Q = require('q');
 const request = require('request-promise');
-const messages = require('elasticio-node').messages;
-
+const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 
 exports.process = processAction;
@@ -62,9 +62,7 @@ function processAction(msg, cfg) {
   }
 
   function emitData() {
-    const data = messages.newMessageWithBody({
-      "person": reply
-    });
+    const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
 

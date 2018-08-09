@@ -5,6 +5,29 @@
 
 This component requires no authentication.
 
+
+## Source Application
+This transformer refers to the Salesforce CRM application.
+
+## Relating Adapter
+This transformer interacts and transforms the incoming input of the Open Integration Hub and the [Salesforce adapter (component)](https://github.com/elasticio/salesforce-component)
+
+Currently only one version of the Salesforce adapter is available.
+
+## Relating Master Data Model
+All currently existing actions refer to the [Master Data Model Addresses V2](https://github.com/openintegrationhub/Data-and-Domain-Models/tree/master/MasterDataModels/Addresses)
+
+## Covered Domain Objects
+Currently, the followowing domain objects are covered:
+
+- Contacts
+
+## Actions
+Currently, the followowing actions are available:
+
+- transformContactToOih
+- transformContactFromOih
+
 ## How it works
 
 The component supports two actions - **Transform to OIH** and **Transform from OIH**. This means that the component takes the incoming message body from the previous step and creates a new expression in a ``JSON`` format. The new generated ``JSON`` object has specific properties which represent the input/output for the next/previous component in the flow.
@@ -56,10 +79,13 @@ The result of that transofrmation will be the following JSON document:
 }
 ```
 
+## Version
+
+Version 1.0.0
+
 ## License
 
 Apache-2.0 © [elastic.io GmbH](http://elastic.io)
-
 
 [npm-image]: https://badge.fury.io/js/jsonata-transform-component.svg
 [npm-url]: https://npmjs.org/package/jsonata-transform-component

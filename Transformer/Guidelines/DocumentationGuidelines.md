@@ -2,6 +2,8 @@
 
 In order to enhance understandability and to simplify reuse of a transformer the repository should fulfill the following documentation requirements:
 
+(For an example see: [Salesforce Transformer](../Examples/SalesforceTransformer))
+
 ## README.md
 - [ ] A short description of the application the transformer refers to
 - [ ] Description of the adapter with which the transformer is interacting

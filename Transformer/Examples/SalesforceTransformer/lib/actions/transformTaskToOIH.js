@@ -16,7 +16,7 @@ limitations under the License.
 
 /* eslint no-invalid-this: 0 no-console: 0 */
 const eioUtils = require('elasticio-node').messages;
-const { getExpression } = require('./../expressions/contactToOih.js');
+const { getExpression } = require('./../expressions/taskToOih.js');
 const { transform } = require('./transform.js')
 
 /**

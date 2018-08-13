@@ -22,7 +22,7 @@ module.exports.getExpression = function(msg) {
     "LastName": msg.body.lastName,
     "FirstName": msg.body.firstName,
     "Salutation": msg.body.salutation,
-    "OtherStreet": jsonata(`$lookup($filter(${msg.body.addresses}, function($v) { ${$v.description} = "other"}), "street")`).evaluate(),
+    "OtherStreet": jsonata(`$lookup($filter(${msg.body.addresses}, ${function($v) { ${$v.description} = "other"}}), "street")`).evaluate(),
     "OtherCity": jsonata(`$lookup($filter(msg.body.addresses, function($v) { ${$v.description} = "other"}), "city")`).evaluate(),
     "OtherState": jsonata(`$lookup($filter(msg.body.addresses, function($v) { ${$v.description} = "other"}), "region")`).evaluate(),
     "OtherPostalCode": jsonata(`$lookup($filter(msg.body.addresses, function($v) { ${$v.description} = "other"}), "zipcode")`).evaluate(),

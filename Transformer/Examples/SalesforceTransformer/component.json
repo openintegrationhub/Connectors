@@ -3,14 +3,28 @@
   "actions": {
     "transformContactFromOIH": {
       "main": "./lib/actions/transformContactFromOIH.js",
-      "title": "Transform from OIH",
+      "title": "Transform a contact from Open Integration Hub",
       "metadata": {
         "out": {}
       }
     },
     "transformContactToOIH": {
       "main": "./lib/actions/transformContactToOIH.js",
-      "title": "Transform to OIH",
+      "title": "Transform a contact to Open Integration Hub",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "transformTaskFromOIH": {
+      "main": "./lib/actions/transformTaskFromOIH.js",
+      "title": "Transform a task from Open Integration Hub",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "transformTaskToOIH": {
+      "main": "./lib/actions/transformTaskToOIH.js",
+      "title": "Transform a task to Open Integration Hub",
       "metadata": {
         "out": {}
       }

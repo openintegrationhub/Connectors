@@ -21,12 +21,15 @@ All currently existing actions refer to the [Master Data Model Addresses V2](htt
 Currently, the followowing domain objects are covered:
 
 - Contacts
+- Tasks
 
 ## Actions
 Currently, the followowing actions are available:
 
 - transformContactToOih
 - transformContactFromOih
+- transformTaskToOih
+- transformTaskFromOih
 
 ## How it works
 

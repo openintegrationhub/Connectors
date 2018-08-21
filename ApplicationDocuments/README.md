@@ -1,12 +1,7 @@
 # Application Documents
 
-This folder includes all application documents needed to apply for the funding of the creation of a connector.
+Growth of the Community is important to us. This also means increasing the number of connectors to provide more possible integrations to users of the framework. Therefore we frequently set up funding programmes to support development of connectors.
 
-The `20171204_OIH-Bewerbungsunterlagen.zip` contains the following content:
+The last 10 funded Partners are still in the process of development. There are no further funds available right now.
 
-1. A `short description` of the open integration hub overall purpose
-2. An `application form` for the connector funding
-3. A `presentation (info slides)` to provide additional information on the open integration hub project and the connector funding
-
-
-If you are interested in a connector funding, please send your application to **connector@openintegrationhub.de**
+If you are interested in a connector funding, please get in touch via **connector@openintegrationhub.de**

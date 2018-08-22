@@ -3,7 +3,7 @@
 This guide helps to develop a **Transformer** for your particular application. It describes the process and the structure of development.  
 
 ## Table of Contents
-
+[Expressions](#expressions)  
 [Getting started](#getting started)  
 [Entry point](#entry point)  
 [Actions](#actions)  

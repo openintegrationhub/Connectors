@@ -2,13 +2,14 @@
 
 This guide helps to develop a **Transformer** for your particular application. It describes the process and the structure of development.  
 
-# Table of Contents  
-[Getting started](##getting started)    
-[Entry point](##entry point)  
-[Actions](##actions)  
-[Expressions](##expressions)    
-[JSONata](##jsonata)  
-[Authentication](##authentication)  
+# Table of Contents
+
+[Getting started](#getting started)     
+[Entry point](#entry point)  
+[Actions](#actions)  
+[Expressions](#expressions)    
+[JSONata](#jsonata)  
+[Authentication](#authentication)  
 
 ## Getting started
 

@@ -4,7 +4,7 @@ This guide helps to develop a **Transformer** for your particular application. I
 
 # Table of Contents
 
-[Getting started](#getting started)     
+[Getting started](#getting started)  
 [Entry point](#entry point)  
 [Actions](#actions)  
 [Expressions](#expressions)    

@@ -16,8 +16,8 @@ limitations under the License.
 
 /* eslint no-invalid-this: 0 no-console: 0 */
 const eioUtils = require('elasticio-node').messages;
-const { getExpression } = require('./../expressions/personToOih.js');
-const { transform } = require('./transform.js');
+const {getExpression} = require('./../expressions/personToOih.js');
+const {transform} = require('./transform.js');
 
 /**
  * This method will be called from elastic.io platform providing following data
@@ -28,10 +28,14 @@ async function processAction(msg) {
   try {
     const expression = getExpression(msg);
     const result = await transform(expression);
-    return eioUtils.newMessageWithBody(result.body);
+
+    if (result !== undefined) {
+      return eioUtils.newMessageWithBody(result.body);
+    }
+    return;
   } catch (e) {
-    throw new Error(e);
     console.log(`ERROR: ${e}`);
+    throw new Error(e);
   }
 }
 

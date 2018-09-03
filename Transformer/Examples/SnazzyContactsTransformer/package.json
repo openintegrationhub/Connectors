@@ -32,10 +32,18 @@
     "eslint-plugin-mocha": "^4.12.1",
     "mocha": "^5.2.0"
   },
+  "scripts": {
+    "pretest": "eslint lib spec --ext .json --ext .js --fix",
+    "test": "NODE_ENV=test mocha spec/*",
+    "test-watch": "nodemon --exec \"npm test \""
+  },
   "eslintConfig": {
     "extends": "xo-space",
     "env": {
       "mocha": true
+    },
+    "rules": {
+        "camelcase": [2, {"properties": "never"}]
     }
   },
   "engines": {

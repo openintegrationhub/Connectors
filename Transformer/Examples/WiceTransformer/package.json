@@ -24,6 +24,11 @@
     "elasticio-sailor-nodejs": "^2.2.1",
     "jsonata": "^1.5.3"
   },
+  "scripts": {
+    "pretest": "eslint lib spec --ext .json --ext .js --fix",
+    "test": "NODE_ENV=test mocha spec/*",
+    "test-watch": "nodemon --exec \"npm test \""
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^3.1.1",
@@ -36,6 +41,9 @@
     "extends": "xo-space",
     "env": {
       "mocha": true
+    },
+    "rules": {
+        "camelcase": [2, {"properties": "never"}]
     }
   },
   "engines": {

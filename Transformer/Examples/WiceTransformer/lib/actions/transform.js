@@ -43,7 +43,7 @@ const PASSTHROUGH_BODY_PROPERTY = 'elasticio';
  *
  * @param exp incoming expression object
  */
-module.exports.transform = (exp) => {
+module.exports.transform = exp => {
   const stringifiedExpression = JSON.stringify(exp);
   const compiledExpression = jsonata(stringifiedExpression);
 
@@ -62,7 +62,7 @@ module.exports.transform = (exp) => {
     return Promise.resolve();
   }
   return Promise.resolve(eioUtils.newMessageWithBody(result));
-}
+};
 
 function handlePassthrough(message) {
   if (message.passthrough && Object.keys(message.passthrough)) {

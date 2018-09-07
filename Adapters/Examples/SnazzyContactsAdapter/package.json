@@ -2,19 +2,19 @@
   "name": "snazzycontacts",
   "version": "0.5.0",
   "description": "elastic.io Snazzy Contacts component",
-  "scripts": {
-    "test": "exit 0"
-  },
+  "homepage": "https://wice.de/",
+  "author": "Wice GmbH",
+  "files": [
+    "lib"
+  ],
   "keywords": [
-    "snazzy",
+    "snazzy contacts",
     "component"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:openintegrationhub/Connectors.git"
+  "scripts": {
+    "test": "NODE_ENV=test mocha spec/* --timeout 10000",
+    "test-watch": "nodemon --exec \"npm test \""
   },
-  "author": "Wice GmbH",
-  "license": "Apache 2.0",
   "engines": {
     "node": "8.6.0",
     "npm": ">=5.4"
@@ -26,5 +26,32 @@
     "q": "^1.5.1",
     "request": "^2.87.0",
     "request-promise": "4.1.1"
-  }
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.1.1",
+    "eslint-config-xo-space": "^0.15.0",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-mocha": "^4.12.1",
+    "mocha": "^5.2.0"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "mocha": true
+    },
+    "rules": {
+      "camelcase": [
+        2,
+        {
+          "properties": "never"
+        }
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:openintegrationhub/Connectors.git"
+  },
+  "license": "Apache 2.0"
 }

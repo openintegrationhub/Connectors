@@ -22,8 +22,6 @@ const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 const BASE_URI = `https://snazzycontacts.com/mp_contact/json_respond`;
 
-exports.process = processAction;
-
 /**
  * This method will be called from elastic.io platform providing following data
  *
@@ -31,95 +29,11 @@ exports.process = processAction;
  * @param cfg configuration that is account information and configuration field values
  */
 function processAction(msg, cfg) {
+  const headers = { 'X-API-KEY': cfg.apikey };
   const self = this;
-  const headers = {
-    'X-API-KEY': cfg.apikey
-  };
-  let reply = [];
 
-  async function checkForExistingUser(user, cookie) {
-    try {
-      let existingRowid = 0;
-      const requestOptions = {
-        uri: `${BASE_URI}/address_contactperson/json_mainview?&mp_cookie=${cookie}`,
-        json: {
-          // Best practise is to use email to check user identity,
-          // but for testing purposes we just use first name and last name
-          "address_contactperson_name": user.name,
-          "address_contactperson_firstname": user.firstname
-        },
-        headers
-      };
-      const getExistingRowid = await request.post(requestOptions);
-      if (getExistingRowid.content[0].rowid) {
-        existingRowid = getExistingRowid.content[0].rowid;
-        console.log(`Person already exists... ROWID: ${existingRowid}`);
-      }
-      return existingRowid;
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-      throw new Error(e);
-    }
-  }
-
-  async function getSameContactId(cookie) {
-    try {
-      const requestOptions = {
-        uri: `${BASE_URI}/same_contactperson/json_insert?&mp_cookie=${cookie}`,
-        headers
-      };
-      const getId = await request.post(requestOptions);
-      const jsonDecode = JSON.parse(getId);
-      let sameContactId = jsonDecode.rowid;
-      return sameContactId;
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-      throw new Error(e);
-    }
-  }
-
-  async function createOrUpdatePerson(existingRowid, cookie) {
-    try {
-      const requestOptions = {
-        json: msg.body,
-        headers
-      };
-
-      if (existingRowid == 0) {
-        console.log('Creating person ...');
-        requestOptions.uri = `${BASE_URI}/address_contactperson/json_insert?&mp_cookie=${cookie}`;
-        const sameContactId = await getSameContactId(cookie);
-        msg.body.same_contactperson = sameContactId;
-        const person = await request.post(requestOptions);
-        console.log(JSON.stringify(person, undefined, 2));
-        return person;
-      } else {
-        console.log('Updating person ...');
-        requestOptions.uri = `${BASE_URI}/address_contactperson/json_update?&mp_cookie=${cookie}`;
-        msg.body.rowid = existingRowid;
-        const person = await request.post(requestOptions);
-        console.log(JSON.stringify(person, undefined, 2));
-        return person;
-      }
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-      throw new Error(e);
-    }
-  }
-
-  async function executeRequest() {
-    try {
-      const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingUser(msg.body, cookie);
-      reply = await createOrUpdatePerson(existingRowid, cookie);
-      return reply;
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-      throw new Error(e);
-    }
-  }
-
-  function emitData() {
+  async function emitData() {
+    const reply = await executeRequest(msg, cfg, headers);
     const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
@@ -135,8 +49,94 @@ function processAction(msg, cfg) {
   }
 
   Q()
-    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);
 }
+
+async function checkForExistingUser(user, cookie, headers) {
+  try {
+    let existingRowid = 0;
+    const requestOptions = {
+      uri: `${BASE_URI}/address_contactperson/json_mainview?&mp_cookie=${cookie}`,
+      json: {
+        // Best practise is to use email to check user identity,
+        // but for testing purposes we just use first name and last name
+        "address_contactperson_name": user.body.name,
+        "address_contactperson_firstname": user.body.firstname
+      },
+      headers
+    };
+    const getExistingRowid = await request.post(requestOptions);
+    if (getExistingRowid.content[0].rowid) {
+      existingRowid = getExistingRowid.content[0].rowid;
+      console.log(`Person already exists... ROWID: ${existingRowid}`);
+    }
+    return existingRowid;
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    throw new Error(e);
+  }
+}
+
+async function getSameContactId(cookie, headers) {
+  try {
+    const requestOptions = {
+      uri: `${BASE_URI}/same_contactperson/json_insert?&mp_cookie=${cookie}`,
+      headers
+    };
+    const getId = await request.post(requestOptions);
+    const jsonDecode = JSON.parse(getId);
+    let sameContactId = jsonDecode.rowid;
+    return sameContactId;
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    throw new Error(e);
+  }
+}
+
+async function createOrUpdatePerson(existingRowid, cookie, headers, msg) {
+  try {
+    const requestOptions = {
+      json: msg.body,
+      headers
+    };
+
+    if (existingRowid == 0) {
+      console.log('Creating person ...');
+      requestOptions.uri = `${BASE_URI}/address_contactperson/json_insert?&mp_cookie=${cookie}`;
+      const sameContactId = await getSameContactId(cookie, headers);
+      msg.body.same_contactperson = sameContactId;
+      const person = await request.post(requestOptions);
+      console.log(JSON.stringify(person, undefined, 2));
+      return person;
+    } else {
+      console.log('Updating person ...');
+      requestOptions.uri = `${BASE_URI}/address_contactperson/json_update?&mp_cookie=${cookie}`;
+      msg.body.rowid = existingRowid;
+      const person = await request.post(requestOptions);
+      return person;
+    }
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    throw new Error(e);
+  }
+}
+
+async function executeRequest(msg, cfg, headers) {
+  try {
+    const cookie = await createSession(cfg);
+    const existingRowid = await checkForExistingUser(msg, cookie, headers);
+    return await createOrUpdatePerson(existingRowid, cookie, headers, msg);
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    throw new Error(e);
+  }
+}
+
+module.exports = {
+  process: processAction,
+  checkForExistingUser,
+  getSameContactId,
+  createOrUpdatePerson
+};

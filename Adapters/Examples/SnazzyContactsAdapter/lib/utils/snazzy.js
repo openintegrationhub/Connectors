@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
- 
+
 "use strict";
 
 const request = require('request-promise');
@@ -71,6 +71,7 @@ async function getCookie(token, config) {
     return cookie.content.mp_cookie;
   } catch (e) {
     console.log(`ERROR: ${e}`);
+    return undefined;
     throw new Error(e);
   }
 }

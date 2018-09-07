@@ -21,8 +21,6 @@ const request = require('request-promise');
 const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 
-exports.process = processTrigger;
-
 /**
  * This method will be called from elastic.io platform providing following data
  *
@@ -32,31 +30,60 @@ exports.process = processTrigger;
  */
 function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
-  let contacts = [];
 
   snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
   console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
-  async function fetchAll(options) {
-    try {
-      let result = [];
-      const persons = await request.post(options);
-      const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
+  async function emitData() {
+    const contacts = await getPersons(cfg, snapshot);
 
-      if (totalEntries == 0) return result;
+    console.log(`Found ${contacts.length} new records.`);
 
-      persons.content.filter((person) => {
-        const currentPerson = customPerson(person);
-        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
+    if (contacts.length > 0) {
+      contacts.forEach(elem => {
+        self.emit('data', messages.newMessageWithBody(elem));
       });
-
-      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
-      return result;
-    } catch (e) {
-      throw new Error(e);
+      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
+      console.log(`New snapshot: ${snapshot.lastUpdated}`);
+      self.emit('snapshot', snapshot);
+    } else {
+      self.emit('snapshot', snapshot);
     }
   }
 
+  function emitError(e) {
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    // .then(getPersons)
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
+}
+
+async function getPersons(cfg, snapshot = {}) {
+  try {
+    const cookie = await createSession(cfg);
+    const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
+    const requestOptions = {
+      uri,
+      json: { 'max_hits': 100 }, // just for testing purposes
+      headers: { 'X-API-KEY': cfg.apikey }
+    };
+    const contacts = await fetchAll(requestOptions, snapshot);
+
+    if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+    return contacts;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
   function customPerson(person) {
     const customUserFormat = {
       rowid: person.rowid,
@@ -99,52 +126,27 @@ function processTrigger(msg, cfg, snapshot = {}) {
     return customUserFormat;
   }
 
-  async function getPersons() {
+  async function fetchAll(options, snapshot) {
     try {
-      const cookie = await createSession(cfg);
-      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
-      const requestOptions = {
-        uri,
-        json: { 'max_hits': 100 }, // just for testing purposes
-        headers: { 'X-API-KEY': cfg.apikey }
-      };
-      contacts = await fetchAll(requestOptions);
+      let result = [];
+      const persons = await request.post(options);
+      const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
+      if (totalEntries == 0) return result;
 
-      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+      persons.content.filter((person) => {
+        const currentPerson = customPerson(person);
+        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
+      });
 
-      return contacts;
+      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
+      return result;
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  function emitData() {
-    console.log(`Found ${contacts.length} new records.`);
 
-    if (contacts.length > 0) {
-      contacts.forEach(elem => {
-        self.emit('data', messages.newMessageWithBody(elem));
-      });
-      snapshot.lastUpdated = contacts[contacts.length - 1].last_update;
-      console.log(`New snapshot: ${snapshot.lastUpdated}`);
-      self.emit('snapshot', snapshot);
-    } else {
-      self.emit('snapshot', snapshot);
-    }
-  }
-
-  function emitError(e) {
-    self.emit('error', e);
-  }
-
-  function emitEnd() {
-    console.log('Finished execution');
-    self.emit('end');
-  }
-
-  Q()
-    .then(getPersons)
-    .then(emitData)
-    .fail(emitError)
-    .done(emitEnd);
+module.exports = {
+  process: processTrigger,
+  getPersons
 }

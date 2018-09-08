@@ -21,8 +21,6 @@ const request = require('request-promise');
 const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
-exports.process = processAction;
-
 /**
  * This method will be called from elastic.io platform providing following data
  *
@@ -31,7 +29,6 @@ exports.process = processAction;
  */
 function processAction(msg, cfg) {
   const self = this;
-  let reply = [];
 
   const options = {
     method: 'POST',
@@ -43,67 +40,8 @@ function processAction(msg, cfg) {
 
   msg.body.same_contactperson = 'auto';
 
-  async function checkForExistingPerson(person, cookie) {
-    let existingRowid = 0;
-    try {
-      options.form = {
-        method: 'get_all_persons',
-        cookie,
-        ext_search_do: 1,
-        name: person.name
-      };
-
-      const rowid = await request.post(options);
-      const rowidObj = JSON.parse(rowid);
-      if (rowidObj.loop_addresses) {
-        existingRowid = rowidObj.loop_addresses[0].rowid;
-        console.log(`Person already exists ... ROWID: ${existingRowid}`);
-      }
-      return existingRowid;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  async function createOrUpdatePerson(existingRowid, cookie) {
-    try {
-      if (existingRowid == 0) {
-        console.log('Creating person ...');
-        const input = JSON.stringify(msg.body);
-        options.form = {
-          method: 'insert_contact',
-          data: input,
-          cookie
-        };
-        const person = await request.post(options);
-        return JSON.parse(person);
-      } else {
-        console.log('Updating person ...');
-        msg.body.rowid = existingRowid;
-        options.form = {
-          method: 'update_contact',
-          data: JSON.stringify(msg.body),
-          cookie
-        };
-        const person = await request.post(options);
-        return JSON.parse(person);
-      }
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  async function executeRequest() {
-    try {
-      const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingPerson(msg.body, cookie);
-      reply = await createOrUpdatePerson(existingRowid, cookie);
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  function emitData() {
+  async function emitData() {
+    const reply = await executeRequest(msg, cfg, options);
     const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
@@ -119,8 +57,73 @@ function processAction(msg, cfg) {
   }
 
   Q()
-    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);
 }
+
+async function checkForExistingPerson(person, cookie, options) {
+  let existingRowid = 0;
+  try {
+    options.form = {
+      method: 'get_all_persons',
+      cookie,
+      ext_search_do: 1,
+      name: person.body.name
+    };
+
+    const rowid = await request.post(options);
+    const rowidObj = JSON.parse(rowid);
+    if (rowidObj.loop_addresses) {
+      existingRowid = rowidObj.loop_addresses[0].rowid;
+      console.log(`Person already exists ... ROWID: ${existingRowid}`);
+    }
+    return existingRowid;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+async function createOrUpdatePerson(existingRowid, cookie, options, msg) {
+  try {
+    if (existingRowid == 0) {
+      console.log('Creating person ...');
+      const input = JSON.stringify(msg.body);
+      options.form = {
+        method: 'insert_contact',
+        data: input,
+        cookie
+      };
+      const person = await request.post(options);
+      return JSON.parse(person);
+    } else {
+      console.log('Updating person ...');
+      msg.body.rowid = existingRowid;
+      options.form = {
+        method: 'update_contact',
+        data: JSON.stringify(msg.body),
+        cookie
+      };
+      const person = await request.post(options);
+      return JSON.parse(person);
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+async function executeRequest(msg, cfg, options) {
+  try {
+    const cookie = await createSession(cfg);
+    const existingRowid = await checkForExistingPerson(msg, cookie, options);
+    return  await createOrUpdatePerson(existingRowid, cookie, options, msg);
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+module.exports = {
+  process: processAction,
+  checkForExistingPerson,
+  createOrUpdatePerson
+};

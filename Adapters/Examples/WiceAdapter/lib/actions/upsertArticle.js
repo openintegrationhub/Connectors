@@ -21,8 +21,6 @@ const request = require('request-promise');
 const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
-exports.process = processAction;
-
 /**
  * This method will be called from elastic.io platform providing following data
  *
@@ -43,66 +41,8 @@ function processAction(msg, cfg) {
 
   msg.body.number = 'auto';
 
-  async function checkForExistingArticle(article, cookie) {
-    let existingRowid = 0;
-    try {
-      options.form = {
-        method: 'get_all_articles',
-        cookie,
-        search_filter: article.description
-      };
-
-      const rowid = await request.post(options);
-      const rowidObj = JSON.parse(rowid);
-      if (rowidObj.loop_articles) {
-        existingRowid = rowidObj.loop_articles[0].rowid;
-        console.log(`Article already exists ... Rowid: ${existingRowid}`);
-      }
-      return existingRowid;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  async function createOrUpdateArticle(existingRowid, cookie) {
-    try {
-      if (existingRowid == 0) {
-        console.log('Creating article ...');
-        const input = JSON.stringify(msg.body);
-        options.form = {
-          method: 'insert_article',
-          data: input,
-          cookie
-        };
-        const article = await request.post(options);
-        return JSON.parse(article);
-      } else {
-        console.log('Updating article ...');
-        msg.body.rowid = existingRowid;
-        options.form = {
-          method: 'update_article',
-          data: JSON.stringify(msg.body),
-          cookie
-        };
-        const article = await request.post(options);
-        return JSON.parse(article);
-      }
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  async function executeRequest() {
-    try {
-      const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingArticle(msg.body, cookie);
-      reply = await createOrUpdateArticle(existingRowid, cookie);
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  function emitData() {
+  async function emitData() {
+    const reply = await executeRequest(msg, cfg, options);
     const data = messages.newMessageWithBody(reply);
     self.emit('data', data);
   }
@@ -118,8 +58,72 @@ function processAction(msg, cfg) {
   }
 
   Q()
-    .then(executeRequest)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);
 }
+
+async function checkForExistingArticle(article, cookie, options) {
+  let existingRowid = 0;
+  try {
+    options.form = {
+      method: 'get_all_articles',
+      cookie,
+      search_filter: article.description
+    };
+
+    const rowid = await request.post(options);
+    const rowidObj = JSON.parse(rowid);
+    if (rowidObj.loop_articles) {
+      existingRowid = rowidObj.loop_articles[0].rowid;
+      console.log(`Article already exists ... Rowid: ${existingRowid}`);
+    }
+    return existingRowid;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+async function createOrUpdateArticle(existingRowid, cookie, options, msg) {
+  try {
+    if (existingRowid == 0) {
+      console.log('Creating article ...');
+      const input = JSON.stringify(msg.body);
+      options.form = {
+        method: 'insert_article',
+        data: input,
+        cookie
+      };
+      const article = await request.post(options);
+      return JSON.parse(article);
+    } else {
+      console.log('Updating article ...');
+      msg.body.rowid = existingRowid;
+      options.form = {
+        method: 'update_article',
+        data: JSON.stringify(msg.body),
+        cookie
+      };
+      const article = await request.post(options);
+      return JSON.parse(article);
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+async function executeRequest(msg, cfg, options) {
+  try {
+    const cookie = await createSession(cfg);
+    const existingRowid = await checkForExistingArticle(msg, cookie, options);
+    return await createOrUpdateArticle(existingRowid, cookie, options, msg);
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+module.exports = {
+  process: processAction,
+  checkForExistingArticle,
+  createOrUpdateArticle
+};

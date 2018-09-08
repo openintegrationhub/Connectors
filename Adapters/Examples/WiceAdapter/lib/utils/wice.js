@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
-
 "use strict";
 
 const request = require('request-promise');
@@ -28,13 +27,20 @@ async function createSession(cfg) {
       "username": cfg.username,
       "password": cfg.password
     },
-    headers: { 'X-API-KEY': cfg.apikey }
+    headers: {
+      'X-API-KEY': cfg.apikey
+    }
   };
 
-  const getCookie = await request.post(options);
-  const { cookie } = JSON.parse(getCookie);
-  console.log(`COOKIE: ${cookie}`);
-  return cookie;
+  try {
+    const getCookie = await request.post(options);
+    const { cookie } = JSON.parse(getCookie);
+    console.log(`COOKIE: ${cookie}`);
+    return cookie;
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    throw new Error(e);
+  }
 }
 
 module.exports = { createSession };

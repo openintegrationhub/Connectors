@@ -21,8 +21,6 @@ const request = require('request-promise');
 const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/wice');
 
-exports.process = processAction;
-
 /**
  * This method will be called from elastic.io platform providing following data
  *
@@ -41,7 +39,31 @@ function processAction(msg, cfg) {
     }
   };
 
-  async function checkForExistingOrganization(organization, cookie) {
+
+  async function emitData() {
+    const reply = await executeRequest(msg, cfg, options);
+    const data = messages.newMessageWithBody(reply);
+    self.emit('data', data);
+  }
+
+  function emitError(e) {
+    console.log('Oops! Error occurred');
+    self.emit('error', e);
+  }
+
+  function emitEnd() {
+    console.log('Finished execution');
+    self.emit('end');
+  }
+
+  Q()
+    .then(emitData)
+    .fail(emitError)
+    .done(emitEnd);
+}
+
+
+  async function checkForExistingOrganization(organization, cookie, options) {
     let existingRowid = 0;
     try {
       options.form = {
@@ -63,7 +85,7 @@ function processAction(msg, cfg) {
     }
   }
 
-  async function createOrUpdateOrganization(existingRowid, cookie) {
+  async function createOrUpdateOrganization(existingRowid, cookie, options, msg) {
     try {
       if (existingRowid == 0) {
         console.log('Creating organization ...');
@@ -91,34 +113,18 @@ function processAction(msg, cfg) {
     }
   }
 
-  async function executeRequest() {
+  async function executeRequest(msg, cfg, options) {
     try {
       const cookie = await createSession(cfg);
-      const existingRowid = await checkForExistingOrganization(msg.body, cookie);
-      reply = await createOrUpdateOrganization(existingRowid, cookie);
+      const existingRowid = await checkForExistingOrganization(msg, cookie, options);
+      return await createOrUpdateOrganization(existingRowid, cookie, options, msg);
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  function emitData() {
-    const data = messages.newMessageWithBody(reply);
-    self.emit('data', data);
-  }
-
-  function emitError(e) {
-    console.log('Oops! Error occurred');
-    self.emit('error', e);
-  }
-
-  function emitEnd() {
-    console.log('Finished execution');
-    self.emit('end');
-  }
-
-  Q()
-    .then(executeRequest)
-    .then(emitData)
-    .fail(emitError)
-    .done(emitEnd);
-}
+module.exports = {
+  process: processAction,
+  checkForExistingOrganization,
+  createOrUpdateOrganization
+};

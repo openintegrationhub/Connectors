@@ -1,26 +1,58 @@
 {
-    "name": "wice-component",
-    "version": "0.5.0",
-    "description": "elastic.io Wice component",
-    "scripts": {
-        "test": "exit 0"
+  "name": "wice-component",
+  "version": "0.5.0",
+  "description": "elastic.io Wice component",
+  "homepage": "https://wice.de/",
+  "author": "Wice GmbH",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "wice",
+    "component",
+    "WiceCRM"
+  ],
+  "scripts": {
+    "test": "NODE_ENV=test mocha spec/* --timeout 10000",
+    "test-watch": "nodemon --exec \"npm test \""
+  },
+  "engines": {
+    "node": "8.6.0",
+    "npm": ">=5.4"
+  },
+  "dependencies": {
+    "co": "4.6.0",
+    "elasticio-node": "0.0.9",
+    "elasticio-sailor-nodejs": "2.2.1",
+    "q": "^1.5.1",
+    "request": "^2.87.0",
+    "request-promise": "4.1.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.1.1",
+    "eslint-config-xo-space": "^0.15.0",
+    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-mocha": "^4.12.1",
+    "mocha": "^5.2.0"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "mocha": true
     },
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:openintegrationhub/Connectors.git"
-    },
-    "author": "Wice GmbH",
-    "license": "Apache 2.0",
-    "engines": {
-        "node": "8.6.0",
-        "npm": ">=5.4"
-    },
-    "dependencies": {
-        "co": "4.6.0",
-        "elasticio-node": "0.0.9",
-        "elasticio-sailor-nodejs": "2.2.1",
-        "q": "^1.5.1",
-        "request": "^2.87.0",
-        "request-promise": "4.1.1"
+    "rules": {
+      "camelcase": [
+        2,
+        {
+          "properties": "never"
+        }
+      ]
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:openintegrationhub/Connectors.git"
+  },
+  "license": "Apache 2.0"
 }

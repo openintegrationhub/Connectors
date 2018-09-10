@@ -80,9 +80,16 @@ When looking for further information or support, please contact: philipp.hoegner
 
 ## Workgroup
 ### Information
-- Each workgroup has atleast one status call every two weeks
-- Every committer must attend the status call
-- The governance model defines the workgroup members' roles into managers, committers or contributors
+You have the opportunity to get your questions answered in a `weekly Q&A session`.
+Feel free to attend and invite other people to this session.
+
+If possible please send your question in advance to **philipp.hoegner@cloudecosystem.org**.
+
+The session will take place every `Monday from 11:00 - 12:00`.  The first session will be next monday.
+
+**GoToMeeting Link:** https://global.gotomeeting.com/join/456709357 <br>
+**Phone (Germany):** +49 692 5736 7317 <br>
+**Access-Code (Germany):** 456-709-357 <br>
 
 ### Member
 #### Connectors

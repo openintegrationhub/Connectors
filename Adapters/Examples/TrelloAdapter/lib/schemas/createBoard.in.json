@@ -1,0 +1,102 @@
+{
+  "type": "object",
+  "description": "Board Object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "title": "Name",
+      "description": "The new name for the board. 1 to 16384 characters long."
+    },
+    "defaultLabels": {
+      "type": "boolean",
+      "required": false,
+      "title": "defaultLabels",
+      "description": "Determines whether to use the default set of labels."
+    },
+    "defaultLists": {
+      "type": "boolean",
+      "required": false,
+      "title": "defaultLists",
+      "description": "Determines whether to add the default set of lists to a board (To Do, Doing, Done). It is ignored if idBoardSource is provided."
+    },
+    "desc": {
+      "type": "string",
+      "required": false,
+      "title": "desc",
+      "description": "A new description for the board, 0 to 16384 characters long."
+    },
+    "idOrganization": {
+      "type": "string",
+      "required": false,
+      "title": "idOrganization",
+      "description": "The id or name of the team the board should belong to."
+    },
+    "idBoardSource": {
+      "type": "string",
+      "required": false,
+      "title": "idBoardSource",
+      "description": "The id of a board to copy into the new board."
+    },
+    "keepFromSource": {
+      "type": "string",
+      "required": false,
+      "title": "keepFromSource",
+      "description": "To keep cards from the original board pass in the value cards"
+    },
+    "powerUps": {
+      "type": "string",
+      "required": false,
+      "title": "powerUps",
+      "description": "The Power-Ups that should be enabled on the new board. One of: all, calendar, cardAging, recap, voting."
+    },
+    "prefs_permissionLevel": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_permissionLevel",
+      "description": "The permissions level of the board. One of: org, private, public."
+    },
+    "prefs_voting": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_voting",
+      "description": "Who can vote on this board. One of disabled, members, observers, org, public."
+    },
+    "prefs_comments": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_comments",
+      "description": "Who can comment on cards on this board. One of: disabled, members, observers, org, public."
+    },
+    "prefs_invitations": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_invitations",
+      "description": "Determines what types of members can invite users to join. One of: admins, members."
+    },
+    "prefs_selfJoin": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_selfJoin",
+      "description": "Determines whether users can join the boards themselves or whether they have to be invited."
+    },
+    "prefs_cardCovers": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_cardCovers",
+      "description": "Determines whether card covers are enabled."
+    },
+    "prefs_background": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_background",
+      "description": "The id of a custom background or one of: blue, orange, green, red, purple, pink, lime, sky, grey."
+    },
+    "prefs_cardAging": {
+      "type": "string",
+      "required": false,
+      "title": "prefs_cardAging",
+      "description": "Determines the type of card aging that should take place on the board if card aging is enabled. One of: pirate, regular."
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "title": "Trello Adapter",
+  "description": "Trello Adapter for Open Integration Hub",
+  "docsUrl": "https://developers.trello.com/v1.0/reference",
+  "credentials": {
+    "fields": {
+      "oauth":{
+        "label":"Authentication",
+        "viewClass":"OAuthFieldView",
+        "required": true
+      }
+    },
+    "oauth1":{
+      "consumer_key":"{{apiKey}}",
+      "consumer_secret":"{{secret}}",
+      "request_token_uri":"https://trello.com/1/OAuthGetRequestToken",
+      "auth_uri":"https://trello.com/1/OAuthAuthorizeToken",
+      "access_token_uri":"https://trello.com/1/OAuthGetAccessToken"
+    }
+  },
+  "triggers": {
+    "getBoards": {
+      "title": "Get All Boards",
+      "description": "Get all boards",
+      "main": "./lib/triggers/getBoards.js",
+      "type": "polling",
+      "metadata": {
+        "out": "./lib/schemas/getBoardById.out.json"
+      }
+    }
+  },
+  "actions": {
+    "createBoard": {
+      "title": "Create Board",
+      "description": "Create a new board",
+      "main": "./lib/actions/createBoard.js",
+      "metadata": {
+        "in": "./lib/schemas/createBoard.in.json",
+        "out": "./lib/schemas/createBoard.out.json"
+      }
+    },
+    "getBoardById": {
+      "title": "Get Board By Id",
+      "description": "Get a board by id",
+      "main": "./lib/actions/getBoardById.js",
+      "metadata": {
+        "in": "./lib/schemas/getBoardById.in.json",
+        "out": "./lib/schemas/getBoardById.out.json"
+      }
+    }
+  }
+}

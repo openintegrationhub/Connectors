@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "numeric",
+      "required": true,
+      "title": "ID"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "title": "Name"
+    }
+  }
+}

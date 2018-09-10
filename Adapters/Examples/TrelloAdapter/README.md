@@ -1,5 +1,5 @@
 
-# Sugar CRM Component
+# Trello Component
 
 [Trello](https://trello.com/) is a web-based project management software organized with boards, lists and tasks.
 
@@ -12,8 +12,8 @@ following tasks need to be completed:
 * When adding credentials the user (relating to api key and secret) is asked to authorize the trello adapter
 * Finally, a token is provided by Trello which is used within the trello adapter
 
-## Creating an app on a SugarCRM instance
-In order the platform to connect to your SugarCRM instance, an app needs to be
+## Creating an app on a trello instance
+In order the platform to connect to your trello instance, an app needs to be
 created on that instance.  Below are the steps to do so.  Once that is done, you
 will provide a valid username and password to the elastic.io platform.  The
 platform will exchange that username and password for a token.  In a production

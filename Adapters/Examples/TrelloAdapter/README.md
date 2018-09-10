@@ -1,38 +1,57 @@
-# petstore-component-nodejs
-> Petstore Node.js component template for the [elastic.io platform](http://www.elastic.io "elastic.io platform")
+# Sugar CRM Component
 
-This is a component template which we commonly refer as **the first step of the development** for creating a component to deploy into our platform. This component comes with a basic architecture which can be used on our platform. You can clone it and use it. However, **if you plan to deploy it into [elastic.io platform](https://www.elastic.io "elastic.io platform") you must follow sets of instructions to succeed**.
+[Trello](https://trello.com/) is a web-based project management software organized with boards, lists and tasks.
 
-## Before you Begin
+# Authentication
+In order for the elastic.io platform to authenticate with Trello, the
+following tasks need to be completed:
+* An admin must manually add an APIKey and Secret as environment variables
+  * API Key can be found under **https://trello.com/app-key** and must be named `apiKey`
+  * Secret can also be found under **https://trello.com/app-key** (see bottom of the page) and must be named `secret`     
+* When adding credentials the user (relating to api key and secret) is asked to authorize the trello adapter
+* Finally, a token is provided by Trello which is used within the trello adapter
 
-Before you can deploy any code into our system **you must be a registered elastic.io platform user**. Please see our home page at [https://www.elastic.io](https://www.elastic.io) to learn how.
+## Creating an app on a SugarCRM instance
+In order the platform to connect to your SugarCRM instance, an app needs to be
+created on that instance.  Below are the steps to do so.  Once that is done, you
+will provide a valid username and password to the elastic.io platform.  The
+platform will exchange that username and password for a token.  In a production
+system, the best practice is to create a dedicated user for the elastic.io
+platform.  This user should have the minimum required permissions.
 
-> Any attempt to deploy a code into our platform without a registration would be rejected.
+1. As a user on the plattform go to https://trello.com/app-key
 
-After the registration and opening of the account you must **[upload your SSH Key](http://go2.elastic.io/manage-ssh-keys)** into our platform.
+2. Look for the API keys
 
-> If you fail to upload you SSH Key you will get **permission denied** error during the deployment.
+  ![apikey](assets/apiKey.PNG)
 
-## Getting Started
 
-After registration and uploading of your SSH Key you can proceed to deploy it into our system. At this stage we suggest you to:
-* [Create a team](http://go2.elastic.io/manage-teams) to work on your new component. This is not required but will be automatically created using random naming by our system so we suggest you name your team accordingly.
-* [Create a repository](http://go2.elastic.io/manage-repositories) where your new component is going to *reside* inside the team that you have just created.
+3. Look for the secret
 
-```bash
-$ git clone https://github.com/elasticio/petstore-component-nodejs.git your-repository
+  ![secret](assets/secret.PNG)
 
-$ cd your-repository
-```
-Now you can edit your version of **petstore-component-nodejs** component and build your desired component. Or you can just ``PUSH``it into our system to see the process in action:
+4. Add the two environment variables to your repository
 
-```bash
-$ git remote add elasticio your-team@git.elastic.io:your-repository.git
+  ![environment variables](assets/envVars.PNG)
 
-$ git push elasticio master
-```
-Obviously the naming of your team and repository is entirely up-to you and if you do not put any corresponding naming our system will auto generate it for you but the naming might not entirely correspond to your project requirements.
 
-## File Structure
+## Authentication on elastic.io
 
-The structure of **petstore-component-nodejs** component is quite flexible. [elastic.io platform](https://www.elastic.io) expects only two files to be present in the main directory. These are the ``component.json`` and ``package.json``. Our documentation on [how to build a component in node.js](https://support.elastic.io/support/solutions/articles/14000027123-how-to-build-a-component-in-node-js) has more about each file and their function.
+1. Click on `Authenticate`
+
+  ![authenticate](assets/authenticate.PNG)
+
+2. Click on `Allow/Erlauben`
+
+  ![allow](assets/allow.PNG)
+
+# Triggers
+## GetBoards - Bulk Extract
+
+It is possible to fetch all boards of the current user via the getBoards trigger.
+The trigger returns information for all boards the user has access to.
+
+# Actions
+## GetBoardById
+
+Given a board id, this action fetches all information about the board with the given id.

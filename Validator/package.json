@@ -16,12 +16,12 @@
     "npm": ">=5.4"
   },
   "dependencies": {
-    "elasticio-sailor-nodejs": "2.2.1",
-    "elasticio-node": "0.0.8",
+    "ajv": "^6.5.2",
     "co": "4.6.0",
-    "request": "2.76.0",
-    "request-promise": "4.1.1",
-    "ajv": "^6.5.2"
+    "elasticio-node": "0.0.9",
+    "elasticio-sailor-nodejs": "2.2.1",
+    "request": "^2.88.0",
+    "request-promise": "4.1.1"
   },
   "bugs": {
     "url": "https://github.com/openintegrationhub/data-and-domain-models/issues"

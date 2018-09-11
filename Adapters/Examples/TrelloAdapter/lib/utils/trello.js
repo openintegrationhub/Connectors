@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Wice GmbH
+ * Copyright 2018 Cloud Ecosystem e.V.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

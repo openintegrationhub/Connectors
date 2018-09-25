@@ -9,12 +9,16 @@
       "description": "Uniquely identifies a record within a OIH instance. This identifier is provided by the respective OIH instance, or, at least, the OIH defines how the identifier is assigned (e.g. a random UUID given by a connector. TDB!)."
     },
     "oihCreated": {
-      "type": "integer",
-      "description": "The timestamp when the record was created within the OIH as a UNIX timestamp."
+      "$ref": "#/definitions/Modification"
     },
     "oihLastModified": {
-      "type": "integer",
-      "description": "The timestamp when the record was modified within the OIH the last time as a UNIX timestamp."
+      "$ref": "#/definitions/Modification"
+    },
+    "modificationHistory": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Modification"
+      }
     },
     "oihApplicationRecords": {
       "type": "array",
@@ -42,18 +46,45 @@
           "description": "The record's UID within the respective application."
         },
         "created": {
-          "type": "integer",
-          "description": "The timestamp when the record was created within the application as a UNIX timestamp."
+          "$ref": "#/definitions/Modification"
         },
         "lastModified": {
-          "type": "integer",
-          "description": "The timestamp when the record was modified in the application the last time as a UNIX timestamp."
+          "$ref": "#/definitions/Modification"
+        },
+        "modificationHistory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Modification"
+          }
         }
       },
       "required": [
         "applicationUid",
         "recordUid"
       ]
+    },
+    "Modification": {
+      "type": "object",
+      "description": "Object for tracking modifications",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "unique identifier of the modifier"
+        },
+        "type": {
+          "type": "string",
+          "description": "type of modification",
+          "examples":[
+            "modification",
+            "locked"
+          ]
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date-Time of the modification"
+        }
+      }
     }
   }
 }

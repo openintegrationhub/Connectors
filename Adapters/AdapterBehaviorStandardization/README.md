@@ -17,6 +17,6 @@ The documents in this folder are arranged in the following way:
 identifies goals *that can be generalized across systems* and then lists the
 standard implementations that satisfy those goals.
 * [`StandardizedActionsAndTriggers.md`](/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md)
-describes in detail the standard behavior of each implementation.  Furthermore,
+builds on the `adapterGoals` as it describes in detail the standard behavior of each implementation.  Furthermore,
 it describes what functionality is required in the CSP's API in order build such
 an action/trigger.

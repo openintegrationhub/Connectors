@@ -31,9 +31,6 @@ The connector supports the following **actions** and **triggers**:
   - Upsert person (```upsertPerson.js```)
   - Upsert organization(```upsertOrganization.js```)
   - Upsert article(```upsertArticle.js```)
-  - Update person (```updatePerson.js```)
-  - Update organization (```updateOrganization.js```)  
-  - Update article (```updateArticle.js```)  
   - Delete person (```deletePerson.js```)
   - Delete organization (```deleteOrganization.js```)
   - Delete article (```deleteArticle.js```)
@@ -79,27 +76,15 @@ Lookup article action (```lookupArticle.js```) performs a request which fetches 
 
 ##### Upsert person
 
-Upsert person action (``upsertPerson.js``) update an existing person if it already exists. Otherwise create a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
+Upsert person action (``upsertPerson.js``) updates an existing person if it already exists. Otherwise creates a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
 
 ##### Upsert organization
 
-Upsert organization action (``upsertOrganization.js``) update an existing organization if it already exists. Otherwise create a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
+Upsert organization action (``upsertOrganization.js``) updates an existing organization if it already exists. Otherwise creates a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
 
 ##### Upsert article
 
-Upsert article action (``upsertArticle.js``) update an existing article if it already exists. Otherwise create a new one. This function accepts as required parameter ``description``, but if you wish you can also pass ``number``, ``sales_price``, ``purchase_price``, ``in_stock``, ``unit``etc.
-
-##### Update person
-
-Update person action (``updatePerson.js``) updates a specific person in [Wice CRM](https://wice.de/). The function accepts as required parameter ``rowid`` of the person and respectively the values of the properties which you want to update.
-
-##### Update organization
-
-Update organization action (``updateOrganization.js``) updates a specific organization in [Wice CRM](https://wice.de/). The function accepts as required parameter ``rowid`` of the organization  and respectively the values of the properties which you want to update.
-
-##### Update article
-
-Update article action (``updateOrganization.js``) updates a specific article in [Wice CRM](https://wice.de/). The function accepts as required parameter ``rowid`` of the article  and respectively the values of the properties which you want to update.
+Upsert article action (``upsertArticle.js``) updates an existing article if it already exists. Otherwise creates a new one. This function accepts as required parameter ``description``, but if you wish you can also pass ``number``, ``sales_price``, ``purchase_price``, ``in_stock``, ``unit``etc.
 
 ##### Delete person
 

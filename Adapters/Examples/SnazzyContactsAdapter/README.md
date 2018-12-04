@@ -31,9 +31,7 @@ The **adapter** supports the following **actions** and **triggers**:
   - Upsert organization(```upsertOrganization.js```)
   - Delete person (```deletePerson.js```)
   - Delete organization (```deleteOrganization.js```)
-  - Update person (```updatePerson.js```)
   - Update person's organizations (```updatePersonsOrganization.js```)
-  - Update organization (```updateOrganization.js```)
 
 > **NOTE:** As mentioned before, to perform an action or a call trigger you have to be a registered [Snazzy Contacts](https://snazzycontacts.com) user and you have to pass your **API Key** (in [Snazzy Contacts](https://snazzycontacts.com) named *Data Sharing Key*) when you send a request.
 
@@ -58,11 +56,11 @@ Get deleted organizations trigger (```getDeletedOrganizationsPolling.js```) fetc
 
 ##### Upsert person
 
-Upsert person action (``upsertPerson.js``) update an existing person if it already exists. Otherwise create a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
+Upsert person action (``upsertPerson.js``) updates an existing person if it already exists. Otherwise creates a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
 
 ##### Upsert organization
 
-Upsert organization action (``upsertOrganization.js``) update an existing organization if it already exists. Otherwise create a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
+Upsert organization action (``upsertOrganization.js``) updates an existing organization if it already exists. Otherwise creates a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
 
 ##### Delete person
 
@@ -76,12 +74,8 @@ Delete organization action (``deleteOrganization.js``) deletes an organization i
 
 >**NOTE**: We do ***NOT*** really delete the organization from our database, we just set a value in field ``is_deleted`` to ``1`` which actually ***hides*** the organization from the view.
 
-##### Update person
-
-Update person action (``updatePerson.js``) updates a specific person in [Snazzy Contacts](https://snazzycontacts.com). The function accepts as required parameter ``rowid`` of the person and respectively the values of the properties which you want to update.
-
 ##### Update person's organizations
-Update person's organizations action (```updatePersonsOrganization.js```) assign one person to one or more organizations. This means that one person could be  assigned to as many organizations as you want. The function accepts as required parameters ``same_contactperson``, ``for_rowid``, ````name```` und ``firstname``.
+Update person's organizations action (```updatePersonsOrganization.js```) assigns one person to one or more organizations. This means that one person could be  assigned to as many organizations as you want. The function accepts as required parameters ``same_contactperson``, ``for_rowid``, ````name```` und ``firstname``.
 
 ###### Rrequired parametes:
   - ``same_contactperson`` - that is an ``id`` which is generated when the person was created
@@ -90,10 +84,6 @@ Update person's organizations action (```updatePersonsOrganization.js```) assign
   - ``firstname`` - you need to pass the same ``firstname`` as the initial one
 
 >**IMPORTANT**:  With this action we actually create a duplicate of the person which has the same ``same_contactperson``, that's why you have to pass the same ``name`` and ``firstname`` to prevent misconception
-
-##### Update organization
-
-Update organization action (``updateOrganization.js``) updates a specific organization in [Snazzy Contacts](https://snazzycontacts.com). The function accepts as required parameter ``rowid`` of the organization  and respectively the values of the properties which you want to update.
 
 ***
 

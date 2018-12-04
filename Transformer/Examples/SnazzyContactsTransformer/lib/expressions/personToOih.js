@@ -25,7 +25,7 @@ module.exports.getExpression = msg => {
     oihCreated: '',
     oihLastModified: '',
     oihApplicationRecords: [{
-      applicationUid: '3',
+      applicationUid: '',
       recordUid: msg.body.rowid
     }],
     title: msg.body.title,

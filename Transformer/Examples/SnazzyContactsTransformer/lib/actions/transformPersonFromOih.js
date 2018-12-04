@@ -16,8 +16,8 @@ limitations under the License.
 
 /* eslint no-invalid-this: 0 no-console: 0 */
 const eioUtils = require('elasticio-node').messages;
-const {getExpression} = require('./../expressions/personFromOih.js');
-const {transform} = require('./transform.js');
+const { getExpression } = require('./../expressions/personFromOih.js');
+const { transform } = require('./transform.js');
 
 /**
  * This method will be called from elastic.io platform providing following data

@@ -21,6 +21,7 @@ should aim at covering 100% of the objects provided by the API.
 
 
 ![API Classification3](/Adapters/Assets/ConnectorDecisionTree.svg)
+
 A checklist for each case exists in the document
 [AdapterCompletenessChecklist.md](/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 

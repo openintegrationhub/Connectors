@@ -1,4 +1,4 @@
-# elasticio-snazzycontacts-component
+# snazzycontacts-adapter
 > [Snazzy Contacts](https://snazzycontacts.com) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
 
 [Snazzy Contacts](https://snazzycontacts.com) is a smart contact management software for controlling, organizing and managing your contacts data. With [Snazzy Contacts](https://snazzycontacts.com) you could manage your entire team contacts(contacts and organizations) and work flexibly together with your colleagues. You are able to maintain your addresses on all devices from everywhere.
@@ -12,6 +12,10 @@ Before you can use the component you **must be a registered snazzy contacts user
 
 After you are already registered in [Snazzy Contacts](https://snazzycontacts.com) you have to activate your **API Key** (in [Snazzy Contacts](https://snazzycontacts.com) named *Data Sharing Key*).
 > For activation you **have to be logged in**, then click of ``Administration`` and under ```Einstellungen``` click of ``Unternehmensdaten``. Once you are in ``Unternehmensdaten`` click of the button ``Data Sharing aktivieren`` for generating your API key.
+
+![Administration](Assets/Administration.png)
+***
+![DataSharingKey](Assets/DataSharingKey.png)
 
 Once the activation is done you have an access to **API Key** which is required for an authentication when you make a request to Snazzy Contacts.
 

@@ -1,4 +1,4 @@
-# elasticio-wice-component
+# wice-adapter
 > [Wice CRM](https://wice.de/) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
 
 [Wice CRM](https://wice.de/) is a CRM Software which offers different modules for address management, tasks management, project management, calendars and a knowledge base for knowledge management. The software could be used to manage sales opportunities and offers too. In addition, [Wice CRM](https://wice.de/) offers the possibility to manage and create invoices, open items and incoming payments.
@@ -12,6 +12,10 @@ Before you can use the component you **must be a registered Wice CRM user**. Ple
 
 After you are already registered in [Wice CRM](https://wice.de/) you have to generate your **API Key**.
 > For activation you **have to be logged in**, then click of ``Admin`` and under ```Plugins``` click of ``Wice elastic.io backend``. Once you are in click the button ``Create new`` to generate your API key.
+
+![Administration](Assets/Plugins.png)
+***
+![APIKey](Assets/APIKey.png)
 
 Once the activation is done you have an access to **API Key** which is required for an authentication when you make a request to Wice CRM.
 

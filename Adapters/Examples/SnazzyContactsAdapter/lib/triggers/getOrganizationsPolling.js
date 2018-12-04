@@ -21,8 +21,6 @@ const request = require('request-promise');
 const { messages } = require('elasticio-node');
 const { createSession } = require('./../utils/snazzy');
 
-exports.process = processTrigger;
-
 /**
  * This method will be called from elastic.io platform providing following data
  *
@@ -32,74 +30,13 @@ exports.process = processTrigger;
  */
 function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
-  let organizations = [];
 
   snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
   console.log(`Last Updated: ${snapshot.lastUpdated}`);
 
-  async function fetchAll(options) {
-    try {
-      let result = [];
-      const organizations = await request.post(options);
-      const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
-      
-      if (totalEntries == 0) return result;
+  async function emitData() {
+    const organizations = await getOrganizations(cfg, snapshot);
 
-      organizations.content.filter((organization) => {
-        const currentOrganization = customOrganization(organization);
-        currentOrganization.last_update > snapshot.lastUpdated && result.push(currentOrganization);
-      });
-
-      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
-      return result;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  function customOrganization(organization) {
-    const customOrganizationFormat = {
-      rowid: organization.rowid,
-      last_update: organization.last_update,
-      name: organization.name,
-      email: organization.email,
-      phone: organization.phone,
-      fax: organization.fax,
-      street: organization.street,
-      street_number: organization.street_number,
-      zip_code: organization.zip_code,
-      p_o_box: organization.p_o_box,
-      town: organization.town,
-      town_area: organization.town_area,
-      state: organization.state,
-      country: organization.country
-    };
-    return customOrganizationFormat;
-  }
-
-  async function getOrganizations() {
-    try {
-      const cookie = await createSession(cfg);
-      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
-      const requestOptions = {
-        uri,
-        json: {
-          'max_hits': 100 // just for testing purposes
-        },
-        headers: { 'X-API-KEY': cfg.apikey }
-      };
-      organizations = await fetchAll(requestOptions);
-
-      if (!organizations || !Array.isArray(organizations)) throw `Expected records array. Instead received: ${JSON.stringify(organizations)}`;
-
-      return organizations;
-    } catch (e) {
-      console.log(e);
-      throw new Error(e);
-    }
-  }
-
-  function emitData() {
     console.log(`Found ${organizations.length} new records.`);
 
     if (organizations.length > 0) {
@@ -125,8 +62,74 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getOrganizations)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);
+}
+
+async function getOrganizations(cfg, snapshot = {}) {
+  try {
+    const cookie = await createSession(cfg);
+    const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_company/json_mainview?&mp_cookie=${cookie}`;
+    const requestOptions = {
+      uri,
+      json: {
+        'max_hits': 100 // just for testing purposes
+      },
+      headers: {
+        'X-API-KEY': cfg.apikey
+      }
+    };
+    const organizations = await fetchAll(requestOptions, snapshot);
+
+    if (!organizations || !Array.isArray(organizations)) throw `Expected records array. Instead received: ${JSON.stringify(organizations)}`;
+    return organizations;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+async function fetchAll(options, snapshot) {
+  try {
+    let result = [];
+    const organizations = await request.post(options);
+    const totalEntries = organizations.content[0].total_entries_readable_with_current_permissions;
+
+    if (totalEntries === 0) return result;
+
+    organizations.content.filter((organization) => {
+      const currentOrganization = customOrganization(organization);
+      currentOrganization.last_update > snapshot.lastUpdated && result.push(currentOrganization);
+    });
+
+    result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
+    return result;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+function customOrganization(organization) {
+  const customOrganizationFormat = {
+    rowid: organization.rowid,
+    last_update: organization.last_update,
+    name: organization.name,
+    email: organization.email,
+    phone: organization.phone,
+    fax: organization.fax,
+    street: organization.street,
+    street_number: organization.street_number,
+    zip_code: organization.zip_code,
+    p_o_box: organization.p_o_box,
+    town: organization.town,
+    town_area: organization.town_area,
+    state: organization.state,
+    country: organization.country
+  };
+  return customOrganizationFormat;
+}
+
+module.exports = {
+  process: processTrigger,
+  getOrganizations
 }

@@ -82,7 +82,7 @@ async function createOrUpdateOrganization(existingRowid, cookie, headers, msg) {
       json: msg.body,
       headers
     };
-    if (existingRowid == 0) {
+    if (existingRowid === 0) {
       console.log('Creating organization ...');
       requestOptions.uri = `${BASE_URI}/address_company/json_insert?&mp_cookie=${cookie}`;
       const organization = await request.post(requestOptions);

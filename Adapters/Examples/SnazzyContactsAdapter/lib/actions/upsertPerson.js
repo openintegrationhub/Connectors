@@ -102,7 +102,7 @@ async function createOrUpdatePerson(existingRowid, cookie, headers, msg) {
       headers
     };
 
-    if (existingRowid == 0) {
+    if (existingRowid === 0) {
       console.log('Creating person ...');
       requestOptions.uri = `${BASE_URI}/address_contactperson/json_insert?&mp_cookie=${cookie}`;
       const sameContactId = await getSameContactId(cookie, headers);

@@ -19,7 +19,7 @@ In order to enhance understandability and to simplify reuse of a transformer the
 - [ ] License
 
 ## Component.json
-- [ ] Descriptive title of the transformer that follows the common format: _"{Your Application Name} Transformer"_
+- [ ] Descriptive title of the transformer that follows the common format: _"{yourApplicationName-transformer}"_
 - [ ] Short description of the transformer
 - [ ] All Actions are completly described. This includes:
   - [ ] A title for each action

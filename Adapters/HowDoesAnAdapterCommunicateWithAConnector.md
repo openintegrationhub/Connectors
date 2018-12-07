@@ -66,7 +66,7 @@ This strategy is the last resort strategy when the above two strategies can not 
 - Risk of falsely reporting deletions
 
 ## Connection Points
-This section describes the various ways to connect to a system.  Often on premise systems include both a web server that exposes an API and a corresponding database.  Both of these may provide connection opportunities.  Cloud based software as a service providers often only expose APIs on the web server while some custom built or specific purpose applications only expose DB connections.
+This section describes the various ways to connect to a system.  In general, an adapter initiates a connection to the application, not the other way around. (The big notable exceptions are webhooks where data changes are pushed from the application to OIH.)  Often on premise systems include both a web server that exposes an API and a corresponding database.  Both of these may provide connection opportunities.  Cloud based software as a service providers often only expose APIs on the web server while some custom built or specific purpose applications only expose DB connections.
 ### Web Server API
 #### Pros
 

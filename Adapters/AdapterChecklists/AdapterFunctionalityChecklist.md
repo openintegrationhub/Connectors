@@ -1,25 +1,25 @@
 # Adapter Functionality Checklist
-**Version Publish Date: 01.03.2018**
 
-**Semantic Version of Document: 1.0.0**
+**Version Publish Date:** 01.03.2018
+
+**Semantic Version of Document:** 1.0.0
 
 The goal of this document is to track connector completeness based on the
 functionality provided by the API or  to formalize estimates for a non-CSP MSE
 (CSP consumer) requesting the construction of a connector.
 
-# Instructions
-1. Copy this document from the OIH repository and place it in the repository for
-the adapter.
+## Instructions
+
+1. Copy this document from the OIH repository and place it in the repository forthe adapter.
 2. Identify what can be built:
-   * Of the following possible Actions and Triggers listed, strike through all
-actions and triggers which can not be built for a system based on API
-limitations of that system.
+   * Of the following possible Actions and Triggers listed, strike through allactions and triggers which can not be built for a system based on APIlimitations of that system.
    * Enter system specific functionality that can be exposed by the adapter.
    * Identify static object types (if object types are static).
    * Identify endpoints which may be sensibly exposed by the adapter.
 3. As actions and triggers are built, check of those items on this checklist.
 
-## Checklist
+### Checklist
+
 - [ ] Bulk Extract
 
   - [ ] All Objects Programmatically Detectable Covered
@@ -63,14 +63,12 @@ limitations of that system.
 
   List of Polling Filters Supported: `_________________`
 
-
 - [ ] Get Events Webhook
 
   - [ ] All Events Programmatically Detectable Covered
   - [ ] Events Explicitly Covered: `_________________`
 
   List of Server-side Filters Supported: `_________________`
-
 
 - [ ] Lookup Object by Field(s)
 

@@ -1,49 +1,53 @@
 # Descriptions of standardized actions or triggers
-**Version Publish Date: 10.12.2018**
 
-**Semantic Version of Document: 2.0.2**
+**Version Publish Date:** 10.12.2018
 
-# Table of Contents
+**Semantic Version of Document:** 2.0.2
+
+## Table of Contents
+
 - [Actions](#actions)
-  * [Upsert Object](#upsert-object)
-  * [Lookup Object (at most 1)](#lookup-object-at-most-1)
-  * [Lookup Objects (Plural)](#lookup-objects-plural)
-  * [Delete Object](#delete-object)
-  * [Update Object](#update-object)
-  * [Create Object](#create-object)
-  * [Linking/Unlinking Objects](#linkingunlinking-objects)
-  * [Execute Query or Statement in Query Language](#execute-query-or-statement-in-query-language)
-  * [Perform Action/Evaluate Function](#perform-actionevaluate-function)
+  - [Upsert Object](#upsert-object)
+  - [Lookup Object (at most 1)](#lookup-object-at-most-1)
+  - [Lookup Objects (Plural)](#lookup-objects-plural)
+  - [Delete Object](#delete-object)
+  - [Update Object](#update-object)
+  - [Create Object](#create-object)
+  - [Linking/Unlinking Objects](#linkingunlinking-objects)
+  - [Execute Query or Statement in Query Language](#execute-query-or-statement-in-query-language)
+  - [Perform Action/Evaluate Function](#perform-actionevaluate-function)
 - [Triggers](#triggers)
-  * [Get New and Updated Objects Polling](#get-new-and-updated-objects-polling)
-  * [Webhooks](#webhooks)
-  * [Bulk Extract](#bulk-extract)
+  - [Get New and Updated Objects Polling](#get-new-and-updated-objects-polling)
+  - [Webhooks](#webhooks)
+  - [Bulk Extract](#bulk-extract)
 
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
 common behaviors, then it is possible to build integrations by combining
 adapters which are developed by different developers.
 
-# Actions
+## Actions
 
-## Upsert Object
-### Iteration 1: Upsert Object By ID
+### Upsert Object
 
-#### Config Fields
+#### Iteration 1: Upsert Object By ID
+
+##### Config Fields
 
 - Object Type (dropdown)
 
-#### Input Metadata
+##### Input Metadata
 
 - One input per field in the ID that is optional.  This field is marked as being the ID.
 - Inputs for other fields on the body.  All fields that are not nullable and can’t be populated by the system on create should be required.
-#### Pseudo-Code
+  
+##### Pseudo-Code
 
     function upsertObjectById(obj) {
       // If the object's ID is split across more than one field, we should check 
       // that either all ID fields are populated or that none are.  Otherwise we
       // should throw an exception.
-    
+
       const objectToUpdate = GetObjectById(obj.id);   // Usually GET verb
       if(objectToUpdate == null) {
         const createdObject = CreateObject(obj);    // Usually POST verb
@@ -54,26 +58,27 @@ adapters which are developed by different developers.
       }
     }
 
-#### Output Data
+##### Output Data
 
 - The object post creation/update as reported by the system
 
-#### Gotcha’s to lookout for
+##### Gotcha’s to lookout for
 
 - Updates should be partial updates
 - Make sure to Url Encode IDs appearing in HTTP urls
-### Iteration 2: Update Object By Unique Criteria
+  
+#### Iteration 2: Update Object By Unique Criteria
 
-#### Additional Config Fields
+##### Additional Config Fields
 
 - Upsert Criteria: Drop down with all sets of unique constraints for the object in question
 
-#### Input Metadata Changes
+##### Input Metadata Changes
 
 - The fields that are part of the upsert criteria are marked as being part of the criteria.  If the criteria is something other than the ID, they should be marked as required.  
   (There is a hypothetical edge case here where the system auto-populates the unique criteria)
 
-#### Pseudo-Code
+##### Pseudo-Code
 
     function upsertObjectByUniqueCriteria(obj, uniqueCriteria) {
       // Ensure unique criteria are all populated (unless ID)
@@ -93,45 +98,47 @@ adapters which are developed by different developers.
       }
     }
 
+### Lookup Object (at most 1)
 
-## Lookup Object (at most 1)
-### Iteration 1: Lookup Object By ID
+#### Iteration 1: Lookup Object By ID
 
-#### Config Fields
+##### Config Fields
 
 - Object Type (dropdown)
 - Allow ID to be omitted (dropdown/checkbox: yes/no)
 - Allow zero results (dropdown/checkbox: yes/no)
 
-#### Input Metadata
+##### Input Metadata
 
 - One input per field in the ID.  Depending on the value of allowIdToBeOmited this is optional or required.
 
-#### Pseudo-Code
+##### Pseudo-Code
+
 @Jacob H TODO: Re-add
 
-#### Output Data
+##### Output Data
 
 - The object as reported by the system
 
-#### Gotcha’s to lookout for
+##### Gotcha’s to lookout for
 
 - Make sure to Url Encode IDs appearing in HTTP urls
 
-#### Not defined now
+##### Not defined now
 
 - How to handle populating linked objects.
-### Iteration 2: Lookup Object By Unique Criteria
+  
+#### Iteration 2: Lookup Object By Unique Criteria
 
-#### Additional Config Fields
+##### Additional Config Fields
 
 - Lookup Criteria: Drop down with all sets of unique constraints for the object in question
 
-#### Input Metadata Changes
+##### Input Metadata Changes
 
 - The input matches the selected criteria
 
-#### Pseudo-Code
+##### Pseudo-Code
 
     function lookupObjectByUniqueCriteria(uniqueCriteria) {
       if(!uniqueCriteria) {
@@ -158,15 +165,15 @@ adapters which are developed by different developers.
     }
 
 
-## Lookup Objects (Plural)
+### Lookup Objects (Plural)
 
-#### Config Fields
+##### Config Fields
 
 - Object Type (dropdown)
 - Behavior (dropdown: Fetch all, Fetch Page, Emit Individually)
 - Number of search terms (text field: integer >= 1) (iteration 2)
 
-#### Input Metadata
+##### Input Metadata
 
 - Page size: optional positive integer that defaults to 100 (only if fetch page mode)
 - page number: required non-negative integer that is 0 based (only if fetch page mode)
@@ -179,7 +186,7 @@ adapters which are developed by different developers.
 - For each search term - 1: (iteration 2)
   - criteriaLink (and/or)
 
-#### Pseudo-Code
+##### Pseudo-Code
 
     function lookupObjects(criteria) {
       switch(mode) {
@@ -203,32 +210,32 @@ adapters which are developed by different developers.
       }
     }
 
-#### Output Data
+##### Output Data
 
 - An object, with  key `results` that has an array as its value.
 
-#### Gotcha’s to lookout for
+##### Gotcha’s to lookout for
 
 - Make sure to Url Encode field values appearing in HTTP urls
 
-#### Not Handled
+##### Not Handled
 
 - Order of operations in multiple terms
 - How to get total number of matching objects
 
+### Delete Object
 
-## Delete Object
-### Iteration 1: Delete Object By ID
+#### Iteration 1: Delete Object By ID
 
-#### Config Fields
+##### Config Fields
 
 - Object Type (dropdown)
 
-#### Input Metadata
+##### Input Metadata
 
 - One input per field in the ID that is required.
 
-#### Pseudo-Code
+##### Pseudo-Code
 
     function deleteObjectById(id) {
       try {
@@ -240,25 +247,26 @@ adapters which are developed by different developers.
       emitData({id: id});
     }
 
-#### Output Data
+##### Output Data
 
 - The id of the object deleted.
 
-#### Gotcha’s to lookout for
+##### Gotcha’s to lookout for
 
 - If zero objects are deleted, then the empty object should be emitted
 - Make sure to Url Encode IDs appearing in HTTP urls
-### Iteration 2: Delete Object By Unique Criteria
+  
+#### Iteration 2: Delete Object By Unique Criteria
 
-#### Additional Config Fields
+##### Additional Config Fields
 
 - Upsert Criteria: Drop down with all sets of unique constraints for the object type in question
 
-#### Input Metadata Changes
+##### Input Metadata Changes
 
 - The input matches the selected criteria
 
-#### Pseudo-Code
+##### Pseudo-Code
 
     function deleteObjectByUniqueCriteria(uniqueCriteria) {
       const foundObjects = GetObjectsByCritieria(uniqueCriteria);   // Usually GET verb
@@ -272,25 +280,29 @@ adapters which are developed by different developers.
       }
     }
 
+### Update Object
 
-## Update Object
 - Similar to upsert object (both iteration 1 & 2) but:
   - We will not create the object if it does not exist
   - The ID/other unique criteria is required
   - No other fields are required
-## Create Object
+  
+### Create Object
 
 Similar to upsert object but needed for the following cases:
 
 - Objects that can be created but can not be updated after creation (e.g. Invoices)
 - Cases where you want to create an object and its children
 - Cases where the id of the object includes information in the object (e.g. The ID of a sales line is the sales order ID + SKU).
-## Linking/Unlinking Objects
+  
+### Linking/Unlinking Objects
+
 - Given a many-to-many relationship in a system: create/update/remove a relationship between two objects.
 - In order to do this, the inbound metadata needs to include:
   - the types of the two objects
   - two sets of unique criteria which describe the two objects
   - Information about the relationship (e.g. if assigning user to company membership, identify the role of the user)
+  
     ```
     function linkObjects(obj1, obj2, linkMetadata) {
       const matchingObjects1 = lookupObjectByCriteria(obj1.type, obj1.uniqueCriteria);
@@ -309,30 +321,34 @@ Similar to upsert object but needed for the following cases:
     }
     ```
 
-## Execute Query or Statement in Query Language
+### Execute Query or Statement in Query Language
+
 *This action has not been fully standardized.*
 
 Examples of this include constructing a query in SQL, Salesforce’s SOQL, etc.
 
+### Perform Action/Evaluate Function
 
-## Perform Action/Evaluate Function
 *This action has not been fully standardized.*
 
 Examples of this include sendEmail, calculatePrice, etc.
 
-# Triggers
-## Get New and Updated Objects Polling
+## Triggers
 
-#### Config Fields
+### Get New and Updated Objects Polling
+
+##### Config Fields
 
 - Object Type (dropdown)
 - Start Time (string, optional): Indicates the begining time to start polling from (defaults to the begining of time)
 - End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
 - Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
 
-#### Input Metadata
+##### Input Metadata
+
 N/A
-#### Pseudo-Code
+
+##### Pseudo-Code
 
     function getObjectsPolling(cfg, snapshot) {
       const previousLastModified = snapshot.previousLastModified || cfg.startTime || new Date(0);
@@ -365,20 +381,21 @@ N/A
       emitSnapshot(snapshot);
     }
 
-#### Output Data
+##### Output Data
 
 - Each object emitted individually.
 
-#### Gotcha’s to lookout for
+##### Gotcha’s to lookout for
 
 - TODO
 
-## Webhooks
+### Webhooks
+
 *This action has not been fully standardized.*
 
 Receives data pushed to the iPaas from an external system.
 
-## Bulk Extract
+### Bulk Extract
 
 Useful for:
 

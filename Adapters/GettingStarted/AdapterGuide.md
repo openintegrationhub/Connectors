@@ -37,12 +37,10 @@ This guide helps to classify an API and to derive a set of functionalities that 
     - [DocumentationGuidelines](#documentationguidelines)
         - [Must Have](#must-have)
             - [README.md](#readmemd)
-        - [Should Have](#should-have)
-            - [README.md](#readmemd-1)
             - [Component.json](#componentjson)
             - [AdapterFunctionalityChecklist.md](#adapterfunctionalitychecklistmd)
         - [Could Have](#could-have)
-            - [README.md](#readmemd-2)
+            - [README.md](#readmemd-1)
             - [AdapterDescriptionAndDocumentationChecklist](#adapterdescriptionanddocumentationchecklist)
             - [Other Files](#other-files)
 
@@ -279,19 +277,14 @@ Adapter Repository Requirements:
 
 - [ ] Description of the application adapter connects to
 - [ ] List of environment variables that need to be configured (e.g. OAuth ClientID/Secret)
-
-### Should Have
-
-#### README.md
-
 - [ ] Description of the incoming message and outgoing message for each action/trigger (e.g. Update Contact Action)
   - [ ] Description of any attachments generated or consumed for each action/trigger
   
 #### Component.json
 
-See the
-[AdapterJsonSchema](/Adapters/AdapterJsonSchema.json)
-for a template to create the `component.json` file.
+The component.json acts as an entry point for systems. It holds meta information about the adapters functionality and can be used in several ways e.g. to generate an user interface
+
+See the [AdapterJsonSchema](/Adapters/AdapterJsonSchema.json) for a template to create the `component.json` file.
 
 - [ ] `component.json` should have a global `description` field filled.
 - [ ] `component.json` should have a link to the documentation, e.g. `README` file below

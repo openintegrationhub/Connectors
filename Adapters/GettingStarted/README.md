@@ -15,4 +15,4 @@ For actual implementations of Adapters, please checkout our examples:
 - [`SnazzyContacts`](../Examples/SnazzyContactsAdapter)
 - [`Wice`](../Examples/WiceAdapter)
   
-Once you have finished creating an Adapter there is a file called [AdapterFunctionalityChecklist](../AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.
+Once you have finished creating an Adapter there is a file called [`AdapterFunctionalityChecklist`](../AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.

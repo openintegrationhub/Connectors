@@ -1,8 +1,8 @@
 # Guide for creating an Adapter
 
-**Version Publish Date:** 01.03.2018
+**Version Publish Date:** 10.12.2018
 
-**Semantic Version of Document:** 1.0.0
+**Semantic Version of Document:** 2.0.0
 
 This guide helps to classify an API and to derive a set of functionalities that can be performed by an Adapter with the given API.
 
@@ -59,9 +59,6 @@ should aim at covering 100% of the objects provided by the API.
  a SOAP API, a SQL (or other) DB connection, etc.
 
 ![API Classification3](Assets/ConnectorDecisionTree.svg)
-
-A checklist for each case exists in the document
-[AdapterCompletenessChecklist.md](/Adapters/AdapterChecklists/DesiredAdapterBehaviors.md).
 
 ### Questions
 

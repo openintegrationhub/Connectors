@@ -15,25 +15,25 @@ This guide helps to classify an API and to derive a set of functionalities that 
             - [Question 1: Is the list of business objects dynamic](#question-1-is-the-list-of-business-objects-dynamic)
             - [Question 2: Is the structure of objects dynamic](#question-2-is-the-structure-of-objects-dynamic)
             - [Question 3: Does the API support Webhooks](#question-3-does-the-api-support-webhooks)
-        - [Desired Adapter Behavior](#desired-adapter-behavior)
-            - [Case 1](#case-1)
-                - [Triggers](#triggers)
-                - [Actions](#actions)
-            - [Case 2](#case-2)
-                - [Triggers](#triggers-1)
-                - [Actions](#actions-1)
-            - [Case 3](#case-3)
-                - [Triggers](#triggers-2)
-                - [Actions](#actions-2)
-            - [Case 4](#case-4)
-                - [Triggers](#triggers-3)
-                - [Actions](#actions-3)
-            - [Case 5](#case-5)
-                - [Triggers](#triggers-4)
-                - [Actions](#actions-4)
-            - [Case 6](#case-6)
-                - [Triggers](#triggers-5)
-                - [Actions](#actions-5)
+    - [Desired Adapter Behavior](#desired-adapter-behavior)
+        - [Case 1](#case-1)
+            - [Triggers](#triggers)
+            - [Actions](#actions)
+        - [Case 2](#case-2)
+            - [Triggers](#triggers-1)
+            - [Actions](#actions-1)
+        - [Case 3](#case-3)
+            - [Triggers](#triggers-2)
+            - [Actions](#actions-2)
+        - [Case 4](#case-4)
+            - [Triggers](#triggers-3)
+            - [Actions](#actions-3)
+        - [Case 5](#case-5)
+            - [Triggers](#triggers-4)
+            - [Actions](#actions-4)
+        - [Case 6](#case-6)
+            - [Triggers](#triggers-5)
+            - [Actions](#actions-5)
     - [DocumentationGuidelines](#documentationguidelines)
         - [Must Have](#must-have)
             - [README.md](#readmemd)
@@ -114,15 +114,15 @@ This can be more efficient (both in terms of speed and machine resources) than
 having a scheduled job periodically make calls for changes that may or may not
 have occurred.
 
-### Desired Adapter Behavior
+## Desired Adapter Behavior
 
-#### Case 1
+### Case 1
 
 - The list of business objects is dynamic
 - The structure of the objects is dynamic (*Implied by above statement*)
 - The API supports webhooks
 
-##### Triggers
+#### Triggers
 
 - [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) including functionality to
   - [ ] supply the list of readable objects
@@ -132,7 +132,7 @@ have occurred.
 - [ ] [getDeletedObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-webhook) including functionality to
   - [ ] supply the list of deletable objects
 
-##### Actions
+#### Actions
 
 - [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including functionality to
   - [ ] supply the list of writable objects
@@ -143,20 +143,20 @@ have occurred.
   - [ ] supply the list of readable objects
   - [ ] supply the list of fields that can be searched
 
-#### Case 2
+### Case 2
 
 - The list of business objects is dynamic
 - The structure of the objects is dynamic (*Implied by above statement*)
 - The API does not support webhooks
 
-##### Triggers
+#### Triggers
 
 - [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) including functionality to
   - [ ] supply the list of readable objects
 - [ ] [getDeletedObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) (if possible)
   - [ ] including functionality to supply the list of deletable objects
 
-##### Actions
+#### Actions
 
 - [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including functionality to
   - [ ] supply the list of writable objects
@@ -167,13 +167,13 @@ have occurred.
   - [ ] supply the list of readable objects
   - [ ] supply the list of fields that can be searched
 
-#### Case 3
+### Case 3
 
 - The list of business objects is static
 - The structure of the objects is dynamic
 - The API supports webhooks
 
-##### Triggers
+#### Triggers
 
 - [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) including
   - [ ] the static list of readable objects
@@ -183,7 +183,7 @@ have occurred.
 - [ ] [getDeletedObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-webhook) including
   - [ ] the static list of deletable objects
 
-##### Actions
+#### Actions
 
 - [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
@@ -194,20 +194,20 @@ have occurred.
   - [ ] the static list of readable objects
   - [ ] supply the list of fields that can be searched
 
-#### Case 4
+### Case 4
 
 - The list of business objects is static
 - The structure of the objects is dynamic
 - The API does not support webhooks
 
-##### Triggers
+#### Triggers
 
 - [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) including
   - [ ] the static list of readable objects
 - [ ] [getDeletedObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) (if possible)
   - [ ] including the static list of readable objects
 
-##### Actions
+#### Actions
 
 - [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
@@ -218,13 +218,13 @@ have occurred.
   - [ ] the static list of readable objects
   - [ ] supply the list of fields that can be searched
 
-#### Case 5
+### Case 5
 
 - The list of business objects is static
 - The structure of the objects is static
 - The API supports webhooks
 
-##### Triggers
+#### Triggers
 
 - [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) including
   - [ ] the static list of readable objects
@@ -234,7 +234,7 @@ have occurred.
 - [ ] [getDeletedObjectsWebhook](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-webhook) including
   - [ ] the static list of deletable objects
 
-##### Actions
+#### Actions
 
 - [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
@@ -245,20 +245,20 @@ have occurred.
   - [ ] the static list of readable objects
   - [ ] the static list of fields that can be searched
 
-#### Case 6
+### Case 6
 
 - The list of business objects is static
 - The structure of the objects is static
 - The API does not support webhooks
 
-##### Triggers
+#### Triggers
 
 - [ ] [getObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-new-and-updated-objects-polling) including
   - [ ] the static list of readable objects
 - [ ] [getDeletedObjectsPolling](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#get-deleted-objects-polling) (if possible)
   - [ ] including the static list of readable objects
 
-##### Actions
+#### Actions
 
 - [ ] [upsertObject](https://github.com/openintegrationhub/Connectors/blob/master/Adapters/AdapterBehaviorStandardization/StandardizedActionsAndTriggers.md#upsert-object) including
   - [ ] the static list of writable objects
@@ -269,7 +269,7 @@ have occurred.
   - [ ] the static list of readable objects
   - [ ] the static list of fields that can be searched
 
-## DocumentationGuidelines 
+## DocumentationGuidelines
 
 Adapter Repository Requirements:
 

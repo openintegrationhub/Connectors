@@ -1,15 +1,27 @@
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Adapter Concept](#adapter-concept)
+- [Getting Started](#getting-started)
 - [Adapter Tasks](#adapter-tasks)
     - [Exposes an Endpoint](#exposes-an-endpoint)
     - [Manipulating Data Stored by a System](#manipulating-data-stored-by-a-system)
-- [Getting Started](#getting-started)
   
 ## Adapter Concept
 The Adapter is a single, reusable piece of functionality that stands between your solution’s API and the Transformer. To enable communication between you and Open Integration Hub, the Adapter syntactically normalizes and transforms your applications data into a JSON object. For example, transforming CSV-, JS-, XML- files into JSON objects. The Adapter exposes the endpoint of your SaaS solution’s API via pre-defined actions and triggers(see elastic.io's definition of a component.json file[]). Those make sure that the four basic operations of persistent storage are available, such as create, read, update and delete a file.
 
 ![Adapter](Assets/Adapter.png)
+
+## Getting Started
+
+1. If you are planning to write your own Adapter while not being familiar with them, the folder  [`GettingStarted`](GettingStarted) is designed to be the starting point.  It explains the concept of the Adapter, how it works, the problems which an Adapter must solve and the recommended way of doing so. This document also includes a decision tree as well, helping you to discover which case your API falls into, respectively, how your Adapter should behave.
+
+2. [`AdapterBehaviorStandardization`](/Adapters/AdapterBehaviorStandardization) will then describe the various actions and triggers in detail, additional functionalities that an Adapter can perform and the standard way of exposing those. 
+
+3. For actual implementations of Adapters, please checkout our examples for [`SnazzyContacts`](/Examples/SnazzyContactsAdapter) and [`Wice`](/Examples/WiceAdapter)!
+
+4. Once you have finished creating an Adapter there is a file called [AdapterFunctionalityChecklist](/AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.
+
+5. In order to test your component, different resources must be provided. These resources are listed within the [RequirementsToTestOrBuildAnAdapter](/AdapterChecklists/RequirementsToTestOrBuildAnAdapter.md) file.
 
 ## Adapter Tasks
 There are two ways in which an adapter can expose the API functionality:
@@ -45,15 +57,3 @@ integrator can manipulate data.  This is in addition to all of the
 responsibilities of approach 1.
 *Note: Within any given adapter, it is possible to combine the two approaches if
 doing so makes sense.*
-
-## Getting Started
-
-1. If you are planning to write your own Adapter while not being familiar with them, the folder  [`GettingStarted`](GettingStarted) is designed to be the starting point.  It explains the concept of the Adapter, how it works, the problems which an Adapter must solve and the recommended way of doing so. This document also includes a decision tree as well, helping you to discover which case your API falls into, respectively, how your Adapter should behave.
-
-2. [`AdapterBehaviorStandardization`](/Adapters/AdapterBehaviorStandardization) will then describe the various actions and triggers in detail, additional functionalities that an Adapter can perform and the standard way of exposing those. 
-
-3. For actual implementations of Adapters, please checkout our examples for [`SnazzyContacts`](/Examples/SnazzyContactsAdapter) and [`Wice`](/Examples/WiceAdapter)!
-
-4. Once you have finished creating an Adapter there is a file called [AdapterFunctionalityChecklist](/AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.
-
-5. In order to test your component, different resources must be provided. These resources are listed within the [RequirementsToTestOrBuildAnAdapter](/AdapterChecklists/RequirementsToTestOrBuildAnAdapter.md) file.

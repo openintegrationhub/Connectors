@@ -1,7 +1,7 @@
 # Descriptions of standardized actions or triggers
-**Version Publish Date: 07.12.2018**
+**Version Publish Date: 10.12.2018**
 
-**Semantic Version of Document: 2.0.1**
+**Semantic Version of Document: 2.0.2**
 
 # Table of Contents
 - [Actions](#actions)
@@ -12,11 +12,11 @@
   * [Update Object](#update-object)
   * [Create Object](#create-object)
   * [Linking/Unlinking Objects](#linkingunlinking-objects)
-  * Execute Query or Statement in Query Language (e.g. SQL, Salesforce’s SOQL, etc) *(Not Standardized)*
-  * Perform Action/Evaluate Function (e.g. sendEmail, calculatePrice) *(Not Standardized)*
+  * [Execute Query or Statement in Query Language](#execute-query-or-statement-in-query-language)
+  * [Perform Action/Evaluate Function](#perform-actionevaluate-function)
 - [Triggers](#triggers)
   * [Get New and Updated Objects Polling](#get-new-and-updated-objects-polling)
-  * Webhooks *(Not Standardized)*
+  * [Webhooks](#webhooks)
   * [Bulk Extract](#bulk-extract)
 
 It is important to define common rules on how an adapter responds to changes
@@ -309,6 +309,17 @@ Similar to upsert object but needed for the following cases:
     }
     ```
 
+## Execute Query or Statement in Query Language
+*This action has not been fully standardized.*
+
+Examples of this include constructing a query in SQL, Salesforce’s SOQL, etc.
+
+
+## Perform Action/Evaluate Function
+*This action has not been fully standardized.*
+
+Examples of this include sendEmail, calculatePrice, etc.
+
 # Triggers
 ## Get New and Updated Objects Polling
 
@@ -361,6 +372,11 @@ N/A
 #### Gotcha’s to lookout for
 
 - TODO
+
+## Webhooks
+*This action has not been fully standardized.*
+
+Receives data pushed to the iPaas from an external system.
 
 ## Bulk Extract
 

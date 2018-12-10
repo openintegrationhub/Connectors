@@ -38,11 +38,14 @@ This guide helps to classify an API and to derive a set of functionalities that 
         - [Must Have](#must-have)
             - [README.md](#readmemd)
             - [Component.json](#componentjson)
-            - [AdapterFunctionalityChecklist.md](#adapterfunctionalitychecklistmd)
-        - [Could Have](#could-have)
-            - [README.md](#readmemd-1)
-            - [AdapterDescriptionAndDocumentationChecklist](#adapterdescriptionanddocumentationchecklist)
             - [Other Files](#other-files)
+        - [Should Have](#should-have)
+            - [README.md](#readmemd-1)
+            - [AdapterFunctionalityChecklist.md](#adapterfunctionalitychecklistmd)
+            - [Other Files](#other-files-1)
+        - [Could Have](#could-have)
+            - [README.md](#readmemd-2)
+            - [AdapterDescriptionAndDocumentationChecklist](#adapterdescriptionanddocumentationchecklist)
 
 ## Given an API how should an Adapter behave
 
@@ -294,20 +297,34 @@ See the [AdapterJsonSchema](/Adapters/AdapterJsonSchema.json) for a template to 
 - [ ] Each field in the trigger/action should have a `note` explaining what expected to be there as well as meaningful example
  in `placeholder` which could be (for optional fields) a default value if field is empty
 
+#### Other Files
+
+- [ ] License file
+
+### Should Have
+
+#### README.md
+
+- [ ] Documentation for the authentication process (How to find API key, etc.)
+- [ ] Screen shot of the parameters for each action/trigger with sample meaningful values (if parameters are defined for given trigger/action)
+- [ ] Description of the parameters (if any) for each action/trigger
+- [ ] Sample of the minimum viable input (e.g. for updating or creating something) for each action/trigger
+- [ ] Description of the dynamic metadata generation rules, metadata discovery rules for each action/trigger
+
 #### AdapterFunctionalityChecklist.md
 
-- [ ] A copy of the [Adapter FunctionalityChecklist](/../AdapterChecklists/AdapterFunctionalityChecklist.md) which tracks which functionality has been implemented in the component.
+- [ ] A copy of the [Adapter FunctionalityChecklist](../AdapterChecklists/AdapterFunctionalityChecklist.md) which tracks which functionality has been implemented in the component.
+
+#### Other Files
+
+- [ ] Logo - 128x128 PNG file with transparent background
+- [ ] Changelog
 
 ### Could Have
 
 #### README.md
 
 - [ ] Version and compatibility information
-- [ ] Documentation for the authentication process (How to find API key, etc.)
-- [ ] Screen shot of the parameters for each action/trigger with sample meaningful values (if parameters are defined for given trigger/action)
-- [ ] Description of the parameters (if any) for each action/trigger
-- [ ] Sample of the minimum viable input (e.g. for updating or creating something) for each action/trigger
-- [ ] Description of the dynamic metadata generation rules, metadata discovery rules for each action/trigger
 - [ ] Known limitations, may be with link to the issue
 - [ ] Contribution guidelines (they should be standardized)
 - [ ] License and copyright
@@ -315,9 +332,3 @@ See the [AdapterJsonSchema](/Adapters/AdapterJsonSchema.json) for a template to 
 #### AdapterDescriptionAndDocumentationChecklist
 
 - [ ] A copy of this checklist which tracks completeness of the documentation.
-
-#### Other Files
-
-- [ ] Logo - 128x128 PNG file with transparent background
-- [ ] License file
-- [ ] Changelog

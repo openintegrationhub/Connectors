@@ -1,14 +1,10 @@
 # Adapter
 
 ## Table of Contents
-
-- [Adapter](#adapter)
-    - [Table of Contents](#table-of-contents)
-    - [Adapter Concept](#adapter-concept)
-    - [Getting Started](#getting-started)
-    - [Adapter Tasks](#adapter-tasks)
-        - [Exposes an Endpoint](#exposes-an-endpoint)
-        - [Manipulating Data Stored by a System](#manipulating-data-stored-by-a-system)
+- [Getting Started](#getting-started)
+- [Adapter Tasks](#adapter-tasks)
+    - [Exposes an Endpoint](#exposes-an-endpoint)
+    - [Manipulating Data Stored by a System](#manipulating-data-stored-by-a-system)
   
 ## Adapter Concept
 

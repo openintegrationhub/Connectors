@@ -1,9 +1,8 @@
 # wice-adapter
-> [Wice CRM](https://wice.de/) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
 
 [Wice CRM](https://wice.de/) is a CRM Software which offers different modules for address management, tasks management, project management, calendars and a knowledge base for knowledge management. The software could be used to manage sales opportunities and offers too. In addition, [Wice CRM](https://wice.de/) offers the possibility to manage and create invoices, open items and incoming payments.
 
-This is an **adapter** which connects [Wice CRM](https://wice.de/) which with third-party applications via [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this **adapter** you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``upsertArticle``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
+This **adapter** connects [Wice CRM](https://wice.de/) which with third-party applications. With this **adapter** you are able to create different application flows. It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``upsertArticle``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/).
 
 ## Before you begin
 

@@ -1,9 +1,8 @@
 # snazzycontacts-adapter
-> [Snazzy Contacts](https://snazzycontacts.com) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
 
 [Snazzy Contacts](https://snazzycontacts.com) is a smart contact management software for controlling, organizing and managing your contacts data. With [Snazzy Contacts](https://snazzycontacts.com) you could manage your entire team contacts(contacts and organizations) and work flexibly together with your colleagues. You are able to maintain your addresses on all devices from everywhere.
 
-This is an **adapter** which connects [Snazzy Contacts](https://snazzycontacts.com) with third-party applications via [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this **adapter** you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``deleteOrganization``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Snazzy Contacts](https://snazzycontacts.com) and write and save data in [Snazzy Contacts](https://snazzycontacts.com) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
+This **adapter** connects [Snazzy Contacts](https://snazzycontacts.com) with third-party applications. With this **adapter** you are able to create different application flows. It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``deleteOrganization``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Snazzy Contacts](https://snazzycontacts.com) and write and save data in [Snazzy Contacts](https://snazzycontacts.com).
 
 ## Before you begin
 

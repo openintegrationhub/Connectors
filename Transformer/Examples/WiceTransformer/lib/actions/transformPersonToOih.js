@@ -34,7 +34,7 @@ async function processAction(msg) {
     }
     return;
   } catch (e) {
-    console.log(`ERROR: ${e}`);
+    console.log('ERROR: ', e);
     throw new Error(e);
   }
 }

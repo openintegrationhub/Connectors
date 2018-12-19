@@ -1,9 +1,8 @@
-# elasticio-wice-component
-> [Wice CRM](https://wice.de/) Node.js component for [elastic.io platform](http://www.elastic.io "elastic.io platform")
+# wice-adapter
 
 [Wice CRM](https://wice.de/) is a CRM Software which offers different modules for address management, tasks management, project management, calendars and a knowledge base for knowledge management. The software could be used to manage sales opportunities and offers too. In addition, [Wice CRM](https://wice.de/) offers the possibility to manage and create invoices, open items and incoming payments.
 
-This is an **adapter** which connects [Wice CRM](https://wice.de/) which with third-party applications via [elastic.io platform](http://www.elastic.io "elastic.io platform"). With this **adapter** you are able to create different flows on [elastic.io](http://www.elastic.io "elastic.io platform"). It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``upsertArticle``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/) via [elastic.io platform](http://www.elastic.io "elastic.io platform").
+This **adapter** connects [Wice CRM](https://wice.de/) which with third-party applications. With this **adapter** you are able to create different application flows. It supports **"Triggers"** (e.g. ``getPersonsPolling``, ``getOrganizationsPolling``) as well as **"Actions"** (e.g. ``upsertPerson``, ``upsertArticle``, ``updatePersonsOrganization``, etc.), therefore with this **adapter** you could both read and fetch data from [Wice CRM](https://wice.de/) and write and save data in [Wice CRM](https://wice.de/).
 
 ## Before you begin
 
@@ -12,6 +11,10 @@ Before you can use the component you **must be a registered Wice CRM user**. Ple
 
 After you are already registered in [Wice CRM](https://wice.de/) you have to generate your **API Key**.
 > For activation you **have to be logged in**, then click of ``Admin`` and under ```Plugins``` click of ``Wice elastic.io backend``. Once you are in click the button ``Create new`` to generate your API key.
+
+![Administration](Assets/Plugins.png)
+***
+![APIKey](Assets/APIKey.png)
 
 Once the activation is done you have an access to **API Key** which is required for an authentication when you make a request to Wice CRM.
 
@@ -31,9 +34,6 @@ The connector supports the following **actions** and **triggers**:
   - Upsert person (```upsertPerson.js```)
   - Upsert organization(```upsertOrganization.js```)
   - Upsert article(```upsertArticle.js```)
-  - Update person (```updatePerson.js```)
-  - Update organization (```updateOrganization.js```)  
-  - Update article (```updateArticle.js```)  
   - Delete person (```deletePerson.js```)
   - Delete organization (```deleteOrganization.js```)
   - Delete article (```deleteArticle.js```)
@@ -79,27 +79,15 @@ Lookup article action (```lookupArticle.js```) performs a request which fetches 
 
 ##### Upsert person
 
-Upsert person action (``upsertPerson.js``) update an existing person if it already exists. Otherwise create a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
+Upsert person action (``upsertPerson.js``) updates an existing person if it already exists. Otherwise creates a new one. At this point of time the function accepts as required parameters ``name`` and ``firstname``, but of course you can also pass other parameters like ``email``, ``phone``, ``salutation``, ``title``, etc.
 
 ##### Upsert organization
 
-Upsert organization action (``upsertOrganization.js``) update an existing organization if it already exists. Otherwise create a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
+Upsert organization action (``upsertOrganization.js``) updates an existing organization if it already exists. Otherwise creates a new one. This function accepts as required parameter only ``name``, but if you wish you can also pass ``town``, ``street``, ``street_number``, ``zip_code``, ``country``etc.
 
 ##### Upsert article
 
-Upsert article action (``upsertArticle.js``) update an existing article if it already exists. Otherwise create a new one. This function accepts as required parameter ``description``, but if you wish you can also pass ``number``, ``sales_price``, ``purchase_price``, ``in_stock``, ``unit``etc.
-
-##### Update person
-
-Update person action (``updatePerson.js``) updates a specific person in [Wice CRM](https://wice.de/). The function accepts as required parameter ``rowid`` of the person and respectively the values of the properties which you want to update.
-
-##### Update organization
-
-Update organization action (``updateOrganization.js``) updates a specific organization in [Wice CRM](https://wice.de/). The function accepts as required parameter ``rowid`` of the organization  and respectively the values of the properties which you want to update.
-
-##### Update article
-
-Update article action (``updateOrganization.js``) updates a specific article in [Wice CRM](https://wice.de/). The function accepts as required parameter ``rowid`` of the article  and respectively the values of the properties which you want to update.
+Upsert article action (``upsertArticle.js``) updates an existing article if it already exists. Otherwise creates a new one. This function accepts as required parameter ``description``, but if you wish you can also pass ``number``, ``sales_price``, ``purchase_price``, ``in_stock``, ``unit``etc.
 
 ##### Delete person
 

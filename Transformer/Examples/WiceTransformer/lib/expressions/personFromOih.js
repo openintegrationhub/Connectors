@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /**
  * Copyright 2018 Wice GmbH
 
@@ -20,7 +21,12 @@ module.exports.getExpression = msg => {
   if (Object.keys(msg.body).length === 0 && msg.body.constructor === Object) {
     return msg.body;
   }
+
+  const rowids = (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v, $i, $a) { ($v.recordUid != '') })`).evaluate());
+  const lastModifications = (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v, $i, $a) { ($v.lastModified.timestamp != '') })`).evaluate());
+
   const expression = {
+    rowid: rowids ? rowids.recordUid : '',
     address_category2: '',
     phone: (jsonata(`$filter(${JSON.stringify(msg.body.contactData)}, function($v) { $v.description = 'primary'})`).evaluate()).value,
     wp_contact_remote_addr: '',
@@ -42,7 +48,6 @@ module.exports.getExpression = msg => {
     mobile_phone: (jsonata(`$filter(${JSON.stringify(msg.body.contactData)}, function($v) { $v.description = 'secondary'})`).evaluate()).value,
     email_save_note: '',
     updated_by_user: '',
-    rowid: (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v) { $v.applicationUid = 2})`).evaluate()).recordUid,
     oldstatus_remarks: '',
     picture_url: msg.body.photo,
     deactivated: '',
@@ -70,7 +75,7 @@ module.exports.getExpression = msg => {
     column_output: '',
     fax: '',
     caring_employee: '',
-    last_update: (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v) { $v.applicationUid = 3})`).evaluate()).lastModified,
+    last_update: lastModifications ? lastModifications.lastModified.timestamp : '',
     address_category4: '',
     created_by_wp_contact: '0',
     salutation: msg.body.salutation,
@@ -91,5 +96,6 @@ module.exports.getExpression = msg => {
     department: '',
     for_rowid: 199978
   };
+
   return expression;
 };

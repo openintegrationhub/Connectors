@@ -32,90 +32,13 @@ exports.process = processTrigger;
  */
 function processTrigger(msg, cfg, snapshot = {}) {
   const self = this;
-  let contacts = [];
 
   snapshot.lastUpdated = snapshot.lastUpdated || (new Date(0)).toISOString();
   console.log(`Last updated: ${snapshot.lastUpdated}`);
 
-  async function fetchAll(options) {
-    try {
-      let result = [];
-      const persons = await request.post(options);
-      const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
+  async function emitData() {
+    const contacts = await getDeletedPersons(cfg, snapshot);
 
-      if (totalEntries == 0) return result;
-
-      persons.content.filter((person) => {
-        const currentPerson = customPerson(person);
-        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
-      });
-
-      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
-      return result;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  function customPerson(person) {
-    const customUserFormat = {
-      rowid: person.rowid,
-      firstname: person.firstname,
-      name: person.name,
-      email: person.email,
-      for_rowid: person.for_rowid,
-      same_contactperson: person.same_contactperson,
-      last_update: person.last_update,
-      title: person.title,
-      salutation: person.salutation,
-      date_of_birth: person.date_of_birth,
-      private_street: person.private_street,
-      private_zip_code: person.private_zip_code,
-      private_town: person.private_town,
-      private_country: person.private_country,
-      house_post_code: person.house_post_code,
-      fax: person.fax,
-      phone: person.phone,
-      mobile_phone: person.mobile_phone,
-      private_mobile_phone: person.private_mobile_phone,
-      private_phone: person.private_phone,
-      private_email: person.private_email,
-      facebook_url: person.facebook_url,
-      linked_in_url: person.linked_in_url,
-      twitter_url: person.twitter_url,
-      googleplus_url: person.googleplus_url,
-      youtube_url: person.youtube_url,
-      url: person.url,
-      skype: person.skype
-    };
-    return customUserFormat;
-  }
-
-  async function getDeletedPersons() {
-    try {
-      const cookie = await createSession(cfg);
-      const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
-      const requestOptions = {
-        uri,
-        json: {
-          'print_deleted_entries_only': true
-        },
-        headers: {
-          'X-API-KEY': cfg.apikey
-        }
-      };
-      contacts = await fetchAll(requestOptions);
-
-      if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
-
-      return contacts;
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-      throw new Error(e);
-    }
-  }
-
-  function emitData() {
     console.log(`Found ${contacts.length} new records.`);
 
     if (contacts.length > 0) {
@@ -131,6 +54,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   function emitError(e) {
+    console.log(`ERROR: ${e}`);
     self.emit('error', e);
   }
 
@@ -140,8 +64,90 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    .then(getDeletedPersons)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);
+}
+
+async function getDeletedPersons(cfg, snapshot = {}) {
+  try {
+    const cookie = await createSession(cfg);
+    const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
+    const requestOptions = {
+      uri,
+      json: {
+        'print_deleted_entries_only': true
+      },
+      headers: {
+        'X-API-KEY': cfg.apikey
+      }
+    };
+    const contacts = await fetchAll(requestOptions, snapshot);
+
+    if (!contacts || !Array.isArray(contacts)) throw `Expected records array. Instead received: ${JSON.stringify(contacts)}`;
+
+    return contacts;
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    throw new Error(e);
+  }
+}
+
+async function fetchAll(options, snapshot) {
+  try {
+    let result = [];
+    const persons = await request.post(options);
+    const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
+
+    if (totalEntries === 0) return result;
+
+    persons.content.filter((person) => {
+      const currentPerson = customPerson(person);
+      currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
+    });
+
+    result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
+    return result;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+function customPerson(person) {
+  const customUserFormat = {
+    rowid: person.rowid,
+    firstname: person.firstname,
+    name: person.name,
+    email: person.email,
+    for_rowid: person.for_rowid,
+    same_contactperson: person.same_contactperson,
+    last_update: person.last_update,
+    title: person.title,
+    salutation: person.salutation,
+    date_of_birth: person.date_of_birth,
+    private_street: person.private_street,
+    private_zip_code: person.private_zip_code,
+    private_town: person.private_town,
+    private_country: person.private_country,
+    house_post_code: person.house_post_code,
+    fax: person.fax,
+    phone: person.phone,
+    mobile_phone: person.mobile_phone,
+    private_mobile_phone: person.private_mobile_phone,
+    private_phone: person.private_phone,
+    private_email: person.private_email,
+    facebook_url: person.facebook_url,
+    linked_in_url: person.linked_in_url,
+    twitter_url: person.twitter_url,
+    googleplus_url: person.googleplus_url,
+    youtube_url: person.youtube_url,
+    url: person.url,
+    skype: person.skype
+  };
+  return customUserFormat;
+}
+
+module.exports = {
+  process: processTrigger,
+  getDeletedPersons
 }

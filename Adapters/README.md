@@ -22,7 +22,7 @@ The Adapter is a single, reusable piece of functionality that stands between you
 
 4. Once you have finished creating an Adapter there is a file called [`AdapterFunctionalityChecklist`](AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.
 
-5. In order to test your component, different resources must be provided. These resources are listed within the [`RequirementsToTestOrBuildAnAdapter`](/AdapterChecklists/RequirementsToTestOrBuildAnAdapter.md) file.
+5. In order to test your component, different resources must be provided. These resources are listed within the [`RequirementsToTestOrBuildAnAdapter`](/GettingStarted/RequirementsToTestOrBuildAnAdapter.md) file.
 
 ## Adapter Tasks
 

@@ -65,8 +65,6 @@ In the first section the general template is provided. In the second section, an
 
 - [ ] Known limitations, may be with link to the issue
 
-- [ ] Contribution guidelines (they should be standardized)
-
 - [ ] License and copyright
 
 #### Component.json
@@ -74,8 +72,6 @@ In the first section the general template is provided. In the second section, an
 - [ ] `component.json` should have a global `description` field filled.
 
 - [ ] `component.json` should have a link to the documentation, e.g. `README` file below
-
-- [ ] Each field in credentials should have a `note` on it explaining what exactly is required here (unless it's obvious, e.g. password)
 
 - [ ] Each field except `password` should have a `placeholder` configured with a meaningful sample (unless it's obvious)
 

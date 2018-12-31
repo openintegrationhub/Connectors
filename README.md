@@ -95,12 +95,11 @@ The session will take place every `Monday from 11:00 - 12:00`.  The first sessio
 #### Connectors
 |Member Name |GitHub Alias|Company| Role |
 | --- | --- | --- | --- |
-| Dennis Steiniger|[dennisCES](https://github.com/dennisCES)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| **Manager**  |
+| Selim Achmerzaev |[sachmerz](https://github.com/sachmerz)|[Basaas](http://www.basaas.com/)| Committer  |
+| Igor Drobiazko |[drobiazko](https://github.com/drobiazko)|[Elastic.io](http://www.elastic.io/)| Committer  |
+| Franz  Degenhardt|[FranzDegenhardt](https://github.com/FranzDegenhardt)|[X-Integrate](https://x-integrate.com/x-integrate-startseite/)| Committer  |
+| Hansjörg Schmidt  |[hschmidthh](https://github.com/hschmidthh)|[Wice](https://wice.de/)| Committer  |
 | Philipp Hoegner|[philecs](https://github.com/philecs)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| Committer  |
-| Robin Brinkmann |[RobinBrinkmann](https://github.com/RobinBrinkmann)|[Cloud Ecosystem](http://www.cloudecosystem.org/) | Committer   |
-| Jacob Horbulyk |[jhorbulyk](https://github.com/jhorbulyk)|[Elastic.io](https://www.elastic.io/)| Committer   |
-| Renat Zubairov|[zubairov](https://github.com/zubairov)|[Elastic.io](https://www.elastic.io/)| Contributor   |
-
 
 ## Wording
 Within the project different terms and abbreviations are frequently used. All terms and abbrevations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).

@@ -20,8 +20,12 @@ module.exports.getExpression = msg => {
   if (Object.keys(msg.body).length === 0 && msg.body.constructor === Object) {
     return msg.body;
   }
+
+  const rowids = (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v, $i, $a) { ($v.recordUid != '') })`).evaluate());
+  const lastModifications = (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v, $i, $a) { ($v.lastModified.timestamp != '') })`).evaluate());
+
   const expression = {
-    rowid: (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v) { $v.applicationUid = 3})`).evaluate()).recordUid,
+    rowid: rowids ? rowids.recordUid : '',
     tenant: '',
     for_rowid: '',
     for_table: '',
@@ -46,7 +50,7 @@ module.exports.getExpression = msg => {
     address_category2: '',
     address_category3: '',
     address_category4: '',
-    last_update: (jsonata(`$filter(${JSON.stringify(msg.body.oihApplicationRecords)}, function($v) { $v.applicationUid = 3})`).evaluate()).lastModified,
+    last_update: lastModifications ? lastModifications.lastModified.timestamp : '',
     date_of_birth: msg.body.birthday,
     private_street: (jsonata(`$filter(${JSON.stringify(msg.body.addresses)}, function($v) { $v.description = 'primary'})`).evaluate()).street,
     private_zip_code: (jsonata(`$filter(${JSON.stringify(msg.body.addresses)}, function($v) { $v.description = 'primary'})`).evaluate()).zipCode,

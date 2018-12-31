@@ -52,6 +52,7 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   function emitError(e) {
+    console.log(`ERROR: ${e}`);
     self.emit('error', e);
   }
 
@@ -61,7 +62,6 @@ function processTrigger(msg, cfg, snapshot = {}) {
   }
 
   Q()
-    // .then(getPersons)
     .then(emitData)
     .fail(emitError)
     .done(emitEnd);
@@ -73,8 +73,12 @@ async function getPersons(cfg, snapshot = {}) {
     const uri = `http://snazzycontacts.com/mp_contact/json_respond/address_contactperson/json_mainview?&mp_cookie=${cookie}`;
     const requestOptions = {
       uri,
-      json: { 'max_hits': 100 }, // just for testing purposes
-      headers: { 'X-API-KEY': cfg.apikey }
+      json: {
+        'max_hits': 100 // just for testing purposes
+      },
+      headers: {
+        'X-API-KEY': cfg.apikey
+      }
     };
     const contacts = await fetchAll(requestOptions, snapshot);
 
@@ -84,67 +88,68 @@ async function getPersons(cfg, snapshot = {}) {
     throw new Error(e);
   }
 }
-  function customPerson(person) {
-    const customUserFormat = {
-      rowid: person.rowid,
-      firstname: person.firstname,
-      name: person.name,
-      email: person.email,
-      for_rowid: person.for_rowid,
-      same_contactperson: person.same_contactperson,
-      last_update: person.last_update,
-      is_deleted: person.is_deleted,
-      title: person.title,
-      salutation: person.salutation,
-      position: person.position,
-      date_of_birth: person.date_of_birth,
-      private_street: person.private_street,
-      private_zip_code: person.private_zip_code,
-      private_town: person.private_town,
-      private_state: person.private_state,
-      private_country: person.private_country,
-      private_country_symbol: person.private_country_symbol,
-      house_post_code: person.house_post_code,
-      fax: person.fax,
-      phone: person.phone,
-      phone2: person.phone2,
-      phone3: person.phone3,
-      mobile_phone: person.mobile_phone,
-      private_mobile_phone: person.private_mobile_phone,
-      private_phone: person.private_phone,
-      private_email: person.private_email,
-      picture_url: person.picture_url,
-      xing_url: person.xing_url,
-      facebook_url: person.facebook_url,
-      linked_in_url: person.linked_in_url,
-      twitter_url: person.twitter_url,
-      googleplus_url: person.googleplus_url,
-      youtube_url: person.youtube_url,
-      url: person.url,
-      skype: person.skype
-    };
-    return customUserFormat;
+
+async function fetchAll(options, snapshot) {
+  try {
+    let result = [];
+    const persons = await request.post(options);
+    const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
+
+    if (totalEntries === 0) return result;
+
+    persons.content.filter((person) => {
+      const currentPerson = customPerson(person);
+      currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
+    });
+
+    result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
+    return result;
+  } catch (e) {
+    throw new Error(e);
   }
+}
 
-  async function fetchAll(options, snapshot) {
-    try {
-      let result = [];
-      const persons = await request.post(options);
-      const totalEntries = persons.content[0].total_entries_readable_with_current_permissions;
-      if (totalEntries == 0) return result;
-
-      persons.content.filter((person) => {
-        const currentPerson = customPerson(person);
-        currentPerson.last_update > snapshot.lastUpdated && result.push(currentPerson);
-      });
-
-      result.sort((a, b) => Date.parse(a.last_update) - Date.parse(b.last_update));
-      return result;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
+function customPerson(person) {
+  const customUserFormat = {
+    rowid: person.rowid,
+    firstname: person.firstname,
+    name: person.name,
+    email: person.email,
+    for_rowid: person.for_rowid,
+    same_contactperson: person.same_contactperson,
+    last_update: person.last_update,
+    is_deleted: person.is_deleted,
+    title: person.title,
+    salutation: person.salutation,
+    position: person.position,
+    date_of_birth: person.date_of_birth,
+    private_street: person.private_street,
+    private_zip_code: person.private_zip_code,
+    private_town: person.private_town,
+    private_state: person.private_state,
+    private_country: person.private_country,
+    private_country_symbol: person.private_country_symbol,
+    house_post_code: person.house_post_code,
+    fax: person.fax,
+    phone: person.phone,
+    phone2: person.phone2,
+    phone3: person.phone3,
+    mobile_phone: person.mobile_phone,
+    private_mobile_phone: person.private_mobile_phone,
+    private_phone: person.private_phone,
+    private_email: person.private_email,
+    picture_url: person.picture_url,
+    xing_url: person.xing_url,
+    facebook_url: person.facebook_url,
+    linked_in_url: person.linked_in_url,
+    twitter_url: person.twitter_url,
+    googleplus_url: person.googleplus_url,
+    youtube_url: person.youtube_url,
+    url: person.url,
+    skype: person.skype
+  };
+  return customUserFormat;
+}
 
 module.exports = {
   process: processTrigger,

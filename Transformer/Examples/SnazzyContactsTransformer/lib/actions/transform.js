@@ -62,7 +62,7 @@ module.exports.transform = (exp) => {
     return Promise.resolve();
   }
   return Promise.resolve(eioUtils.newMessageWithBody(result));
-}
+};
 
 function handlePassthrough(message) {
   if (message.passthrough && Object.keys(message.passthrough)) {

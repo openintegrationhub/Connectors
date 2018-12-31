@@ -81,16 +81,20 @@ const personFromOih = () => {
       description: 'private address data of the person'
     }],
     oihApplicationRecords: [{
-      applicationUid: 3,
-      recordUid: 98765,
-      created: 23215151,
-      lastModified: 36542364
+      applicationUid: '',
+      recordUid: '98765',
+      created: '23215151',
+      lastModified: '36542364'
     },
     {
-      applicationUid: 2,
-      recordUid: 12121,
-      created: 454545454,
-      lastModified: 7878787
+      applicationUid: '',
+      recordUid: '',
+      created: '454545454',
+      lastModified: {
+        userId: '254',
+        type: 'modification',
+        timestamp: '2018-01-02'
+      }
     }
     ]
   };
@@ -102,7 +106,8 @@ const personToOih = () => {
     rowid: 98123,
     name: 'Smith',
     firstname: 'Mark',
-    private_street: 'Main Str. 120',
+    private_street: 'Main Str.',
+    private_street_number: '120',
     position: 'Marketing Manager',
     title: 'Prof',
     phone: 830238131,
@@ -111,4 +116,7 @@ const personToOih = () => {
   return expression;
 };
 
-module.exports = {personFromOih, personToOih};
+module.exports = {
+  personFromOih,
+  personToOih
+};

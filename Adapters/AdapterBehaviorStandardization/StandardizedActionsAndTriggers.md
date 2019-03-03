@@ -40,7 +40,7 @@ adapters which are developed by different developers.
 
 - One input per field in the ID that is optional.  This field is marked as being the ID.
 - Inputs for other fields on the body.  All fields that are not nullable and can’t be populated by the system on create should be required.
-  
+
 ##### Pseudo-Code
 
     function upsertObjectById(obj) {
@@ -66,7 +66,7 @@ adapters which are developed by different developers.
 
 - Updates should be partial updates
 - Make sure to Url Encode IDs appearing in HTTP urls
-  
+
 #### Iteration 2: Update Object By Unique Criteria
 
 ##### Additional Config Fields
@@ -114,7 +114,27 @@ adapters which are developed by different developers.
 
 ##### Pseudo-Code
 
-@Jacob H TODO: Re-add
+    function lookupObjectById(id) {
+      if(!id) {
+        if(allowCriteriaToBeOmitted) {
+          emitData({});
+          return;
+        } else {
+          throw new Error('No ID provided');
+        } 
+      }
+      
+      try {  
+        const foundObject = GetObjectById(id);   // Usually GET verb
+        emitData(foundObject);    
+      } catch (NotFoundException e) {
+        if(allowZeroResults) {
+          emitData({});
+        } else {
+          throw e;
+        }
+      }        
+    }
 
 ##### Output Data
 
@@ -127,7 +147,7 @@ adapters which are developed by different developers.
 ##### Not defined now
 
 - How to handle populating linked objects.
-  
+
 #### Iteration 2: Lookup Object By Unique Criteria
 
 ##### Additional Config Fields
@@ -255,7 +275,7 @@ adapters which are developed by different developers.
 
 - If zero objects are deleted, then the empty object should be emitted
 - Make sure to Url Encode IDs appearing in HTTP urls
-  
+
 #### Iteration 2: Delete Object By Unique Criteria
 
 ##### Additional Config Fields
@@ -286,7 +306,7 @@ adapters which are developed by different developers.
   - We will not create the object if it does not exist
   - The ID/other unique criteria is required
   - No other fields are required
-  
+
 ### Create Object
 
 Similar to upsert object but needed for the following cases:
@@ -294,7 +314,7 @@ Similar to upsert object but needed for the following cases:
 - Objects that can be created but can not be updated after creation (e.g. Invoices)
 - Cases where you want to create an object and its children
 - Cases where the id of the object includes information in the object (e.g. The ID of a sales line is the sales order ID + SKU).
-  
+
 ### Linking/Unlinking Objects
 
 - Given a many-to-many relationship in a system: create/update/remove a relationship between two objects.
@@ -302,7 +322,7 @@ Similar to upsert object but needed for the following cases:
   - the types of the two objects
   - two sets of unique criteria which describe the two objects
   - Information about the relationship (e.g. if assigning user to company membership, identify the role of the user)
-  
+
     ```
     function linkObjects(obj1, obj2, linkMetadata) {
       const matchingObjects1 = lookupObjectByCriteria(obj1.type, obj1.uniqueCriteria);
@@ -343,6 +363,7 @@ Examples of this include sendEmail, calculatePrice, etc.
 - Start Time (string, optional): Indicates the begining time to start polling from (defaults to the begining of time)
 - End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
 - Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
+- Single Page per Interval (dropdown/checkbox: yes/no; default no) Indicates that if the number of changed records exceeds the maximum number of results in a page, instead of fetching the next page immediately, wait until the next flow start to fetch the next page.
 
 ##### Input Metadata
 
@@ -374,7 +395,10 @@ N/A
         if(pageOfResults.length > 0) {
           lastSeenTime = pageOfResults[pageOfResults.length - 1].lastModified;
         }
-        emitSnapshot(snapshot);  
+        emitSnapshot(snapshot);
+        if(singlePagePerInterval && hasMorePages) {
+          return;
+        }          
       } while (hasMorePages)
       delete snapshot.pageNumber;
       snapshot.previousLastModified = lastSeenTime;

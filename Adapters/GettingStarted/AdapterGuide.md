@@ -77,8 +77,6 @@ the list of objects is dynamic and it is possible to use the API to learn the
 list of existing objects, the developer should write code to fetch that list and
 [provide that as dynamic
 configuration](https://support.elastic.io/support/solutions/articles/14000041559-selectview#dynamic-select).
-[See an example in
-SugarCRM.](https://github.com/elasticio/sugarcrm-component/blob/master/lib/actions/lookupObject.js#L12-L15)
 Furthermore, in the case of a dynamic list of business objects, since the list
 of objects is unknown, the structure of objects is also unknown.  This means
 that an answer of *yes* to *Question 1* implies an answer of *yes* to *Question
@@ -96,8 +94,7 @@ of any object in the system.
 
 If the objects have a fixed structure, then the adapter developer can hard code
 the schema of the objects produced.  Otherwise, the developer should write code
-to fetch [the dynamic structure of that
-object.](https://github.com/elasticio/sugarcrm-component/blob/master/lib/actions/upsertObject.js#L36-L43).
+to fetch the dynamic structure of that object.
 
 #### Question 3: Does the API support Webhooks
 

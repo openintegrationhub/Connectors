@@ -363,7 +363,7 @@ Examples of this include sendEmail, calculatePrice, etc.
 - Start Time (string, optional): Indicates the begining time to start polling from (defaults to the begining of time)
 - End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
 - Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
-- Single Page per Interval (dropdown/checkbox: yes/no; default no) Indicates that if the number of changed records exceeds the maximum number of results in a page, instead of fetching the next page immediately, wait until the next flow start to fetch the next page.
+- Single Page per Interval (dropdown/checkbox: yes/no; default yes) Indicates that if the number of changed records exceeds the maximum number of results in a page, instead of fetching the next page immediately, wait until the next flow start to fetch the next page.
 
 ##### Input Metadata
 

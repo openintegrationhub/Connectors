@@ -344,6 +344,8 @@ Examples of this include sendEmail, calculatePrice, etc.
 - End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
 - Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
 
+*Note:* Trigger polls all objects with `Time > Start Time && Time < End Time`, therefore Objects that match with specified Start Time value and End Time value are not included in Output Data.
+
 ##### Input Metadata
 
 N/A

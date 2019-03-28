@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 10.12.2018
+**Version Publish Date:** 28.03.2019
 
-**Semantic Version of Document:** 2.0.2
+**Semantic Version of Document:** 2.1.0
 
 ## Table of Contents
 

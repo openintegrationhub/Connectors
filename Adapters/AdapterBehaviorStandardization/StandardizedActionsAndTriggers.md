@@ -378,12 +378,22 @@ N/A
       snapshot.pageNumber = snapshot.pageNumber || 0;
       let lastSeenTime = previousLastModified;
       do {
+        let whereCondition;
+        if (previousLastModified === cfg.startTime || new Date(0)){
+          whereCondition = [
+            lastModified >= previousLastModified,
+            lastModified <= maxTime
+          ];
+        } else {
+          whereCondition = [
+            lastModified > previousLastModified,
+            lastModified <= maxTime
+          ];
+        }
+          
         const pageOfResults = GetPageOfResults({
           orderBy: Time ascending
-          where: [
-            lastModified >= previousLastModified,
-            lastModified < maxTime
-          ],
+          where: whereCondition,
           top: sizeOfPollingPage,
           skip: snapshot.pageNumber * sizeOfPollingPage
         });
@@ -411,6 +421,9 @@ N/A
 
 ##### Gotcha’s to lookout for
 
+- If `previousLastModified` is set to `lastSeenTime` and we have `lastModified >= previousLastModified` then each execution will include records from previous execution.  But if at the first execution `previousLastModified` could be equal `cfg.startTime` and we have `lastModified > previousLastModified` then we will lose objects whose last modified date is equal to the `cfg.startTime`.  This is why we compare `previousLastModified` and `cfg.startTime || new Date(0)` and if they are equal, use condition `lastModified >= previousLastModified,` else: `lastModified > previousLastModified,`
+- We use `lastModified <= maxTime` as it is more understandable for user.
+- We have `Single Page per Interval` default to yes because it is slightly safer.
 - TODO
 
 ### Webhooks

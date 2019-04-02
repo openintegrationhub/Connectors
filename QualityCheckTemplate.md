@@ -55,7 +55,7 @@ In the first section the general template is provided. In the second section, an
 
 - [ ] Documentation for the authentication process (How to find API key, etc.)
 
-- [ ] Screen shot of the parameters for each action/trigger with sample meaningful values (if parameters are defined for given trigger/action)
+- [ ] Screenshot of the parameters for each action/trigger with sample meaningful values (if parameters are defined for given trigger/action)
 
 - [ ] Description of the parameters (if any) for each action/trigger
 

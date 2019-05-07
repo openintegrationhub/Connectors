@@ -70,7 +70,6 @@ When looking for further information or support, please contact: philipp.hoegner
 ### Folders
 
 - [Adapters](Adapters): Describes the adapters, their goals, standardized behavior and checklists for building an adapter
-- [ApplicationDocuments](ApplicationDocuments): Contains all application documents needed to apply for the funding of the creation of a connector
 - [Protocols](Protocols): Collection of all taken protocols by the workgroup
 - [Transformer](Transformer): Includes the transformer concept, a basic introduction into the JSONata transformation language,  transformer evolution and suggestions for possible implementations
 

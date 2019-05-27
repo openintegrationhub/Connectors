@@ -6,9 +6,9 @@ The revolution in data synchronization — the Open Integration Hub enables simp
 
 Visit the official [Open Integration Hub homepage](https://www.openintegrationhub.org/)
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](LICENSE)
-
 ## Introduction
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](LICENSE)
 
 The Open Integration Hub enables data synchronization across a variety of applications. To create a connection and enable interaction a link is needed between the software application and the Open Integration Hub - namely an Open Integration Hub connector.
 

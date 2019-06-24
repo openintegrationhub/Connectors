@@ -2,7 +2,7 @@
 
 In order to enhance understandability and to simplify reuse of a transformer the repository should fulfill the following documentation requirements:
 
-(For an example see: [Salesforce Transformer](../Examples/SalesforceTransformer))
+(For an example see: [Salesforce Transformer](https://github.com/openintegrationhub/salesforce-transformer))
 
 ## README.md
 - [ ] A short description of the application the transformer refers to

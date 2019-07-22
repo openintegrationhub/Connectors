@@ -12,7 +12,7 @@ To get more detailed information regarding the adapters and triggers that you've
 
 For actual implementations of Adapters, please checkout our examples:
 
-- [`SnazzyContacts`](../Examples/SnazzyContactsAdapter)
-- [`Wice`](../Examples/WiceAdapter)
+- [`SnazzyContacts`](https://github.com/openintegrationhub/snazzycontacts-adapter)
+- [`Wice`](https://github.com/openintegrationhub/wicecrm-adapter)
   
 Once you have finished creating an Adapter there is a file called [`AdapterFunctionalityChecklist`](../AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.

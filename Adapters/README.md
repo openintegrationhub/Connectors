@@ -18,7 +18,7 @@ The Adapter is a single, reusable piece of functionality that stands between you
 
 2. [`AdapterBehaviorStandardization`](/Adapters/AdapterBehaviorStandardization) will then describe the various actions and triggers in detail, additional functionalities that an Adapter can perform and the standard way of exposing those. 
 
-3. For actual implementations of Adapters, please checkout our examples for [`SnazzyContacts`](/Examples/SnazzyContactsAdapter) and [`Wice`](/Examples/WiceAdapter)!
+3. For actual implementations of Adapters, please checkout our examples for [`SnazzyContacts`](https://github.com/openintegrationhub/snazzy-adapter) and [`Wice`](https://github.com/openintegrationhub/wicecrm-adapter)!
 
 4. Once you have finished creating an Adapter there is a file called [`AdapterFunctionalityChecklist`](AdapterChecklists/AdapterFunctionalityChecklist.md) which helps you to document all functionalities of your Adapter and therefore  make it more comprehensible for third parties.
 

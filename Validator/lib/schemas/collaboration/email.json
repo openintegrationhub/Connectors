@@ -4,11 +4,6 @@
    "title":"EMail",
    "description":"Describes the EMail",
    "type":"object",
-   "allOf":[
-      {
-         "$ref":"../oih-data-record.json"
-      }
-   ],
    "properties":{
       "collaborationElement":{
          "description":"CollaborationElement Data",

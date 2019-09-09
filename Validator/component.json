@@ -16,6 +16,54 @@
       "metadata": {
         "out": {}
       }
+    },
+    "validateTask": {
+      "main": "./lib/actions/validateTask.js",
+      "description": "Validate incoming Task object against master data model",
+      "title": "Collaboration Model - Validate Task",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "validateEmail": {
+      "main": "./lib/actions/validateEmail.js",
+      "description": "Validate incoming Email object against master data model",
+      "title": "Collaboration Model - Validate Email",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "validateCalendarevent": {
+      "main": "./lib/actions/validateCalendarEvent.js",
+      "description": "Validate incoming Calendarevent object against master data model",
+      "title": "Collaboration Model - Validate Calendarevent",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "validateRelation": {
+      "main": "./lib/actions/validateRelation.js",
+      "description": "Validate incoming document relation object against master data model",
+      "title": "Document Model - Validate Relation",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "validateFolder": {
+      "main": "./lib/actions/validateFolder.js",
+      "description": "Validate incoming folder object against master data model",
+      "title": "Document Model - Validate Folder",
+      "metadata": {
+        "out": {}
+      }
+    },
+    "validateDocument": {
+      "main": "./lib/actions/validateDocument.js",
+      "description": "Validate incoming document object against master data model",
+      "title": "Document Model - Validate Document",
+      "metadata": {
+        "out": {}
+      }
     }
   }
 }

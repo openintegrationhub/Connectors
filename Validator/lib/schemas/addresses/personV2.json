@@ -4,11 +4,6 @@
   "title": "Person",
   "description": "Describes a natural person",
   "type": "object",
-  "allOf": [
-    {
-      "$ref": "../oih-data-record.json"
-    }
-  ],
   "properties": {
     "title":
     {

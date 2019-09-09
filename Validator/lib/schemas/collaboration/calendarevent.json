@@ -4,11 +4,6 @@
   "title":"CalendarEvent",
   "description":"Describes the CalendarEvent",
   "type":"object",
-  "allOf":[
-    {
-      "$ref":"../oih-data-record.json"
-    }
-  ],
   "properties":{
     "collaborationElement":{
       "description":"CollaborationElement Data",

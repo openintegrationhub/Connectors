@@ -10,13 +10,10 @@ Visit the official [Open Integration Hub homepage](https://www.openintegrationhu
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](LICENSE)
 
-The Open Integration Hub enables data synchronization across a variety of applications. To create a connection and enable interaction a link is needed between the software application and the Open Integration Hub - namely an Open Integration Hub connector.
-
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Introduction](#introduction)
-	- [Adapter](#adapter)
-	- [Transformer](#transformer)
+- [Open Source Connectors](#open-source-connectors)
 - [Contribution](#contribution)
 	- [Contribution Guidelines](#contribution-guidelines)
 	- [Code of Conduct](#code-of-conduct)
@@ -25,33 +22,43 @@ The Open Integration Hub enables data synchronization across a variety of applic
 	- [Folders](#folders)
 	- [Documents](#documents)
 - [Workgroup](#workgroup)
-	- [Information](#information)
 	- [Member](#member)
 - [Wording](#wording)
 
 <!-- /TOC -->
 
+The Open Integration Hub enables data synchronization across a variety of applications. To enable interaction with any software an technical component is needed to the Open Integration Hub - the connector. It consists of two distinct parts: the adapter and the transformer.
 
-A connector connects a software solution to the Open Integration Hub. It consists of two distinct parts, namely adapter and transformer.  It contains different functionalities e.g. to fetch and transform data. These functionalities are further explained in the sections [adapter](#adapter) and [transformer](#transformer). In order to achieve our goal to establish a successful open source community we need to steadily increase the number of connectors. So join us and help us grow as an open source community!
-
-
-The following illustration provides a holistic overview of a connector:
-![Connector](Assets/ConnectorsV3.png)
-
-### Adapter
-
-An adapter is a module for the syntactic connection of an external application and its data to the Open Integration Hub. This includes protocol translation, data format transformation, etc.
+An **adapter** is a module for the syntactic connection of an external application and its data to the Open Integration Hub. This includes protocol translation, data format transformation, etc.
 Furthermore it provides functionalities to perform e.g. CRUD operations within the source system.
 
 For further information please read through the information within the [adapter folder](/Adapters).
 
-
-### Transformer
-
-A transformer is responsible to semantically transform an incoming JSON object into another JSON object. Thus the mapping between two data models is done within the transformer.
+A **transformer** is responsible to semantically transform an incoming JSON object into another JSON object. Thus the mapping between two data models is done within the transformer.
 
 For further information please read through the information within the [transformer folder](/Transformer).
 
+The following illustration provides a holistic overview of a connector:
+![Connector](Assets/ConnectorsV3.png)
+
+
+## Open Source Connectors
+
+Like the Open Integration Hub services, connectors are also standardized components that can be reused in any implementation of the framework. There are several contributors that provide a wide range of open source connectors already. So before you start your own, check out what's already there:
+
+[Open Integration Hub](https://github.com/openintegrationhub)
+[Flowground](https://github.com/flowground)
+[elastic.io](https://github.com/elasticio)
+
+If you want to build your own connector, we suggest you start with a our node.js example, to understand the structure and what you need to get going. Most components are build in node.js, although you can choose any language you want.
+
+[node.js example](https://openintegrationhub.github.io//docs/Connectors/building-nodejs-component.html)
+
+If you prefer a real world example, the wice components are good place to get inspiration.
+
+[Wice Adapter](https://github.com/openintegrationhub/wicecrm-adapter)
+
+[Wice Transformer](https://github.com/openintegrationhub/wicecrm-transformer)
 
 ## Contribution
 ### Contribution Guidelines
@@ -68,7 +75,7 @@ When looking for further information or support, please contact: philipp.hoegner
 ### Folders
 
 - [Adapters](Adapters): Describes the adapters, their goals, standardized behavior and checklists for building an adapter
-- [Protocols](Protocols): Collection of all taken protocols by the workgroup
+- [Protocols](Protocols): Archive for all protocols by the workgroup
 - [Transformer](Transformer): Includes the transformer concept, a basic introduction into the JSONata transformation language,  transformer evolution and suggestions for possible implementations
 
 ### Documents
@@ -76,17 +83,6 @@ When looking for further information or support, please contact: philipp.hoegner
 - [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md): Contains an explanation of the expected behavior of the community members, following  the code of conduct defined by the Contributor Covenant
 
 ## Workgroup
-### Information
-You have the opportunity to get your questions answered in a `weekly Q&A session`.
-Feel free to attend and invite other people to this session.
-
-If possible please send your question in advance to **philipp.hoegner@cloudecosystem.org**.
-
-The session will take place every `Monday from 11:00 - 12:00`.  The first session will be next monday.
-
-**GoToMeeting Link:** https://global.gotomeeting.com/join/456709357 <br>
-**Phone (Germany):** +49 692 5736 7317 <br>
-**Access-Code (Germany):** 456-709-357 <br>
 
 ### Member
 #### Connectors
@@ -99,4 +95,4 @@ The session will take place every `Monday from 11:00 - 12:00`.  The first sessio
 | Philipp Hoegner|[philecs](https://github.com/philecs)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| Committer  |
 
 ## Wording
-Within the project different terms and abbreviations are frequently used. All terms and abbrevations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).
+Within the project different terms and abbreviations are frequently used. All terms and abbreviations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).

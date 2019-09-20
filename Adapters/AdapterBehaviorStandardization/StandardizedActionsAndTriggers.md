@@ -25,7 +25,7 @@
   * [Get New and Updated Objects Polling](#get-new-and-updated-objects-polling)
   * [Webhooks](#webhooks)
   * [Get Recently Deleted Objects Polling](#get-recently-deleted-objects-polling)
-  * [Event subscription](#event-subscription)
+  * [Event Subscription](#event-subscription)
   * [Bulk Extract](#bulk-extract)
 
 It is important to define common rules on how an adapter responds to changes
@@ -119,7 +119,7 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 - Object Type (dropdown)
 - Allow ID to be omitted (dropdown/checkbox: yes/no)
 - Allow zero results (dropdown/checkbox: yes/no).  If zero results are not allowed, in many cases it makes sense to apply some rebounds to wait for it to exists.
-- Linked objects to populate (optional, dropdown).  Select which linked objects to fetch if supported by the API.
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 
 ##### Input Metadata
 
@@ -203,7 +203,7 @@ I want to search my CRM for data based on some criteria.
 - Object Type (dropdown)
 - Behavior (dropdown: Fetch all, Fetch Page, Emit Individually)
 - Number of search terms (text field: integer >= 0) (iteration 2) (0 indicates return all items)
-- Linked objects to populate (optional, dropdown).  Select which linked objects to fetch if supported by the API.
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 
 ##### Input Metadata
 
@@ -335,6 +335,7 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 ##### Config Fields
 
 - Object Type (dropdown)
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 - Iteration 2: Unique Criteria (dropdown)
 
 ##### Input Metadata
@@ -663,7 +664,7 @@ In order for the bellow polling algorithm to work, all of the following must be 
             emitData(result);
           };   
           if(pageOfResults.length > 0) {
-            snapshot.previousLastModified = pageOfResults[pageOfResults.length - 1].lastModified;
+            snapshot.previousLastModified = pageOfResults[pageOfResults.length - 1][pollingField]];
             delete snapshot.previousId;
             emitSnapshot(snapshot);          
           }   
@@ -673,8 +674,8 @@ In order for the bellow polling algorithm to work, all of the following must be 
             emitData(result);
           };   
           const secondLastResult = pageOfResults[pageOfResults.length - 1];
-          snapshot.previousLastModified = secondLastResult.lastModified;   
-          if(lastResult.lastModified !== secondLastResult.lastModified) {
+          snapshot.previousLastModified = secondLastResult[pollingField];   
+          if(lastResult[pollingField] !== secondLastResult[pollingField]) {
             delete snapshot.previousId;          
           } else {
             snapshot.previousId = secondLastResult.id;
@@ -712,7 +713,7 @@ Same as `Get New and Updated Objects Polling`.
 
 - Each object emitted individually.
 
-### Event subscription
+### Event Subscription
 
 *This action has not been fully standardized.*
 

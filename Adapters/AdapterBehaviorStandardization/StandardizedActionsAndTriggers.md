@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 07.11.2019
+**Version Publish Date:** 28.10.2019
 
-**Semantic Version of Document:** 2.2.1
+**Semantic Version of Document:** 2.2.2
 
 ## Table of Contents
 
@@ -115,8 +115,8 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 ##### Config Fields
 
 - Object Type (dropdown)
-- Allow ID to be omitted (dropdown/checkbox: yes/no)
-- Allow zero results (dropdown/checkbox: yes/no)
+- Allow ID to be omitted (dropdown/checkbox: yes/no); when selected, the ID field becomes optional, otherwise it is a required field
+- Allow zero results (dropdown/checkbox: yes/no); hen selected, if zero results are returned, the empty object `{}` is emitted, otherwise typically an error would be thrown
 
 ##### Input Metadata
 

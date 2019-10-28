@@ -116,7 +116,9 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 
 - Object Type (dropdown)
 - Allow ID to be omitted (dropdown/checkbox: yes/no)
+  - When selected, the ID field becomes optional; otherwise it is a required field
 - Allow zero results (dropdown/checkbox: yes/no)
+  - When selected, if zero results are returned, the empty object `{}` is emitted; otherwise typically an error would be thrown
 
 ##### Input Metadata
 

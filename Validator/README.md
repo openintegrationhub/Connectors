@@ -7,16 +7,7 @@ The revolution in data synchronization — the Open Integration Hub enables simp
 Visit the official [Open Integration Hub homepage](https://www.openintegrationhub.de/)
 
 ## Table of Content
-<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Table of Content](#table-of-content)
-- [How it works](#how-it-works)
-- [Configuration](#configuration)
-	- [Select Validator](#select-validator)
-	- [Choose Action](#choose-action)
-- [Possible Outputs](#possible-outputs)
-
-<!-- /TOC -->
 
 ## How it works
 
@@ -31,9 +22,9 @@ Exemplary flow:<br>
 
 After you successfully created the subsequent steps you need to select the Validator component:
 
-![validator](Assets/SelectValidator.PNG)
+![validator](Assets/SelectValidator.png)
 
-### Choose Action
+## Choose Action
 
 Based on the type of object you select you need to select the relating action within the validator to validate the object against the correct schema:
 
@@ -43,11 +34,11 @@ Based on the type of object you select you need to select the relating action wi
 
 `Valid JSON object:` Validation successful & Sample was retrieved from validator
 
-![successful](Assets/valid.PNG)
+![successful](Assets/valid.png)
 <br>
 <br>
-![successful2](Assets/valid2.PNG)
+![successful2](Assets/valid2.png)
 
 `Invalid JSON object:` Error message that includes the specific error
 
-![failed](Assets/invalid.PNG)
+![failed](Assets/invalid.png)

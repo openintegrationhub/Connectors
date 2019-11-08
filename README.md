@@ -69,7 +69,7 @@ Before you contribute please read our [contribution guidelines](CONTRIBUTING.md)
 To see how members of the community are expected to behave, please read the [code of conduct](CODE_OF_CONDUCT.md). We apply the code of conduct defined by the Contributor Covenant, which is used across many open source projects, such as [NodeJS](https://github.com/nodejs/node), [Atom](https://github.com/atom/atom) and [Kubernetes](https://github.com/kubernetes/kubernetes).
 
 ## Contact
-When looking for further information or support, please contact: philipp.hoegner@cloudecosystem.org.
+When looking for further information or support, please contact: robin.brinkmann@cloudecosystem.org.
 
 ## Content
 ### Folders
@@ -92,7 +92,6 @@ When looking for further information or support, please contact: philipp.hoegner
 | Igor Drobiazko |[drobiazko](https://github.com/drobiazko)|[Elastic.io](http://www.elastic.io/)| Committer  |
 | Franz  Degenhardt|[FranzDegenhardt](https://github.com/FranzDegenhardt)|[X-Integrate](https://x-integrate.com/x-integrate-startseite/)| Committer  |
 | Hansjörg Schmidt  |[hschmidthh](https://github.com/hschmidthh)|[Wice](https://wice.de/)| Committer  |
-| Philipp Hoegner|[philecs](https://github.com/philecs)|[Cloud Ecosystem](http://www.cloudecosystem.org/)| Committer  |
 
 ## Wording
 Within the project different terms and abbreviations are frequently used. All terms and abbreviations are explained within the [glossary](https://github.com/openintegrationhub/Connectors/wiki/Glossary) and our [list of abbrevations](https://github.com/openintegrationhub/Connectors/wiki/Abbreviations).

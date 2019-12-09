@@ -203,7 +203,7 @@ I want to search my CRM for data based on some criteria.
 
 - Object Type (dropdown)
 - Behavior (dropdown: Fetch all, Fetch Page, Emit Individually)
-- Number of search terms (text field: integer >= 1) (iteration 2)
+- Number of search terms (text field: integer >= 0) (iteration 2)
 
 ##### Input Metadata
 

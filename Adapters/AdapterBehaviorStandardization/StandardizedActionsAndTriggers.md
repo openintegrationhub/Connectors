@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 28.10.2019
+**Version Publish Date:** 18.02.2020
 
-**Semantic Version of Document:** 2.2.2
+**Semantic Version of Document:** 2.3.1
 
 ## Table of Contents
 
@@ -24,6 +24,8 @@
 - [Triggers](#triggers)
   * [Get New and Updated Objects Polling](#get-new-and-updated-objects-polling)
   * [Webhooks](#webhooks)
+  * [Get Recently Deleted Objects Polling](#get-recently-deleted-objects-polling)
+  * [Event Subscription](#event-subscription)
   * [Bulk Extract](#bulk-extract)
 
 It is important to define common rules on how an adapter responds to changes
@@ -108,7 +110,7 @@ I have some contact data that I want to add to my CRM.  I don't necessarily know
 
 ### Lookup Object (at most 1)
 ##### Example Use Case
-I have a contact who works for a company.  I have an ID or other distinguishing characteristic (e.g. legal name) of the company and I want to learn some detail about the company (e.g. number of employees).
+I have a contact who works for a company.  I have an ID or other distinguishing characteristic (e.g. legal name) of the company and I want to learn some detail about the company (e.g. country of company).
 
 #### Iteration 1: Lookup Object By ID
 
@@ -116,7 +118,9 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 
 - Object Type (dropdown)
 - Allow ID to be omitted (dropdown/checkbox: yes/no); when selected, the ID field becomes optional, otherwise it is a required field
-- Allow zero results (dropdown/checkbox: yes/no); hen selected, if zero results are returned, the empty object `{}` is emitted, otherwise typically an error would be thrown
+- Allow zero results (dropdown/checkbox: yes/no); When selected, if zero results are returned, the empty object `{}` is emitted, otherwise typically an error would be thrown. 
+- Wait for object to exist (dropdown/checkbox: yes/no); When selected, if no results are found, apply rebounds and wait until the object exits.
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 
 ##### Input Metadata
 
@@ -135,10 +139,12 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
       }
 
       try {
-        const foundObject = GetObjectById(id);   // Usually GET verb
+        const foundObject = GetObjectById(id, linkedObjectsToPopulate);   // Usually GET verb
         emitData(foundObject);
       } catch (NotFoundException e) {
-        if(allowZeroResults) {
+        if(waitForObjectToExist && notAllReboundsExhausted) {
+          emitRebound({});
+        } else if(allowZeroResults) {
           emitData({});
         } else {
           throw e;
@@ -153,10 +159,6 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 ##### Gotcha’s to lookout for
 
 - Make sure to Url Encode IDs appearing in HTTP urls
-
-##### Not defined now
-
-- How to handle populating linked objects.
 
 #### Iteration 2: Lookup Object By Unique Criteria
 
@@ -180,9 +182,11 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
         }
       }
 
-      const foundObjects = GetObjectsByCriteria(uniqueCriteria);   // Usually GET verb
+      const foundObjects = GetObjectsByCriteria(uniqueCriteria, linkedObjectsToPopulate);   // Usually GET verb
       if(foundObjects.length == 0) {
-        if(allowZeroResults) {
+        if(waitForObjectToExist && notAllReboundsExhausted) {
+          emitRebound({});
+        } else if(allowZeroResults) {
           emitData({});
         } else {
           throw new Error('Not found');
@@ -203,7 +207,8 @@ I want to search my CRM for data based on some criteria.
 
 - Object Type (dropdown)
 - Behavior (dropdown: Fetch all, Fetch Page, Emit Individually)
-- Number of search terms (text field: integer >= 0) (iteration 2)
+- Number of search terms (text field: integer >= 0) (iteration 2) (0 indicates return all items)
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 
 ##### Input Metadata
 
@@ -223,20 +228,20 @@ I want to search my CRM for data based on some criteria.
     function lookupObjects(criteria) {
       switch(mode) {
         case 'fetchAll':
-          const results = GetObjectsByCriteria(criteria);
+          const results = GetObjectsByCriteria(criteria, linkedObjectsToPopulate);
           if(results.length >= maxResultSize) {
             throw new Error('Too many results');
           }
           emitData({results: results});
           break;
         case 'emitIndividually':
-          const results = GetObjectsByCriteria(criteria);
+          const results = GetObjectsByCriteria(criteria, linkedObjectsToPopulate);
           results.forEach(result => {
             emitData(result);
           }
           break;
         case 'fetchPage':
-          const results = GetObjectsByCritieria(criteria, top: pageSize, skip: pageSize * pageNumber, orderBy: orderByTerms);
+          const results = GetObjectsByCritieria(criteria, top: pageSize, skip: pageSize * pageNumber, orderBy: orderByTerms, linkedObjectsToPopulate);
           emitData({results: results});
           break;
       }
@@ -254,6 +259,7 @@ I want to search my CRM for data based on some criteria.
 
 - Order of operations in multiple terms
 - How to get total number of matching objects
+- How to handle variable number of search terms (perhaps integrator mode?)
 
 ### Delete Object
 ##### Example Use Case
@@ -320,14 +326,18 @@ I know the ID of a customer that I want to delete.
 
 A simple action to allow integrators to assemble requests to be sent to the system.  The component should expose the parts that vary in a typical request.  The component should handle authentication and error reporting.
 
+Additional Options to Consider:
+* Consider that it may make sense to turn off error reporting & to return things like the HTTP status code & headers
+* Consider that it may make sense to allow the option to make a series of sequential array requests.
+
 ##### Example Use Case
 I'm a technically advanced user who wants to interact with a system in a way not permissible by the existing component actions but would like some simplification relative to using the REST component.
 
 ### Lookup Set Of Objects By Unique Criteria
-Given an array of information where each item in the array uniquely describes exactly one object.  It can be assumed that the array is short enough to reasonably fit the results in a single message.
+Given an array of information where each item in the array uniquely describes exactly one object.  It can be assumed that the array is short enough to reasonably fit the results in a single message.  If any of the objects are not found then it indicates a logic problem in the integration.
 
 ##### Example Use Case
-I salesperson is responsible for 0 to N accounts.  I would like to look up a piece of information for each account associated with the salesperson.
+I salesperson is responsible for 0 to N accounts (N being reasonably small).  I would like to look up a piece of information for each account associated with the salesperson.
 
 #### Iteration 1: Lookup Object By ID
 #### Iteration 2: Lookup Object By Unique Criteria
@@ -335,6 +345,8 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 ##### Config Fields
 
 - Object Type (dropdown)
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
+- Wait for object to exist (dropdown/checkbox: yes/no); When selected, if no results are found, apply rebounds and wait until the object exits.
 - Iteration 2: Unique Criteria (dropdown)
 
 ##### Input Metadata
@@ -345,9 +357,13 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 
     function lookupSetOfObjects(itemUniqueCriteriaListToLookup) {
       const results = itemUniqueCriteriaListToLookup.map(itemUniqueCriteria => {
-        const matchingItems = GetObjectsByCriteria(itemUniqueCriteria);
+        const matchingItems = GetObjectsByCriteria(itemUniqueCriteria, linkedObjectsToPopulate);
         if(matchingItems.length != 1) {
-         throw new Error(`Lookup failed for ${itemUniqueCriteria}`);
+         if(!waitForObjectToExist) {
+           throw new NotFoundError();
+         }
+         emitRebound({});
+         return;     
         }
         return {
           key: itemCriteria,
@@ -365,13 +381,17 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
         return;
       }
 
-      const searchResults = FetchObjectsWhereIdIn(itemIdsToLookup);
+      const searchResults = FetchObjectsWhereIdIn(itemIdsToLookup, linkedObjectsToPopulate);
 
       const resultDictionary = {};
       for each (let itemId of itemIdsToLookup) {
         const matchingItems = searchResults.filter(result.Id = itemId);
         if(matchingItems.length != 1) {
-          throw new Error(`Lookup failed for ${itemUniqueCriteria}`);
+          if(!waitForObjectToExist) {
+            throw new NotFoundError();
+          }
+          emitRebound({});
+          return;
         }
         resultDictionary[itemId] = matchingItems[0];
       }
@@ -387,10 +407,6 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 ##### Gotcha’s to lookout for
 
 - Make sure to Url Encode IDs appearing in HTTP urls
-
-##### Not defined now
-- Encode any IDs in URLs
-- Rebounds when an object is not found
 - There are different structures depending on the input structure
 
 ### Update Object
@@ -399,6 +415,7 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
   - We will not create the object if it does not exist
   - The ID/other unique criteria is required
   - No other fields are required
+If the object is not found, then rebounds should be done based on the rebound option.
 
 ##### Example Use Case
 I want to update the price of a product based on its SKU but I don't want to look up other required attributes such as name since I know those have already been set and are not changing.
@@ -421,18 +438,31 @@ See above.
   - the types of the two objects
   - two sets of unique criteria which describe the two objects
   - Information about the relationship (e.g. if assigning user to company membership, identify the role of the user)
+- There should be an option to emit rebounds should be emitted if results aren't found.
 
     ```
     function linkObjects(obj1, obj2, linkMetadata) {
       const matchingObjects1 = lookupObjectByCriteria(obj1.type, obj1.uniqueCriteria);
-      if (matchingObjects1.length != 1) {
-        throw new Error('Not found/too many found.');
-      }
+      if (matchingObjects1.length > 1) {
+        throw new Error('Too many found.');
+      } else if (matchingObjects1.length == 0) {
+        if(!waitForObjectToExist) {
+          throw new NotFoundError();
+        }
+        emitRebound();
+        return;      
+      }    
       const object1Id = matchingObjects1[0].id;
 
       const matchingObjects2 = lookupObjectByCriteria(obj2.type, obj2.uniqueCriteria);
-      if (matchingObjects2.length != 1) {
-        throw new Error('Not found/too many found.');
+      if (matchingObjects2.length > 1) {
+        throw new Error('Too many found.');
+      } else if (matchingObjects2.length == 0) {
+        if(!waitForObjectToExist) {
+          throw new NotFoundError();
+        }
+        emitRebound();
+        return;      
       }
       const object2Id = matchingObjects2[0].id;
 
@@ -444,7 +474,7 @@ See above.
 A student can be a participant in a class and a class can have many students.  Given a student ID and a course ID I want to enroll that student in that course.
 
 ### Execute Query or Statement in Query Language
-Examples of this include constructing a query or statement in SQL, Salesforce’s SOQL, etc. Queries return a table of data when executed.  Statements do not reutrn results (other than execution statistics).
+Examples of this include constructing a query or statement in SQL, Salesforce’s SOQL, etc. Queries return a table of data when executed.  Statements do not return results (other than execution statistics).
 
 ##### Example Use Case
 Execute SQL query in SQL database
@@ -586,77 +616,139 @@ I want to learn about changes to contacts in my CRM when they happen.
 ##### Config Fields
 
 - Object Type (dropdown)
-- Start Time (string, optional): Indicates the beginning time to start polling from (defaults to the begining of time)
+- Start Time (string, optional): Indicates the beginning time to start polling from (defaults to the beginning of time)
 - End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
 - Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
 - Single Page per Interval (dropdown/checkbox: yes/no; default yes) Indicates that if the number of changed records exceeds the maximum number of results in a page, instead of fetching the next page immediately, wait until the next flow start to fetch the next page.
+- Time stamp field to poll on (dropdown: created or modified).  Indicates just new items or new and modified items.
 
 ##### Input Metadata
 
 N/A
-
-##### Pseudo-Code
-
-    function getObjectsPolling(cfg, snapshot) {
-      const previousLastModified = snapshot.previousLastModified || cfg.startTime || new Date(0);
-      const maxTime = cfg.endTime || Date.MaxDate();
-      let hasMorePages = true;
-      snapshot.pageNumber = snapshot.pageNumber || 0;
-      let lastSeenTime = previousLastModified;
-      do {
-        let whereCondition;
-        if (previousLastModified === cfg.startTime || new Date(0)){
-          whereCondition = [
-            lastModified >= previousLastModified,
-            lastModified <= maxTime
-          ];
-        } else {
-          whereCondition = [
-            lastModified > previousLastModified,
-            lastModified <= maxTime
-          ];
-        }
-
-        const pageOfResults = GetPageOfResults({
-          orderBy: Time ascending
-          where: whereCondition,
-          top: sizeOfPollingPage,
-          skip: snapshot.pageNumber * sizeOfPollingPage
-        });
-        pageOfResults.forEach(result => {
-          emitData(result);
-        };
-        snapshot.pageNumber++;
-        hasMorePages = pageOfResults.length == pageSize;
-        if(pageOfResults.length > 0) {
-          lastSeenTime = pageOfResults[pageOfResults.length - 1].lastModified;
-        }
-        emitSnapshot(snapshot);
-        if(singlePagePerInterval && hasMorePages) {
-          return;
-        }
-      } while (hasMorePages)
-      delete snapshot.pageNumber;
-      snapshot.previousLastModified = lastSeenTime;
-      emitSnapshot(snapshot);
-    }
-
-##### Output Data
-
-- Each object emitted individually.
 
 ##### Gotcha’s to lookout for
 
 - If `previousLastModified` is set to `lastSeenTime` and we have `lastModified >= previousLastModified` then each execution will include records from previous execution.  But if at the first execution `previousLastModified` could be equal `cfg.startTime` and we have `lastModified > previousLastModified` then we will lose objects whose last modified date is equal to the `cfg.startTime`.  This is why we compare `previousLastModified` and `cfg.startTime || new Date(0)` and if they are equal, use condition `lastModified >= previousLastModified,` else: `lastModified > previousLastModified,`
 - We use `lastModified <= maxTime` as it is more understandable for user.
 - We have `Single Page per Interval` default to yes because it is slightly safer.
-- TODO
+- We need to be careful about more than a page worth of records having the same timestamp.
+- We need to be careful about the last record on one page having the same timestamp as the first record on the next page
+- We need to be careful about records on page N being modified before reading page N+1 (thus causing records to be skipped as they move from page N+1 to page N).
+
+##### Assumptions About Server Behavior:
+In order for the bellow polling algorithm to work, all of the following must be true about the way the server behaves:
+* It is possible to order results by last modified and then by primary key.
+* If record A has a timestamp of X and appears within a search but not record B, then if record B appears in a later search than record B MUST have a timestamp that is later (i.e. Not the same or earlier) than record A.
+
+##### Pseudo-Code
+
+**High level steps:**
+1. Retrieve a page of data.
+2. If the size of the page is less than the max page size, emit the timestamp of the last record on the page.
+3. Compare the timestamps of the last and second last items on the page.  If they are different, store the timestamp of the second last record of the page and don't emit the last record.
+4. If the timestamps are the same, then store that timestamp and the primary key of the last item.  On the next iteration fetch page where the timestamps are equal and primary key is larger than last seen item.
+
+```
+    function getObjectsPolling(cfg, snapshot) {
+      const pollingField = cfg.timeStampFieldToPollOn;
+      let attemptMorePages = !cfg.singlePagePerInterval;
+      do {
+        const previousLastModified = snapshot.previousLastModified || cfg.startTime || new Date(0);
+        const maxTime = cfg.endTime || Date.MaxDate();
+
+        let whereCondition;
+        if(snapshot.previousId) {
+          whereCondition = [ 
+            pollingField = previousLastModified, 
+            Id > snapshot.previousId
+          ];
+        } else if (previousLastModified === cfg.startTime || new Date(0)){
+          whereCondition = [
+            pollingField >= previousLastModified,
+            pollingField <= maxTime
+          ];
+        } else {
+          whereCondition = [
+            pollingField > previousLastModified,
+            pollingField <= maxTime
+          ];
+        }
+
+        const pageOfResults = GetPageOfResults({
+          orderBy: [Time ascending, Primary Key Ascending]
+          where: whereCondition,
+          top: cfg.sizeOfPollingPage
+        });
+       
+        const hasMorePages = pageOfResults.length == cfg.sizeOfPollinPage;
+        
+        if(!hasMorePages) {
+          attemptMorePages = attemptMorePages && !snapshot.previousId; 
+          pageOfResults.forEach(result => {
+            emitData(result);
+          };   
+          if(pageOfResults.length > 0) {
+            snapshot.previousLastModified = pageOfResults[pageOfResults.length - 1][pollingField]];
+            delete snapshot.previousId;
+            emitSnapshot(snapshot);          
+          }   
+        } else {
+          const lastResult = pageOfResults.pop();
+          pageOfResults.forEach(result => {
+            emitData(result);
+          };   
+          const secondLastResult = pageOfResults[pageOfResults.length - 1];
+          snapshot.previousLastModified = secondLastResult[pollingField];   
+          if(lastResult[pollingField] !== secondLastResult[pollingField]) {
+            delete snapshot.previousId;          
+          } else {
+            snapshot.previousId = secondLastResult.id;
+          }
+          emitSnapshot(snapshot);      
+        } 
+      }
+    }
+```
+
+##### Output Data
+
+- Each object emitted individually.
 
 ### Webhooks
 
 *This action has not been fully standardized.*
 
 Receives data pushed to the iPaas from an external system.
+
+### Get Recently Deleted Objects Polling
+##### Example Use Case
+I want to learn about contacts in my CRM that are deleted so that I can propagate those deletes.
+
+##### Config Fields
+
+Same as `Get New and Updated Objects Polling`.
+##### Input Metadata
+
+N/A
+
+##### Pseudo-Code
+
+Same as `Get New and Updated Objects Polling`.
+##### Output Data
+
+- Each object emitted individually.
+
+### Event Subscription
+
+*This action has not been fully standardized.*
+
+The platform must have a part that is actively awake and is able to receive events based on some protocol.  Examples:
+* Salesforce Event Bus
+* AMQP component
+* Socket component
+* JMX component
+* CometD protocol
+* Long polling
 
 ### Bulk Extract
 
@@ -665,3 +757,4 @@ Useful for:
 - Systems that do no track last_modified
 - Systems that don’t support filtering by timestamp range
 - Systems which have dedicated bulk export functionality
+- Providing a way to track object deletions

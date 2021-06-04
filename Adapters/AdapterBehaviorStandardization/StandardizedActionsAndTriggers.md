@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 26.05.2021
+**Version Publish Date:** 04.06.2021
 
-**Semantic Version of Document:** 2.5.0
+**Semantic Version of Document:** 2.5.1
 
 ## Table of Contents
 
@@ -822,7 +822,6 @@ For a contact photo
   "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
   "size": 126976,
   "type": ".xml",
-  "modifyTime": "2021-05-01T12:00:00.000Z",
   "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
   "attachmentExpiryTime": "2021-05-27T12:00:00.000Z",
   "contentType": "application/xml"

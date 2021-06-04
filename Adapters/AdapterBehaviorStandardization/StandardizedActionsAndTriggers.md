@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 25.05.2021
+**Version Publish Date:** 26.05.2021
 
-**Semantic Version of Document:** 2.4.0
+**Semantic Version of Document:** 2.5.0
 
 ## Table of Contents
 
@@ -208,23 +208,19 @@ I want to search my CRM for data based on some criteria.
 
 ##### Config Fields
 
-- Object Type (dropdown)
-- Behavior (dropdown: Fetch all, Fetch Page, Emit Individually)
-- Number of search terms (text field: integer >= 0) (iteration 2) (0 indicates return all items)
-- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
+- Object Type (dropdown, required)
+- Behavior (dropdown: Fetch All, Fetch Page, Emit Individually, required)
+- Linked objects to populate (multi-select dropdown, optional):  Select which linked objects to fetch if supported by the API.
 
 ##### Input Metadata
 
-- Page size: optional positive integer that defaults to 100 (only if fetch page mode)
-- page number: required non-negative integer that is 0 based (only if fetch page mode)
-- order: optional array of fieldname + sort direction pairs (only if fetch page mode)
-- max result size: optional positive integer that defaults to 1000 (only if fetch all mode)
-- For each search term:
+- Page Size (non-negative integer, optional: defaults to page size used by API): (only if fetch page mode) A value of `0` indicates that the `results` will be an empty array with only `totalCountOfMatchingResults` populated.
+- Page Number (non-negative 0 based integer, optional: default to 0): (only if fetch page mode)
+- Order (Array of fieldname + sort direction pairs, optional: default to empty array): (only if fetch page mode)
+- Search Criteria: (optional: default to empty array). Search terms are to be combined with the *AND* operator. For each search term:
   - fieldName
   - fieldValue
-  - condition (equal, not equal, >=, <=, >, <, like (if supported), possibly more in the future)
-- For each search term - 1: (iteration 2)
-  - criteriaLink (and/or)
+  - condition (equal, not equal, >=, <=, >, <, like (if supported), whatever else is suppored by the API)
 
 ##### Pseudo-Code
 
@@ -232,9 +228,6 @@ I want to search my CRM for data based on some criteria.
       switch(mode) {
         case 'fetchAll':
           const results = GetObjectsByCriteria(criteria, linkedObjectsToPopulate);
-          if(results.length >= maxResultSize) {
-            throw new Error('Too many results');
-          }
           emitData({results: results});
           break;
         case 'emitIndividually':
@@ -244,25 +237,26 @@ I want to search my CRM for data based on some criteria.
           }
           break;
         case 'fetchPage':
-          const results = GetObjectsByCritieria(criteria, top: pageSize, skip: pageSize * pageNumber, orderBy: orderByTerms, linkedObjectsToPopulate);
-          emitData({results: results});
+          const {results, totalCountOfMatchingResults} = GetObjectsByCritieria(criteria, top: pageSize, skip: pageSize * pageNumber, orderBy: orderByTerms, linkedObjectsToPopulate);
+          emitData({results, totalCountOfMatchingResults});
           break;
       }
     }
 
 ##### Output Data
-
-- An object, with  key `results` that has an array as its value.
+- For **Fetch Page** mode:An object with
+  - key `results` that has an array as its value
+  - key `totalCountOfMatchingResults` which contains the total number of results (not just on the page) which match the search criteria
+- For **Fetch All** mode: An object, with  key `results` that has an array as its value.
+- For **Emit Individually** mode: Each object should fill the entire message.
 
 ##### Gotcha’s to lookout for
 
 - Make sure to Url Encode field values appearing in HTTP urls
+- The page size requested for the component may be larger that the page size supported by the API. In this case, the component must fetch multiple pages from the API to combine into a result.
 
 ##### Not Handled
-
-- Order of operations in multiple terms
-- How to get total number of matching objects
-- How to handle variable number of search terms (perhaps integrator mode?)
+- Using the *OR* operator to combine search terms
 
 ### Delete Object
 ##### Example Use Case

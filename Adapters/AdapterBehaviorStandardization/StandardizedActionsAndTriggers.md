@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 18.02.2020
+**Version Publish Date:** 25.05.2021
 
-**Semantic Version of Document:** 2.3.1
+**Semantic Version of Document:** 2.4.0
 
 ## Table of Contents
 
@@ -27,6 +27,9 @@
   * [Get Recently Deleted Objects Polling](#get-recently-deleted-objects-polling)
   * [Event Subscription](#event-subscription)
   * [Bulk Extract](#bulk-extract)
+- [Attachments](#attachments)
+  * [List of Attachment Meta-Information Fields](#list-of-attachment-meta-information-fields)
+  * [Attachment Examples](#attachment-examples)
 
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
@@ -118,7 +121,7 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 
 - Object Type (dropdown)
 - Allow ID to be omitted (dropdown/checkbox: yes/no); when selected, the ID field becomes optional, otherwise it is a required field
-- Allow zero results (dropdown/checkbox: yes/no); When selected, if zero results are returned, the empty object `{}` is emitted, otherwise typically an error would be thrown. 
+- Allow zero results (dropdown/checkbox: yes/no); When selected, if zero results are returned, the empty object `{}` is emitted, otherwise typically an error would be thrown.
 - Wait for object to exist (dropdown/checkbox: yes/no); When selected, if no results are found, apply rebounds and wait until the object exits.
 - Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 
@@ -363,7 +366,7 @@ I salesperson is responsible for 0 to N accounts (N being reasonably small).  I 
            throw new NotFoundError();
          }
          emitRebound({});
-         return;     
+         return;
         }
         return {
           key: itemCriteria,
@@ -450,8 +453,8 @@ See above.
           throw new NotFoundError();
         }
         emitRebound();
-        return;      
-      }    
+        return;
+      }
       const object1Id = matchingObjects1[0].id;
 
       const matchingObjects2 = lookupObjectByCriteria(obj2.type, obj2.uniqueCriteria);
@@ -462,7 +465,7 @@ See above.
           throw new NotFoundError();
         }
         emitRebound();
-        return;      
+        return;
       }
       const object2Id = matchingObjects2[0].id;
 
@@ -658,8 +661,8 @@ In order for the bellow polling algorithm to work, all of the following must be 
 
         let whereCondition;
         if(snapshot.previousId) {
-          whereCondition = [ 
-            pollingField = previousLastModified, 
+          whereCondition = [
+            pollingField = previousLastModified,
             Id > snapshot.previousId
           ];
         } else if (previousLastModified === cfg.startTime || new Date(0)){
@@ -679,33 +682,33 @@ In order for the bellow polling algorithm to work, all of the following must be 
           where: whereCondition,
           top: cfg.sizeOfPollingPage
         });
-       
+
         const hasMorePages = pageOfResults.length == cfg.sizeOfPollinPage;
-        
+
         if(!hasMorePages) {
-          attemptMorePages = attemptMorePages && !snapshot.previousId; 
+          attemptMorePages = attemptMorePages && !snapshot.previousId;
           pageOfResults.forEach(result => {
             emitData(result);
-          };   
+          };
           if(pageOfResults.length > 0) {
             snapshot.previousLastModified = pageOfResults[pageOfResults.length - 1][pollingField]];
             delete snapshot.previousId;
-            emitSnapshot(snapshot);          
-          }   
+            emitSnapshot(snapshot);
+          }
         } else {
           const lastResult = pageOfResults.pop();
           pageOfResults.forEach(result => {
             emitData(result);
-          };   
+          };
           const secondLastResult = pageOfResults[pageOfResults.length - 1];
-          snapshot.previousLastModified = secondLastResult[pollingField];   
+          snapshot.previousLastModified = secondLastResult[pollingField];
           if(lastResult[pollingField] !== secondLastResult[pollingField]) {
-            delete snapshot.previousId;          
+            delete snapshot.previousId;
           } else {
             snapshot.previousId = secondLastResult.id;
           }
-          emitSnapshot(snapshot);      
-        } 
+          emitSnapshot(snapshot);
+        }
       }
     }
 ```
@@ -758,3 +761,76 @@ Useful for:
 - Systems that don’t support filtering by timestamp range
 - Systems which have dedicated bulk export functionality
 - Providing a way to track object deletions
+
+## Attachments
+
+This section describes what meta-information for attachments should be communicated as part of the message body and how this meta-information should be included.
+
+There are the following cases where a component would produce an attachment:
+* **Binary Field Case:** There is some binary/non-text data that is stored as part of an entity (e.g. Photo of a contact in a CRM)
+* **File System Case:** The component is interacting with a 3rd party system that could be described as being a "drive" that exposes a file system (e.g. SFTP, Google Drive, etc.)
+* **File Generation Case:** The component creates an attachment of a specified type based on the inputs to the step (e.g XML or CSV component creates XML/CSV files based on incoming JSON data)
+
+For the **Binary Field Case**, we would expect the attachment information to appear as an inline object that is appropriately placed within the message body object. Otherwise, for the **File System Case** and the **File Generation Case** the file attachment meta-information can be an object that occupies the entire message body.
+
+### List of Attachment Meta-Information Fields
+* `attachmentUrl` (Expected for all three cases): URL to a steward or maester object containing the (potentially) binary data of the attachment
+* `size` (Expected for all three cases): Size in bytes of the attachment
+* `name` (Expected only for the **File System Case**): Name of the file in the "drive"
+* `path` (Expected only for the **File System Case**): Path of the file within the "drive" (includes filename)
+* `directory` (Expected only for the **File System Case**): Path of the file within the "drive" (excludes filename)
+* `type` (Optional for the **File System Case**, Expected for the **File System Case** and **File Generation Case**): Filename extension suffix (e.g. `.csv`, `.jpg`) of the file
+* `modifyTime` (Expected for **File System Case**, optional for **Binary Field Case**): Time when the file was created
+* `attachmentCreationTime` (Expected for all three cases): Time when the attachment was created
+* `attachmentExpiryTime` (Expected for all three cases): Time when the attachment will be deleted
+* `contentType` (Expected for only the **Binary Field Case** and **File Generation Case**): [Value that would normally appear in a `Content-Type` HTTP header field (e.g. `application/xml`, `image/jpeg`)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+
+
+### Attachment Examples
+#### Binary Field Case
+For a contact photo
+```json
+{
+  "contact": {
+    "firstName": "Fred",
+    "lastName": "Smith",
+    "profilePhoto": {
+      "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
+      "size": 126976,
+      "modifyTime": "2021-05-01T12:00:00.000Z",
+      "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
+      "attachmentExpiryTime": "2021-05-27T12:00:00.000Z",
+      "contentType": "image/jpeg"
+    },
+    ...
+  }
+}
+```
+
+#### File System Case
+```json
+{
+  "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
+  "size": 126976,
+  "name": "profilePhoto.jpg",
+  "path": "/home/someuser/Documents/profilePhoto.jpg",
+  "directory":  "/home/someuser/Documents",
+  "type": ".jpg",
+  "modifyTime": "2021-05-01T12:00:00.000Z",
+  "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
+  "attachmentExpiryTime": "2021-05-27T12:00:00.000Z"
+}
+```
+
+#### File Generation Case
+```json
+{
+  "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
+  "size": 126976,
+  "type": ".xml",
+  "modifyTime": "2021-05-01T12:00:00.000Z",
+  "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
+  "attachmentExpiryTime": "2021-05-27T12:00:00.000Z",
+  "contentType": "application/xml"
+}
+```

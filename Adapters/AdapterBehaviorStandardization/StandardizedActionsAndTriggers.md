@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 04.06.2021
+**Version Publish Date:** 12.07.2021
 
-**Semantic Version of Document:** 2.5.1
+**Semantic Version of Document:** 2.6.0
 
 ## Table of Contents
 
@@ -11,7 +11,7 @@
   * [Lookup Object (at most 1)](#lookup-object-at-most-1)
   * [Lookup Objects (Plural)](#lookup-objects-plural)
   * [Delete Object](#delete-object)
-  * [Make RAW Request](#make-raw-request)
+  * [Make Raw HTTP Request](#make-raw-http-request)
   * [Lookup Set Of Objects By Unique Criteria](#lookup-set-of-objects-by-unique-criteria)
   * [Update Object](#update-object)
   * [Create Object](#create-object)
@@ -317,18 +317,34 @@ I know the ID of a customer that I want to delete.
       }
     }
 
-### Make RAW Request
-
-*This action has not been fully standardized.*
-
-A simple action to allow integrators to assemble requests to be sent to the system.  The component should expose the parts that vary in a typical request.  The component should handle authentication and error reporting.
-
-Additional Options to Consider:
-* Consider that it may make sense to turn off error reporting & to return things like the HTTP status code & headers
-* Consider that it may make sense to allow the option to make a series of sequential array requests.
+### Make Raw HTTP Request
+A simple action to allow integrators to assemble requests to be sent to the system.  The component should expose the parts that vary in a typical request.  The component should handle authentication and error reporting. It can optionally handle paging. In some cases, it may make sense to allow the option to make a series of sequential array requests though this later behavior is not yet standardized.
 
 ##### Example Use Case
 I'm a technically advanced user who wants to interact with a system in a way not permissible by the existing component actions but would like some simplification relative to using the REST component.
+
+##### Config Fields
+* Error Tolerance (dropdown, required): Determines behavior for when an erroneous HTTP code is received. Options are as follows:
+  * **No Errors Tolerated**: Any HTTP status code >= 400 should result in an error being thrown
+  * **Only Not Found Errors Tolerated**: HTTP status codes of 404, 410 or similar should result in a message being produced with the status code and the HTTP reponse. All other error codes should result in an error being thrown.
+  * **None**: Regardless of the HTTP error code, the component should produce an outbound message with the status code and the HTTP reponse.
+  * **Manual**: A range of error codes to throw errors on can be configured via the message input.
+
+##### Input Metadata
+* Url (string, required): Path of the resource relative to the URL base.
+* Method (string enum (Enum options are system specific.), required): HTTP Verb for the request. 
+* Request Body (object, optional): Body of the request to send
+
+If **Error Tolerance** is **Manual**:
+  * HTTP Codes to throw errors (array of error ranges, optional default to `[]`): A double array with a list of ranges of HTTP response codes to throw errors upon receiving Use a syntax that matches [retry-axios](https://www.npmjs.com/package/retry-axios). Example: `[[400, 403], [405,599]]` - Throw errors on all errors apart from 404.
+
+*For some systems, it may make sense to also add the HTTP headers.*
+
+##### Output Data
+* Status Code (integer, required): HTTP status code of the request
+* Response Body (object, optional): JSON representation of the response body from the request
+
+*For some systems, it may make sense to also add the HTTP headers.*
 
 ### Lookup Set Of Objects By Unique Criteria
 Given an array of information where each item in the array uniquely describes exactly one object.  It can be assumed that the array is short enough to reasonably fit the results in a single message.  If any of the objects are not found then it indicates a logic problem in the integration.

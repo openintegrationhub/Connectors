@@ -5,17 +5,16 @@
 **Semantic Version of Document:** 1.0.0
 
 The goal of this document is to track connector completeness based on the
-functionality provided by the API or  to formalize estimates for a non-CSP MSE
-(CSP consumer) requesting the construction of a connector.
+functionality provided by the API.
 
 ## Instructions
 
 1. Copy this document from the OIH repository and place it in the repository forthe adapter.
 2. Identify what can be built:
-   * Of the following possible Actions and Triggers listed, strike through allactions and triggers which can not be built for a system based on APIlimitations of that system.
-   * Enter system specific functionality that can be exposed by the adapter.
-   * Identify static object types (if object types are static).
-   * Identify endpoints which may be sensibly exposed by the adapter.
+   - Of the following possible Actions and Triggers listed, strike through allactions and triggers which can not be built for a system based on APIlimitations of that system.
+   - Enter system specific functionality that can be exposed by the adapter.
+   - Identify static object types (if object types are static).
+   - Identify endpoints which may be sensibly exposed by the adapter.
 3. As actions and triggers are built, check of those items on this checklist.
 
 ### Checklist
@@ -35,7 +34,6 @@ functionality provided by the API or  to formalize estimates for a non-CSP MSE
   List of Polling Filters Supported: `_________________`
 
   List of Server-side Hydration Supported: `_________________`
-
 
 - [ ] Get Objects Webhook
 
@@ -106,7 +104,7 @@ functionality provided by the API or  to formalize estimates for a non-CSP MSE
 - [ ] Delete Link
 - [ ] Set Data For Object
 
-    List all types of settable data:  `_________________`
+  List all types of settable data: `_________________`
 
 - [ ] Perform Action/Evaluate Function
 
@@ -115,9 +113,9 @@ functionality provided by the API or  to formalize estimates for a non-CSP MSE
 
 - [ ] Exposed Endpoints
 
-   List all exposed endpoints: `_________________`
+  List all exposed endpoints: `_________________`
 
 - [ ] Generic Request
 - [ ] Other Functionality
 
-   List all other functionality: `_________________`
+  List all other functionality: `_________________`

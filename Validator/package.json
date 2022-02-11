@@ -21,7 +21,7 @@
     "co": "4.6.0",
     "request": "2.76.0",
     "request-promise": "4.1.1",
-    "ajv": "^6.5.2"
+    "ajv": "^6.12.3"
   },
   "bugs": {
     "url": "https://github.com/openintegrationhub/data-and-domain-models/issues"
@@ -32,6 +32,6 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "ajv": "^6.5.2"
+    "ajv": "^6.12.3"
   }
 }

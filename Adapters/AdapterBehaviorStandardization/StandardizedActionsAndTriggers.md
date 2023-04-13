@@ -210,37 +210,57 @@ I want to search my CRM for data based on some criteria.
 
 - Object Type (dropdown, required)
 - Behavior (dropdown: Fetch All, Fetch Page, Emit Individually, required)
-- Linked objects to populate (multi-select dropdown, optional):  Select which linked objects to fetch if supported by the API.
+- Number of Search Terms (number [0-99], optional)
+- Linked objects to populate (multi-select dropdown, optional): Select which linked objects to fetch if supported by the API.
+- Enable Expert mode (checkbox, optional): If selected, `Number of Search Terms` will be ignored, instead of it inside input metadata will be oly one field - `Filter Expression`
+
+    <details><summary>Metadata example:</summary>
+
+  ```json
+  {
+    "filterExpression": "((name = 'John') and (age between 20 and 30)) or (name = 'Julie')"
+  }
+  ```
+    </details>
 
 ##### Input Metadata
 
 - Page Size (non-negative integer, optional: defaults to page size used by API): (only if fetch page mode) A value of `0` indicates that the `results` will be an empty array with only `totalCountOfMatchingResults` populated.
 - Page Number (non-negative 0 based integer, optional: default to 0): (only if fetch page mode)
-- Order (Array of fieldname + sort direction pairs, optional: default to empty array): (only if fetch page mode)
-- Search Criteria: (optional: default to empty array). Search terms are to be combined with the *AND* operator. For each search term:
-  - fieldName
-  - fieldValue
-  - condition (equal, not equal, >=, <=, >, <, like (if supported), whatever else is suppored by the API)
+- Order (Array of fieldname + sort direction pairs, optional: default to empty array)
+- Groups of fields for each search term if `Number of Search Terms` more than 0 and `Enable Expert mode` not selected
+  - Field name (string, required): Object field name to filter
+  - Condition (string, required): Condition to compare selected field with value, depends from API
+  - Field value (string, optional) Value of selected field, may be empty in cases where condition like `CHANGED` of `EXIST`
+  - Logical operator (string, required): Appears only if there is more than one search term to combine multiple search terms
+- If selected `Enable Expert mode`
+  - Filter Expression (string, required) custom string to filter Objects, for advanced users
 
 ##### Pseudo-Code
 
     function lookupObjects(criteria) {
-      switch(mode) {
-        case 'fetchAll':
-          const results = GetObjectsByCriteria(criteria, linkedObjectsToPopulate);
-          emitData({results: results});
-          break;
-        case 'emitIndividually':
-          const results = GetObjectsByCriteria(criteria, linkedObjectsToPopulate);
-          results.forEach(result => {
-            emitData(result);
-          }
-          break;
-        case 'fetchPage':
-          const {results, totalCountOfMatchingResults} = GetObjectsByCritieria(criteria, top: pageSize, skip: pageSize * pageNumber, orderBy: orderByTerms, linkedObjectsToPopulate);
-          emitData({results, totalCountOfMatchingResults});
-          break;
-      }
+      var proceed = true;
+      vat top = pageSize || 100;
+      var skip = top * (pageNumber || 0);
+      var combinedResults = [];
+      do {
+        const { results, totalCountOfMatchingResults } = GetObjectsByCriteria(criteria, linkedObjectsToPopulate, top, skip, orderByTerms)
+        switch(mode) {
+          case 'fetchAll':
+            combinedResults.push(...results);
+            break;
+          case 'emitIndividually':
+            results.forEach(result => { emitData(result) });
+            break;
+          case 'fetchPage':
+            emitData({results, totalCountOfMatchingResults});
+            proceed = false;
+            break;
+        }
+        skip += top;
+        if (results.length == 0) proceed = false;
+      } while (proceed)
+      if (mode == 'fetchAll') emitData({results: combinedResults});
     }
 
 ##### Output Data

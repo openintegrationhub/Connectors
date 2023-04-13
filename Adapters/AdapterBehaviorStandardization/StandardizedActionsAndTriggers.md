@@ -267,6 +267,10 @@ I know the ID of a customer that I want to delete.
 ##### Config Fields
 
 - Object Type (dropdown)
+- Emit strategy when no object found (dropdown). Available options:
+  - “Emit nothing”
+  - “Emit an empty object {}”
+  - “Throw an error”
 
 ##### Input Metadata
 
@@ -278,7 +282,7 @@ I know the ID of a customer that I want to delete.
       try {
         DeleteObjectById(id);   // Usually DELETE verb
       } catch (NotFoundException e) {
-        emitData({});
+        emitDataBasedOnEmitStrategySelected();
         return;
       }
       emitData({id: id});
@@ -308,7 +312,7 @@ I know the ID of a customer that I want to delete.
     function deleteObjectByUniqueCriteria(uniqueCriteria) {
       const foundObjects = GetObjectsByCritieria(uniqueCriteria);   // Usually GET verb
       if(foundObjects.length == 0) {
-        emitData({});
+        emitDataBasedOnEmitStrategySelected();
       } else if (foundObjects.length == 1) {
         DeleteObjectById(foundObjects[0].id);   // Usually DELETE verb
         emitData({id: foundObjects[0].id});

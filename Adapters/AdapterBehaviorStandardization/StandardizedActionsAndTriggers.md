@@ -654,9 +654,9 @@ I want to learn about changes to contacts in my CRM when they happen.
 
 - Object Type (dropdown)
 - Start Time (string, optional): Indicates the beginning time to start polling from (defaults to the beginning of time)
-- End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
-- Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
-- Single Page per Interval (dropdown/checkbox: yes/no; default yes) Indicates that if the number of changed records exceeds the maximum number of results in a page, instead of fetching the next page immediately, wait until the next flow start to fetch the next page.
+- End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to now, where ‘now’ is each trigger execution’s timestamp)
+- Behavior (dropdown: Fetch Page, Emit Individually, required)
+- Size of Polling Page (optional; positive integer) if size of a page > maximum allowed by API then page size = maximum allowed by API otherwise - a user-specified value
 - Time stamp field to poll on (dropdown: created or modified).  Indicates just new items or new and modified items.
 
 ##### Input Metadata
@@ -664,92 +664,53 @@ I want to learn about changes to contacts in my CRM when they happen.
 N/A
 
 ##### Gotcha’s to lookout for
-
-- If `previousLastModified` is set to `lastSeenTime` and we have `lastModified >= previousLastModified` then each execution will include records from previous execution.  But if at the first execution `previousLastModified` could be equal `cfg.startTime` and we have `lastModified > previousLastModified` then we will lose objects whose last modified date is equal to the `cfg.startTime`.  This is why we compare `previousLastModified` and `cfg.startTime || new Date(0)` and if they are equal, use condition `lastModified >= previousLastModified,` else: `lastModified > previousLastModified,`
-- We use `lastModified <= maxTime` as it is more understandable for user.
-- We have `Single Page per Interval` default to yes because it is slightly safer.
 - We need to be careful about more than a page worth of records having the same timestamp.
 - We need to be careful about the last record on one page having the same timestamp as the first record on the next page
 - We need to be careful about records on page N being modified before reading page N+1 (thus causing records to be skipped as they move from page N+1 to page N).
 
 ##### Assumptions About Server Behavior:
 In order for the bellow polling algorithm to work, all of the following must be true about the way the server behaves:
-* It is possible to order results by last modified and then by primary key.
 * If record A has a timestamp of X and appears within a search but not record B, then if record B appears in a later search than record B MUST have a timestamp that is later (i.e. Not the same or earlier) than record A.
 
 ##### Pseudo-Code
-
-**High level steps:**
-1. Retrieve a page of data.
-2. If the size of the page is less than the max page size, emit the timestamp of the last record on the page.
-3. Compare the timestamps of the last and second last items on the page.  If they are different, store the timestamp of the second last record of the page and don't emit the last record.
-4. If the timestamps are the same, then store that timestamp and the primary key of the last item.  On the next iteration fetch page where the timestamps are equal and primary key is larger than last seen item.
-
 ```
     function getObjectsPolling(cfg, snapshot) {
-      const pollingField = cfg.timeStampFieldToPollOn;
-      let attemptMorePages = !cfg.singlePagePerInterval;
+      const currentTime = new Date();
+      const { startTime, endTime, pageSize, emitBehavior, objectType, pollConfig } = cfg;
+      const from = snapshot?.nextStartTime || startTime || 0;
+      const to = endTime || currentTime;
+      const nextStartTime = currentTime;
+
+      let proceed = true;
+      let pageNumber = 1;
+
       do {
-        const previousLastModified = snapshot.previousLastModified || cfg.startTime || new Date(0);
-        const maxTime = cfg.endTime || Date.MaxDate();
+        const results = getPageOfResults({objectType, pollConfig, pageSize, pageNumber, from, to});
+        pageNumber++;
 
-        let whereCondition;
-        if(snapshot.previousId) {
-          whereCondition = [
-            pollingField = previousLastModified,
-            Id > snapshot.previousId
-          ];
-        } else if (previousLastModified === cfg.startTime || new Date(0)){
-          whereCondition = [
-            pollingField >= previousLastModified,
-            pollingField <= maxTime
-          ];
-        } else {
-          whereCondition = [
-            pollingField > previousLastModified,
-            pollingField <= maxTime
-          ];
-        }
-
-        const pageOfResults = GetPageOfResults({
-          orderBy: [Time ascending, Primary Key Ascending]
-          where: whereCondition,
-          top: cfg.sizeOfPollingPage
-        });
-
-        const hasMorePages = pageOfResults.length == cfg.sizeOfPollinPage;
-
-        if(!hasMorePages) {
-          attemptMorePages = attemptMorePages && !snapshot.previousId;
-          pageOfResults.forEach(result => {
-            emitData(result);
-          };
-          if(pageOfResults.length > 0) {
-            snapshot.previousLastModified = pageOfResults[pageOfResults.length - 1][pollingField]];
-            delete snapshot.previousId;
-            emitSnapshot(snapshot);
+        if (results.length !== 0) {
+          if (results.length < Number(pageSize)) {
+            proceed = false;
+            emitSnapshot({ nextStartTime });
+          }
+          if (emitBehavior === 'emitPage') {
+            emitData({results});
+          } else if (emitBehavior === 'emitIndividually') {
+            for (const record of results) {
+              emitData(record);
+            }
           }
         } else {
-          const lastResult = pageOfResults.pop();
-          pageOfResults.forEach(result => {
-            emitData(result);
-          };
-          const secondLastResult = pageOfResults[pageOfResults.length - 1];
-          snapshot.previousLastModified = secondLastResult[pollingField];
-          if(lastResult[pollingField] !== secondLastResult[pollingField]) {
-            delete snapshot.previousId;
-          } else {
-            snapshot.previousId = secondLastResult.id;
-          }
-          emitSnapshot(snapshot);
+          await this.emit('snapshot', { nextStartTime });
+          proceed = false;
         }
-      }
-    }
+      } while (proceed);
 ```
 
 ##### Output Data
 
-- Each object emitted individually.
+- For **Fetch Page** mode: An object, with  key `results` that has an array as its value.
+- For **Emit Individually** mode: Each object should fill the entire message.
 
 ### Webhooks
 

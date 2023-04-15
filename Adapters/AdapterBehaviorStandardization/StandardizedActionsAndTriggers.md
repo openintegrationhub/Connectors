@@ -1,8 +1,8 @@
 # Descriptions of standardized actions or triggers
 
-**Version Publish Date:** 07.11.2019
+**Version Publish Date:** 12.07.2021
 
-**Semantic Version of Document:** 2.2.1
+**Semantic Version of Document:** 2.6.0
 
 ## Table of Contents
 
@@ -11,7 +11,7 @@
   * [Lookup Object (at most 1)](#lookup-object-at-most-1)
   * [Lookup Objects (Plural)](#lookup-objects-plural)
   * [Delete Object](#delete-object)
-  * [Make RAW Request](#make-raw-request)
+  * [Make Raw HTTP Request](#make-raw-http-request)
   * [Lookup Set Of Objects By Unique Criteria](#lookup-set-of-objects-by-unique-criteria)
   * [Update Object](#update-object)
   * [Create Object](#create-object)
@@ -24,7 +24,12 @@
 - [Triggers](#triggers)
   * [Get New and Updated Objects Polling](#get-new-and-updated-objects-polling)
   * [Webhooks](#webhooks)
+  * [Get Recently Deleted Objects Polling](#get-recently-deleted-objects-polling)
+  * [Event Subscription](#event-subscription)
   * [Bulk Extract](#bulk-extract)
+- [Attachments](#attachments)
+  * [List of Attachment Meta-Information Fields](#list-of-attachment-meta-information-fields)
+  * [Attachment Examples](#attachment-examples)
 
 It is important to define common rules on how an adapter responds to changes
 and performs actions on generic domain objects.  If adapters follow
@@ -108,15 +113,17 @@ I have some contact data that I want to add to my CRM.  I don't necessarily know
 
 ### Lookup Object (at most 1)
 ##### Example Use Case
-I have a contact who works for a company.  I have an ID or other distinguishing characteristic (e.g. legal name) of the company and I want to learn some detail about the company (e.g. number of employees).
+I have a contact who works for a company.  I have an ID or other distinguishing characteristic (e.g. legal name) of the company and I want to learn some detail about the company (e.g. country of company).
 
 #### Iteration 1: Lookup Object By ID
 
 ##### Config Fields
 
 - Object Type (dropdown)
-- Allow ID to be omitted (dropdown/checkbox: yes/no)
-- Allow zero results (dropdown/checkbox: yes/no)
+- Allow ID to be omitted (dropdown/checkbox: yes/no); when selected, the ID field becomes optional, otherwise it is a required field
+- Allow zero results (dropdown/checkbox: yes/no); When selected, if zero results are returned, the empty object `{}` is emitted, otherwise typically an error would be thrown.
+- Wait for object to exist (dropdown/checkbox: yes/no); When selected, if no results are found, apply rebounds and wait until the object exits.
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
 
 ##### Input Metadata
 
@@ -135,10 +142,12 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
       }
 
       try {
-        const foundObject = GetObjectById(id);   // Usually GET verb
+        const foundObject = GetObjectById(id, linkedObjectsToPopulate);   // Usually GET verb
         emitData(foundObject);
       } catch (NotFoundException e) {
-        if(allowZeroResults) {
+        if(waitForObjectToExist && notAllReboundsExhausted) {
+          emitRebound({});
+        } else if(allowZeroResults) {
           emitData({});
         } else {
           throw e;
@@ -153,10 +162,6 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
 ##### Gotcha’s to lookout for
 
 - Make sure to Url Encode IDs appearing in HTTP urls
-
-##### Not defined now
-
-- How to handle populating linked objects.
 
 #### Iteration 2: Lookup Object By Unique Criteria
 
@@ -180,9 +185,11 @@ I have a contact who works for a company.  I have an ID or other distinguishing 
         }
       }
 
-      const foundObjects = GetObjectsByCriteria(uniqueCriteria);   // Usually GET verb
+      const foundObjects = GetObjectsByCriteria(uniqueCriteria, linkedObjectsToPopulate);   // Usually GET verb
       if(foundObjects.length == 0) {
-        if(allowZeroResults) {
+        if(waitForObjectToExist && notAllReboundsExhausted) {
+          emitRebound({});
+        } else if(allowZeroResults) {
           emitData({});
         } else {
           throw new Error('Not found');
@@ -201,59 +208,75 @@ I want to search my CRM for data based on some criteria.
 
 ##### Config Fields
 
-- Object Type (dropdown)
-- Behavior (dropdown: Fetch all, Fetch Page, Emit Individually)
-- Number of search terms (text field: integer >= 1) (iteration 2)
+- Object Type (dropdown, required)
+- Behavior (dropdown: Fetch All, Fetch Page, Emit Individually, required)
+- Number of Search Terms (number [0-99], optional)
+- Linked objects to populate (multi-select dropdown, optional): Select which linked objects to fetch if supported by the API.
+- Enable Expert mode (checkbox, optional): If selected, `Number of Search Terms` will be ignored, instead of it inside input metadata will be oly one field - `Filter Expression`
+
+    <details><summary>Metadata example:</summary>
+
+  ```json
+  {
+    "filterExpression": "((name = 'John') and (age between 20 and 30)) or (name = 'Julie')"
+  }
+  ```
+    </details>
 
 ##### Input Metadata
 
-- Page size: optional positive integer that defaults to 100 (only if fetch page mode)
-- page number: required non-negative integer that is 0 based (only if fetch page mode)
-- order: optional array of fieldname + sort direction pairs (only if fetch page mode)
-- max result size: optional positive integer that defaults to 1000 (only if fetch all mode)
-- For each search term:
-  - fieldName
-  - fieldValue
-  - condition (equal, not equal, >=, <=, >, <, like (if supported), possibly more in the future)
-- For each search term - 1: (iteration 2)
-  - criteriaLink (and/or)
+- Page Size (non-negative integer, optional: defaults to page size used by API): (only if fetch page mode) A value of `0` indicates that the `results` will be an empty array with only `totalCountOfMatchingResults` populated.
+- Page Number (non-negative 0 based integer, optional: default to 0): (only if fetch page mode)
+- Order (Array of fieldname + sort direction pairs, optional: default to empty array)
+- Groups of fields for each search term if `Number of Search Terms` more than 0 and `Enable Expert mode` not selected
+  - Field name (string, required): Object field name to filter
+  - Condition (string, required): Condition to compare selected field with value, depends from API
+  - Field value (string, optional) Value of selected field, may be empty in cases where condition like `CHANGED` of `EXIST`
+  - Logical operator (string, required): Appears only if there is more than one search term to combine multiple search terms
+- If selected `Enable Expert mode`
+  - Filter Expression (string, required) custom string to filter Objects, for advanced users
 
 ##### Pseudo-Code
 
     function lookupObjects(criteria) {
-      switch(mode) {
-        case 'fetchAll':
-          const results = GetObjectsByCriteria(criteria);
-          if(results.length >= maxResultSize) {
-            throw new Error('Too many results');
-          }
-          emitData({results: results});
-          break;
-        case 'emitIndividually':
-          const results = GetObjectsByCriteria(criteria);
-          results.forEach(result => {
-            emitData(result);
-          }
-          break;
-        case 'fetchPage':
-          const results = GetObjectsByCritieria(criteria, top: pageSize, skip: pageSize * pageNumber, orderBy: orderByTerms);
-          emitData({results: results});
-          break;
-      }
+      var proceed = true;
+      vat top = pageSize || 100;
+      var skip = top * (pageNumber || 0);
+      var combinedResults = [];
+      do {
+        const { results, totalCountOfMatchingResults } = GetObjectsByCriteria(criteria, linkedObjectsToPopulate, top, skip, orderByTerms)
+        switch(mode) {
+          case 'fetchAll':
+            combinedResults.push(...results);
+            break;
+          case 'emitIndividually':
+            results.forEach(result => { emitData(result) });
+            break;
+          case 'fetchPage':
+            emitData({results, totalCountOfMatchingResults});
+            proceed = false;
+            break;
+        }
+        skip += top;
+        if (results.length == 0) proceed = false;
+      } while (proceed)
+      if (mode == 'fetchAll') emitData({results: combinedResults});
     }
 
 ##### Output Data
-
-- An object, with  key `results` that has an array as its value.
+- For **Fetch Page** mode:An object with
+  - key `results` that has an array as its value
+  - key `totalCountOfMatchingResults` which contains the total number of results (not just on the page) which match the search criteria
+- For **Fetch All** mode: An object, with  key `results` that has an array as its value.
+- For **Emit Individually** mode: Each object should fill the entire message.
 
 ##### Gotcha’s to lookout for
 
 - Make sure to Url Encode field values appearing in HTTP urls
+- The page size requested for the component may be larger that the page size supported by the API. In this case, the component must fetch multiple pages from the API to combine into a result.
 
 ##### Not Handled
-
-- Order of operations in multiple terms
-- How to get total number of matching objects
+- Using the *OR* operator to combine search terms
 
 ### Delete Object
 ##### Example Use Case
@@ -264,6 +287,10 @@ I know the ID of a customer that I want to delete.
 ##### Config Fields
 
 - Object Type (dropdown)
+- Emit strategy when no object found (dropdown). Available options:
+  - “Emit nothing”
+  - “Emit an empty object {}”
+  - “Throw an error”
 
 ##### Input Metadata
 
@@ -275,7 +302,7 @@ I know the ID of a customer that I want to delete.
       try {
         DeleteObjectById(id);   // Usually DELETE verb
       } catch (NotFoundException e) {
-        emitData({});
+        emitDataBasedOnEmitStrategySelected();
         return;
       }
       emitData({id: id});
@@ -305,7 +332,7 @@ I know the ID of a customer that I want to delete.
     function deleteObjectByUniqueCriteria(uniqueCriteria) {
       const foundObjects = GetObjectsByCritieria(uniqueCriteria);   // Usually GET verb
       if(foundObjects.length == 0) {
-        emitData({});
+        emitDataBasedOnEmitStrategySelected();
       } else if (foundObjects.length == 1) {
         DeleteObjectById(foundObjects[0].id);   // Usually DELETE verb
         emitData({id: foundObjects[0].id});
@@ -314,20 +341,40 @@ I know the ID of a customer that I want to delete.
       }
     }
 
-### Make RAW Request
-
-*This action has not been fully standardized.*
-
-A simple action to allow integrators to assemble requests to be sent to the system.  The component should expose the parts that vary in a typical request.  The component should handle authentication and error reporting.
+### Make Raw HTTP Request
+A simple action to allow integrators to assemble requests to be sent to the system.  The component should expose the parts that vary in a typical request.  The component should handle authentication and error reporting. It can optionally handle paging. In some cases, it may make sense to allow the option to make a series of sequential array requests though this later behavior is not yet standardized.
 
 ##### Example Use Case
 I'm a technically advanced user who wants to interact with a system in a way not permissible by the existing component actions but would like some simplification relative to using the REST component.
 
+##### Config Fields
+* Error Tolerance (dropdown, required): Determines behavior for when an erroneous HTTP code is received. Options are as follows:
+  * **No Errors Tolerated**: Any HTTP status code >= 400 should result in an error being thrown
+  * **Only Not Found Errors Tolerated**: HTTP status codes of 404, 410 or similar should result in a message being produced with the status code and the HTTP reponse. All other error codes should result in an error being thrown.
+  * **None**: Regardless of the HTTP error code, the component should produce an outbound message with the status code and the HTTP reponse.
+  * **Manual**: A range of error codes to throw errors on can be configured via the message input.
+
+##### Input Metadata
+* Url (string, required): Path of the resource relative to the URL base.
+* Method (string enum (Enum options are system specific.), required): HTTP Verb for the request. 
+* Request Body (object, optional): Body of the request to send
+
+If **Error Tolerance** is **Manual**:
+  * HTTP Codes to throw errors (array of error ranges, optional default to `[]`): A double array with a list of ranges of HTTP response codes to throw errors upon receiving Use a syntax that matches [retry-axios](https://www.npmjs.com/package/retry-axios). Example: `[[400, 403], [405,599]]` - Throw errors on all errors apart from 404.
+
+*For some systems, it may make sense to also add the HTTP headers.*
+
+##### Output Data
+* Status Code (integer, required): HTTP status code of the request
+* Response Body (object, optional): JSON representation of the response body from the request
+
+*For some systems, it may make sense to also add the HTTP headers.*
+
 ### Lookup Set Of Objects By Unique Criteria
-Given an array of information where each item in the array uniquely describes exactly one object.  It can be assumed that the array is short enough to reasonably fit the results in a single message.
+Given an array of information where each item in the array uniquely describes exactly one object.  It can be assumed that the array is short enough to reasonably fit the results in a single message.  If any of the objects are not found then it indicates a logic problem in the integration.
 
 ##### Example Use Case
-I salesperson is responsible for 0 to N accounts.  I would like to look up a piece of information for each account associated with the salesperson.
+I salesperson is responsible for 0 to N accounts (N being reasonably small).  I would like to look up a piece of information for each account associated with the salesperson.
 
 #### Iteration 1: Lookup Object By ID
 #### Iteration 2: Lookup Object By Unique Criteria
@@ -335,6 +382,8 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 ##### Config Fields
 
 - Object Type (dropdown)
+- Linked objects to populate (optional, multi-select dropdown).  Select which linked objects to fetch if supported by the API.
+- Wait for object to exist (dropdown/checkbox: yes/no); When selected, if no results are found, apply rebounds and wait until the object exits.
 - Iteration 2: Unique Criteria (dropdown)
 
 ##### Input Metadata
@@ -345,9 +394,13 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 
     function lookupSetOfObjects(itemUniqueCriteriaListToLookup) {
       const results = itemUniqueCriteriaListToLookup.map(itemUniqueCriteria => {
-        const matchingItems = GetObjectsByCriteria(itemUniqueCriteria);
+        const matchingItems = GetObjectsByCriteria(itemUniqueCriteria, linkedObjectsToPopulate);
         if(matchingItems.length != 1) {
-         throw new Error(`Lookup failed for ${itemUniqueCriteria}`);
+         if(!waitForObjectToExist) {
+           throw new NotFoundError();
+         }
+         emitRebound({});
+         return;
         }
         return {
           key: itemCriteria,
@@ -365,13 +418,17 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
         return;
       }
 
-      const searchResults = FetchObjectsWhereIdIn(itemIdsToLookup);
+      const searchResults = FetchObjectsWhereIdIn(itemIdsToLookup, linkedObjectsToPopulate);
 
       const resultDictionary = {};
       for each (let itemId of itemIdsToLookup) {
         const matchingItems = searchResults.filter(result.Id = itemId);
         if(matchingItems.length != 1) {
-          throw new Error(`Lookup failed for ${itemUniqueCriteria}`);
+          if(!waitForObjectToExist) {
+            throw new NotFoundError();
+          }
+          emitRebound({});
+          return;
         }
         resultDictionary[itemId] = matchingItems[0];
       }
@@ -387,10 +444,6 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
 ##### Gotcha’s to lookout for
 
 - Make sure to Url Encode IDs appearing in HTTP urls
-
-##### Not defined now
-- Encode any IDs in URLs
-- Rebounds when an object is not found
 - There are different structures depending on the input structure
 
 ### Update Object
@@ -399,6 +452,7 @@ I salesperson is responsible for 0 to N accounts.  I would like to look up a pie
   - We will not create the object if it does not exist
   - The ID/other unique criteria is required
   - No other fields are required
+If the object is not found, then rebounds should be done based on the rebound option.
 
 ##### Example Use Case
 I want to update the price of a product based on its SKU but I don't want to look up other required attributes such as name since I know those have already been set and are not changing.
@@ -421,18 +475,31 @@ See above.
   - the types of the two objects
   - two sets of unique criteria which describe the two objects
   - Information about the relationship (e.g. if assigning user to company membership, identify the role of the user)
+- There should be an option to emit rebounds should be emitted if results aren't found.
 
     ```
     function linkObjects(obj1, obj2, linkMetadata) {
       const matchingObjects1 = lookupObjectByCriteria(obj1.type, obj1.uniqueCriteria);
-      if (matchingObjects1.length != 1) {
-        throw new Error('Not found/too many found.');
+      if (matchingObjects1.length > 1) {
+        throw new Error('Too many found.');
+      } else if (matchingObjects1.length == 0) {
+        if(!waitForObjectToExist) {
+          throw new NotFoundError();
+        }
+        emitRebound();
+        return;
       }
       const object1Id = matchingObjects1[0].id;
 
       const matchingObjects2 = lookupObjectByCriteria(obj2.type, obj2.uniqueCriteria);
-      if (matchingObjects2.length != 1) {
-        throw new Error('Not found/too many found.');
+      if (matchingObjects2.length > 1) {
+        throw new Error('Too many found.');
+      } else if (matchingObjects2.length == 0) {
+        if(!waitForObjectToExist) {
+          throw new NotFoundError();
+        }
+        emitRebound();
+        return;
       }
       const object2Id = matchingObjects2[0].id;
 
@@ -444,7 +511,7 @@ See above.
 A student can be a participant in a class and a class can have many students.  Given a student ID and a course ID I want to enroll that student in that course.
 
 ### Execute Query or Statement in Query Language
-Examples of this include constructing a query or statement in SQL, Salesforce’s SOQL, etc. Queries return a table of data when executed.  Statements do not reutrn results (other than execution statistics).
+Examples of this include constructing a query or statement in SQL, Salesforce’s SOQL, etc. Queries return a table of data when executed.  Statements do not return results (other than execution statistics).
 
 ##### Example Use Case
 Execute SQL query in SQL database
@@ -586,77 +653,100 @@ I want to learn about changes to contacts in my CRM when they happen.
 ##### Config Fields
 
 - Object Type (dropdown)
-- Start Time (string, optional): Indicates the beginning time to start polling from (defaults to the begining of time)
-- End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to never)
-- Size of Polling Page (optional; positive integer) Indicates the size of pages to be fetched. Defaults to 1000.
-- Single Page per Interval (dropdown/checkbox: yes/no; default yes) Indicates that if the number of changed records exceeds the maximum number of results in a page, instead of fetching the next page immediately, wait until the next flow start to fetch the next page.
+- Start Time (string, optional): Indicates the beginning time to start polling from (defaults to the beginning of time)
+- End Time (string, optional): If provided, don’t fetch records modified after this time (defaults to now, where ‘now’ is each trigger execution’s timestamp)
+- Behavior (dropdown: Fetch Page, Emit Individually, required)
+- Size of Polling Page (optional; positive integer) if size of a page > maximum allowed by API then page size = maximum allowed by API otherwise - a user-specified value
+- Time stamp field to poll on (dropdown: created or modified).  Indicates just new items or new and modified items.
 
 ##### Input Metadata
 
 N/A
 
+##### Gotcha’s to lookout for
+- We need to be careful about more than a page worth of records having the same timestamp.
+- We need to be careful about the last record on one page having the same timestamp as the first record on the next page
+- We need to be careful about records on page N being modified before reading page N+1 (thus causing records to be skipped as they move from page N+1 to page N).
+
+##### Assumptions About Server Behavior:
+In order for the bellow polling algorithm to work, all of the following must be true about the way the server behaves:
+* If record A has a timestamp of X and appears within a search but not record B, then if record B appears in a later search than record B MUST have a timestamp that is later (i.e. Not the same or earlier) than record A.
+
 ##### Pseudo-Code
-
+```
     function getObjectsPolling(cfg, snapshot) {
-      const previousLastModified = snapshot.previousLastModified || cfg.startTime || new Date(0);
-      const maxTime = cfg.endTime || Date.MaxDate();
-      let hasMorePages = true;
-      snapshot.pageNumber = snapshot.pageNumber || 0;
-      let lastSeenTime = previousLastModified;
-      do {
-        let whereCondition;
-        if (previousLastModified === cfg.startTime || new Date(0)){
-          whereCondition = [
-            lastModified >= previousLastModified,
-            lastModified <= maxTime
-          ];
-        } else {
-          whereCondition = [
-            lastModified > previousLastModified,
-            lastModified <= maxTime
-          ];
-        }
+      const currentTime = new Date();
+      const { startTime, endTime, pageSize, emitBehavior, objectType, pollConfig } = cfg;
+      const from = snapshot?.nextStartTime || startTime || 0;
+      const to = endTime || currentTime;
+      const nextStartTime = currentTime;
 
-        const pageOfResults = GetPageOfResults({
-          orderBy: Time ascending
-          where: whereCondition,
-          top: sizeOfPollingPage,
-          skip: snapshot.pageNumber * sizeOfPollingPage
-        });
-        pageOfResults.forEach(result => {
-          emitData(result);
-        };
-        snapshot.pageNumber++;
-        hasMorePages = pageOfResults.length == pageSize;
-        if(pageOfResults.length > 0) {
-          lastSeenTime = pageOfResults[pageOfResults.length - 1].lastModified;
+      let proceed = true;
+      let pageNumber = 1;
+
+      do {
+        const results = getPageOfResults({objectType, pollConfig, pageSize, pageNumber, from, to});
+        pageNumber++;
+
+        if (results.length !== 0) {
+          if (results.length < Number(pageSize)) {
+            proceed = false;
+            emitSnapshot({ nextStartTime });
+          }
+          if (emitBehavior === 'emitPage') {
+            emitData({results});
+          } else if (emitBehavior === 'emitIndividually') {
+            for (const record of results) {
+              emitData(record);
+            }
+          }
+        } else {
+          await this.emit('snapshot', { nextStartTime });
+          proceed = false;
         }
-        emitSnapshot(snapshot);
-        if(singlePagePerInterval && hasMorePages) {
-          return;
-        }
-      } while (hasMorePages)
-      delete snapshot.pageNumber;
-      snapshot.previousLastModified = lastSeenTime;
-      emitSnapshot(snapshot);
-    }
+      } while (proceed);
+```
 
 ##### Output Data
 
-- Each object emitted individually.
-
-##### Gotcha’s to lookout for
-
-- If `previousLastModified` is set to `lastSeenTime` and we have `lastModified >= previousLastModified` then each execution will include records from previous execution.  But if at the first execution `previousLastModified` could be equal `cfg.startTime` and we have `lastModified > previousLastModified` then we will lose objects whose last modified date is equal to the `cfg.startTime`.  This is why we compare `previousLastModified` and `cfg.startTime || new Date(0)` and if they are equal, use condition `lastModified >= previousLastModified,` else: `lastModified > previousLastModified,`
-- We use `lastModified <= maxTime` as it is more understandable for user.
-- We have `Single Page per Interval` default to yes because it is slightly safer.
-- TODO
+- For **Fetch Page** mode: An object, with  key `results` that has an array as its value.
+- For **Emit Individually** mode: Each object should fill the entire message.
 
 ### Webhooks
 
 *This action has not been fully standardized.*
 
 Receives data pushed to the iPaas from an external system.
+
+### Get Recently Deleted Objects Polling
+##### Example Use Case
+I want to learn about contacts in my CRM that are deleted so that I can propagate those deletes.
+
+##### Config Fields
+
+Same as `Get New and Updated Objects Polling`.
+##### Input Metadata
+
+N/A
+
+##### Pseudo-Code
+
+Same as `Get New and Updated Objects Polling`.
+##### Output Data
+
+- Each object emitted individually.
+
+### Event Subscription
+
+*This action has not been fully standardized.*
+
+The platform must have a part that is actively awake and is able to receive events based on some protocol.  Examples:
+* Salesforce Event Bus
+* AMQP component
+* Socket component
+* JMX component
+* CometD protocol
+* Long polling
 
 ### Bulk Extract
 
@@ -665,3 +755,76 @@ Useful for:
 - Systems that do no track last_modified
 - Systems that don’t support filtering by timestamp range
 - Systems which have dedicated bulk export functionality
+- Providing a way to track object deletions
+
+## Attachments
+
+This section describes what meta-information for attachments should be communicated as part of the message body and how this meta-information should be included.
+
+There are the following cases where a component would produce an attachment:
+* **Binary Field Case:** There is some binary/non-text data that is stored as part of an entity (e.g. Photo of a contact in a CRM)
+* **File System Case:** The component is interacting with a 3rd party system that could be described as being a "drive" that exposes a file system (e.g. SFTP, Google Drive, etc.)
+* **File Generation Case:** The component creates an attachment of a specified type based on the inputs to the step (e.g XML or CSV component creates XML/CSV files based on incoming JSON data)
+
+For the **Binary Field Case**, we would expect the attachment information to appear as an inline object that is appropriately placed within the message body object. Otherwise, for the **File System Case** and the **File Generation Case** the file attachment meta-information can be an object that occupies the entire message body.
+
+### List of Attachment Meta-Information Fields
+* `attachmentUrl` (Expected for all three cases): URL to a steward or maester object containing the (potentially) binary data of the attachment
+* `size` (Expected for all three cases): Size in bytes of the attachment
+* `name` (Expected only for the **File System Case**): Name of the file in the "drive"
+* `path` (Expected only for the **File System Case**): Path of the file within the "drive" (includes filename)
+* `directory` (Expected only for the **File System Case**): Path of the file within the "drive" (excludes filename)
+* `type` (Optional for the **File System Case**, Expected for the **File System Case** and **File Generation Case**): Filename extension suffix (e.g. `.csv`, `.jpg`) of the file
+* `modifyTime` (Expected for **File System Case**, optional for **Binary Field Case**): Time when the file was created
+* `attachmentCreationTime` (Expected for all three cases): Time when the attachment was created
+* `attachmentExpiryTime` (Expected for all three cases): Time when the attachment will be deleted
+* `contentType` (Expected for only the **Binary Field Case** and **File Generation Case**): [Value that would normally appear in a `Content-Type` HTTP header field (e.g. `application/xml`, `image/jpeg`)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+
+
+### Attachment Examples
+#### Binary Field Case
+For a contact photo
+```json
+{
+  "contact": {
+    "firstName": "Fred",
+    "lastName": "Smith",
+    "profilePhoto": {
+      "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
+      "size": 126976,
+      "modifyTime": "2021-05-01T12:00:00.000Z",
+      "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
+      "attachmentExpiryTime": "2021-05-27T12:00:00.000Z",
+      "contentType": "image/jpeg"
+    },
+    ...
+  }
+}
+```
+
+#### File System Case
+```json
+{
+  "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
+  "size": 126976,
+  "name": "profilePhoto.jpg",
+  "path": "/home/someuser/Documents/profilePhoto.jpg",
+  "directory":  "/home/someuser/Documents",
+  "type": ".jpg",
+  "modifyTime": "2021-05-01T12:00:00.000Z",
+  "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
+  "attachmentExpiryTime": "2021-05-27T12:00:00.000Z"
+}
+```
+
+#### File Generation Case
+```json
+{
+  "attachmentUrl": "http://steward-service.platform.svc.cluster.local:8200/files/8a10d010-10f8-4d1d-88ff-7458f66d574d",
+  "size": 126976,
+  "type": ".xml",
+  "attachmentCreationTime": "2021-05-25T12:00:00.000Z",
+  "attachmentExpiryTime": "2021-05-27T12:00:00.000Z",
+  "contentType": "application/xml"
+}
+```
